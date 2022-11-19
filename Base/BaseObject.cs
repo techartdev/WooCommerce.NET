@@ -122,7 +122,7 @@ namespace WooCommerceNET.Base
         public List<T> update { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public List<int> delete { get; set; }
+        public List<ulong> delete { get; set; }
 
         [IgnoreDataMember]
         public List<T> DeletedItems { get; set; }
@@ -223,7 +223,7 @@ namespace WooCommerceNET.Base
                     else
                         batchResult = API.DeserializeJSon<BatchObject<T>>(json);
                 }
-                
+
                 return batchResult;
             }
         }
@@ -276,7 +276,7 @@ namespace WooCommerceNET.Base
             return API.DeserializeJSon<T>(await API.GetRestful(APIParentEndpoint + "/" + parentId.ToString() + "/" + APIEndpoint + "/" + id.ToString(), parms).ConfigureAwait(false));
         }
 
-        public virtual async Task<List<T>> GetAll(object parentId, Dictionary<string, string> parms = null)
+        public virtual async Task<List<T>> GetAll(ulong parentId, Dictionary<string, string> parms = null)
         {
             return API.DeserializeJSon<List<T>>(await API.GetRestful(APIParentEndpoint + "/" + parentId.ToString() + "/" + APIEndpoint, parms).ConfigureAwait(false));
         }
@@ -318,28 +318,28 @@ namespace WooCommerceNET.Base
 
         public virtual async Task<BatchObject<T>> UpdateRange(ulong parentId, BatchObject<T> items, Dictionary<string, string> parms = null)
         {
-            string json = await UpdateRangeRaw( parentId, items, parms );
+            string json = await UpdateRangeRaw(parentId, items, parms);
 
-            if ( items.delete == null || items.delete.Count == 0 )
-                return API.DeserializeJSon<BatchObject<T>>( json );
+            if (items.delete == null || items.delete.Count == 0)
+                return API.DeserializeJSon<BatchObject<T>>(json);
             else
             {
                 BatchObject<T> batchResult = new BatchObject<T>();
 
-                if ( ( items.create == null || items.create.Count == 0 ) && ( items.update == null || items.update.Count == 0 ) )
+                if ((items.create == null || items.create.Count == 0) && (items.update == null || items.update.Count == 0))
                 {
-                    batchResult.DeletedItems = API.DeserializeJSon<List<T>>( json.Substring( json.IndexOf( "[" ) ).TrimEnd( '}' ) );
+                    batchResult.DeletedItems = API.DeserializeJSon<List<T>>(json.Substring(json.IndexOf("[")).TrimEnd('}'));
                 }
                 else
                 {
-                    var pos = json.LastIndexOf( "\"delete\":[" );
-                    if ( pos != -1 )
+                    var pos = json.LastIndexOf("\"delete\":[");
+                    if (pos != -1)
                     {
-                        batchResult = API.DeserializeJSon<BatchObject<T>>( json.Substring( 0, pos - 1 ) + "}" );
-                        batchResult.DeletedItems = API.DeserializeJSon<List<T>>( json.Substring( pos + 9 ).TrimEnd( '}' ) );
+                        batchResult = API.DeserializeJSon<BatchObject<T>>(json.Substring(0, pos - 1) + "}");
+                        batchResult.DeletedItems = API.DeserializeJSon<List<T>>(json.Substring(pos + 9).TrimEnd('}'));
                     }
                     else
-                        batchResult = API.DeserializeJSon<BatchObject<T>>( json );
+                        batchResult = API.DeserializeJSon<BatchObject<T>>(json);
                 }
 
                 return batchResult;
