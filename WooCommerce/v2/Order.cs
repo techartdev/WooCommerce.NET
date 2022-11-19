@@ -424,7 +424,7 @@ namespace WooCommerceNET.WooCommerce.v2
     }
 
     [DataContract]
-    public class OrderMeta : WCObject.MetaData
+    public class OrderMeta : WCObject.SimpleMetaData
     {
 
     }
@@ -537,7 +537,7 @@ namespace WooCommerceNET.WooCommerce.v2
         /// read-only
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string id { get; set; }
+        public ulong? id { get; set; }
 
         /// <summary>
         /// Tax rate code. 

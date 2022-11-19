@@ -139,6 +139,43 @@ namespace WooCommerceNET.WooCommerce.v2
             }
         }
 
+        [DataContract]
+        public class SimpleMetaData
+        {
+            /// <summary>
+            /// Meta ID. 
+            /// read-only
+            /// </summary>
+            [DataMember(EmitDefaultValue = false)]
+            public ulong? id { get; set; }
+
+            /// <summary>
+            /// Meta key.
+            /// </summary>
+            [DataMember(EmitDefaultValue = false)]
+            public string key { get; set; }
+
+            /// <summary>
+            /// Meta value.
+            /// </summary>
+            private object preValue;
+            [DataMember(EmitDefaultValue = false)]
+            public object value
+            {
+                get
+                {
+                    return preValue;
+                }
+                set
+                {
+                    if (MetaValueProcessor != null)
+                        preValue = MetaValueProcessor.Invoke(GetType().Name, value);
+                    else
+                        preValue = value;
+                }
+            }
+        }
+
         public class WCProductItem : WCItem<T3>
         {
             public WCProductItem(RestAPI api) : base(api)

@@ -17,8 +17,8 @@ namespace WooCommerceNET
     public class RestAPI
     {
         protected string wc_url = string.Empty;
-        protected string wc_key = "";
-        protected string wc_secret = "";
+        public string wc_key = "";
+        public string wc_secret = "";
         //private bool wc_Proxy = false;
 
         protected bool AuthorizedHeader { get; set; }
@@ -154,11 +154,11 @@ namespace WooCommerceNET
             HttpWebRequest httpWebRequest = null;
             try
             {
-                if (Version == APIVersion.WordPressAPI)
-                {
-                    if (string.IsNullOrEmpty(oauth_token) || string.IsNullOrEmpty(oauth_token_secret))
-                        throw new Exception($"oauth_token and oauth_token_secret parameters are required when using WordPress REST API.");
-                }
+                //if (Version == APIVersion.WordPressAPI)
+                //{
+                //    if (string.IsNullOrEmpty(oauth_token) || string.IsNullOrEmpty(oauth_token_secret))
+                //        throw new Exception($"oauth_token and oauth_token_secret parameters are required when using WordPress REST API.");
+                //}
 
                 if ((Version == APIVersion.WordPressAPIJWT || WCAuthWithJWT) && JWT_Object == null)
                 {
@@ -213,7 +213,7 @@ namespace WooCommerceNET
                 else
                 {
                     httpWebRequest = (HttpWebRequest)WebRequest.Create(wc_url + GetOAuthEndPoint(method.ToString(), endpoint, parms));
-                    if (Version == APIVersion.WordPressAPIJWT)
+                    if (Version == APIVersion.WordPressAPIJWT || (Version == APIVersion.WordPressAPI && JWT_Object != null))
                         httpWebRequest.Headers["Authorization"] = "Bearer " + JWT_Object.token;
                 }
 
@@ -244,20 +244,24 @@ namespace WooCommerceNET
                     {
                         if (requestBody.ToString() == "fileupload")
                         {
-                            httpWebRequest.Headers["Content-Disposition"] = $"form-data; filename=\"{parms["name"]}\"";
-                            httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+                            httpWebRequest.Headers["Content-Disposition"] = $"attachment; filename=\"{parms["name"]}\"";
+                            httpWebRequest.ContentType = "image/jpeg";
 
                             using (Stream dataStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
                             {
-                                FileStream fileStream = new FileStream(parms["path"], FileMode.Open, FileAccess.Read);
-                                byte[] buffer = new byte[4096];
-                                int bytesRead = 0;
+                                //FileStream fileStream = new FileStream(parms["path"], FileMode.Open, FileAccess.Read);
+                                //byte[] buffer = new byte[4096];
+                                //int bytesRead = 0;
 
-                                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
-                                {
-                                    dataStream.Write(buffer, 0, bytesRead);
-                                }
-                                fileStream.Close();
+                                //while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+                                //{
+                                //    dataStream.Write(buffer, 0, bytesRead);
+                                //}
+                                //fileStream.Close();
+
+                                byte[] fileBytes = File.ReadAllBytes(parms["path"]);
+                                dataStream.Write(fileBytes, 0, fileBytes.Length);
+
                             }
                         }
                         else
@@ -323,7 +327,7 @@ namespace WooCommerceNET
 
         protected string GetOAuthEndPoint(string method, string endpoint, Dictionary<string, string> parms = null)
         {
-            if (Version == APIVersion.WordPressAPIJWT || (wc_url.StartsWith("https", StringComparison.OrdinalIgnoreCase) && Version != APIVersion.WordPressAPI))
+            if (Version == APIVersion.WordPressAPIJWT || (wc_url.StartsWith("https", StringComparison.OrdinalIgnoreCase)))
             {
                 if (parms == null)
                     return endpoint;
@@ -336,7 +340,7 @@ namespace WooCommerceNET
                     return endpoint + "?" + requestParms.TrimEnd('&');
                 }
             }
-            
+
             Dictionary<string, string> dic = new Dictionary<string, string>();
             dic.Add("oauth_consumer_key", wc_key);
 
@@ -364,7 +368,7 @@ namespace WooCommerceNET
                 dic.Add("oauth_signature", Common.GetSHA256(wc_secret + "&" + oauth_token_secret, base_request_uri));
             else
                 dic.Add("oauth_signature", Common.GetSHA256(wc_secret, base_request_uri));
-            
+
             string parmstr = string.Empty;
             foreach (var parm in dic)
                 parmstr += parm.Key + "=" + Uri.EscapeDataString(parm.Value) + "&";
