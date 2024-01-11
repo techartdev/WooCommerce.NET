@@ -709,8 +709,8 @@ namespace WooCommerceNET.WooCommerce.v2
         /// Line total tax (after discounts). 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public decimal? total_tax { get; set; }
+        //[DataMember(EmitDefaultValue = false)]
+        //public decimal? total_tax { get; set; }
 
         /// <summary>
         /// Line taxes. See Order - Taxes properties 
