@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WooCommerceNET.Base
+namespace WooCommerce.NET.Base
 {
     //Thanks to Michael Leonhard's SHA1 project. http://www.tamale.net/sha1/
     public class SHA1

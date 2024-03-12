@@ -4,8 +4,8 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using WooCommerceNET;
-using WooCommerceNET.Base;
+using WooCommerce.NET;
+using WooCommerce.NET.Base;
 
 namespace WooCommerce.NET.WordPress.v2
 {
@@ -14,8 +14,8 @@ namespace WooCommerce.NET.WordPress.v2
         where T7 : Taxonomies where T8 : Media where T9 : Users where T10 : PostTypes where T11 : PostStatuses where T12 : Settings
     {
        
-        protected RestAPI API { get; set; }
-        public WPObject(RestAPI api)
+        protected RestApi API { get; set; }
+        public WPObject(RestApi api)
         {
             API = api;
 
@@ -56,7 +56,7 @@ namespace WooCommerce.NET.WordPress.v2
 
         public class WPPostItem : WCItem<T1>
         {
-            public WPPostItem(RestAPI api) : base(api)
+            public WPPostItem(RestApi api) : base(api)
             {
                 API = api;
 
@@ -68,7 +68,7 @@ namespace WooCommerce.NET.WordPress.v2
 
         public class WPMediaItem : WCItem<T8>
         {
-            public WPMediaItem(RestAPI api) : base(api)
+            public WPMediaItem(RestApi api) : base(api)
             {
                 API = api;
             }
@@ -85,7 +85,7 @@ namespace WooCommerce.NET.WordPress.v2
 
         public class WPSettingItem : WCItem<T12>
         {
-            public WPSettingItem(RestAPI api) : base(api)
+            public WPSettingItem(RestApi api) : base(api)
             {
                 API = api;
             }
@@ -99,7 +99,7 @@ namespace WooCommerce.NET.WordPress.v2
 
     public class WPObject: WPObject<Posts, PostRevisions, Categories, Tags, Pages, Comments, Taxonomies, Media, Users, PostTypes, PostStatuses, Settings>
     {
-        public WPObject(RestAPI api) : base(api)
+        public WPObject(RestApi api) : base(api)
         {
         }
     }

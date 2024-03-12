@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using WooCommerceNET.Base;
+using WooCommerce.NET.Base;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
     public class OrderBatch : BatchObject<Order> { }
 
@@ -424,7 +424,7 @@ namespace WooCommerceNET.WooCommerce.v2
     }
 
     [DataContract]
-    public class OrderMeta : WCObject.SimpleMetaData
+    public class OrderMeta : WcObject.SimpleMetaData
     {
 
     }
@@ -727,7 +727,7 @@ namespace WooCommerceNET.WooCommerce.v2
     }
 
     [DataContract]
-    public class OrderCouponLineMeta : WCObject.MetaData
+    public class OrderCouponLineMeta : WcObject.MetaData
     {
 
     }

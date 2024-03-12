@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using WooCommerceNET.Base;
+using WooCommerce.NET.Base;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
     public class CouponBatch : BatchObject<Coupon> { }
 
@@ -185,7 +185,7 @@ namespace WooCommerceNET.WooCommerce.v2
     }
 
     [DataContract]
-    public class CouponMeta : WCObject.MetaData
+    public class CouponMeta : WcObject.MetaData
     {
 
     }

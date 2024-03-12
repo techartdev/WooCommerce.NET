@@ -1,57 +1,63 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using WooCommerceNET.Base;
+using WooCommerce.NET.Base;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
-    public class WCObject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
+    public class WcObject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
         where T1 : Coupon where T2 : Customer where T3 : Product where T4 : ProductReview where T5 : Variation
         where T6 : Order where T7 : OrderNote where T8 : OrderRefund where T9 : ProductAttribute
         where T10 : ProductAttributeTerm where T11 : ProductCategory where T12 : ShippingClass 
         where T13 : ProductTag where T14 : TaxRate where T15 : TaxClass
     {
        
-        protected RestAPI API { get; set; }
+        protected RestApi Api { get; set; }
+
+        // ReSharper disable once StaticMemberInGenericType
         public static Func<string, object, object> MetaValueProcessor { get; set; }
+
+        // ReSharper disable once StaticMemberInGenericType
         public static Func<string, object, object> MetaDisplayValueProcessor { get; set; }
-        public WCObject(RestAPI api)
+
+        public WcObject(RestApi api)
         {
-            if (api.Version != APIVersion.Version2)
+            if (api.Version != ApiVersion.Version2)
                 throw new Exception("Please use WooCommerce Restful API Version 2 url for this WCObject. e.g.: http://www.yourstore.co.nz/wp-json/wc/v2/");
 
-            API = api;
+            Api = api;
 
             Coupon = new WCItem<T1>(api);
-            Customer = new WCCustomerItem(api);
-            Product = new WCProductItem(api);
-            Order = new WCOrderItem(api);
-            Attribute = new WCAttributeItem(api);
+            Customer = new WcCustomerItem(api);
+            Product = new WcProductItem(api);
+            Order = new WcOrderItem(api);
+            Attribute = new WcAttributeItem(api);
             Category = new WCItem<T11>(api);
             ShippingClass = new WCItem<T12>(api);
             Tag = new WCItem<T13>(api);
-            Report = new WCItem<v2.Report>(api);
+            Report = new WCItem<Report>(api);
             TaxRate = new WCItem<T14>(api);
             TaxClass = new WCItem<T15>(api);
-            Webhook = new WCItem<v2.Webhook>(api);
-            PaymentGateway = new WCItem<v2.PaymentGateway>(api);
-            ShippingZone = new WCShippingZoneItem(api);
-            ShippingMethod = new WCItem<v2.ShippingMethod>(api);
-            SystemStatus = new WCItem<v2.SystemStatus>(api);
-            SystemStatusTool = new WCItem<v2.SystemStatusTool>(api);
+            Webhook = new WCItem<Webhook>(api);
+            PaymentGateway = new WCItem<PaymentGateway>(api);
+            ShippingZone = new WcShippingZoneItem(api);
+            ShippingMethod = new WCItem<ShippingMethod>(api);
+            SystemStatus = new WCItem<SystemStatus>(api);
+            SystemStatusTool = new WCItem<SystemStatusTool>(api);
             Setting = new WCItem<Setting>(api);
         }
 
         public WCItem<T1> Coupon { get; protected set; }
 
-        public WCCustomerItem Customer { get; protected set; }
+        public WcCustomerItem Customer { get; protected set; }
 
-        public WCProductItem Product { get; protected set; }
+        public WcProductItem Product { get; protected set; }
 
-        public WCOrderItem Order { get; protected set; }
+        public WcOrderItem Order { get; protected set; }
 
-        public WCAttributeItem Attribute { get; protected set; }
+        public WcAttributeItem Attribute { get; protected set; }
 
         public WCItem<T11> Category { get; protected set; }
 
@@ -69,7 +75,7 @@ namespace WooCommerceNET.WooCommerce.v2
 
         public WCItem<PaymentGateway> PaymentGateway { get; protected set; }
 
-        public WCShippingZoneItem ShippingZone { get; protected set; }
+        public WcShippingZoneItem ShippingZone { get; protected set; }
 
         public WCItem<ShippingMethod> ShippingMethod { get; protected set; }
 
@@ -87,54 +93,51 @@ namespace WooCommerceNET.WooCommerce.v2
             /// read-only
             /// </summary>
             [DataMember(EmitDefaultValue = false)]
-            public ulong? id { get; set; }
+            [JsonProperty("id")]
+            public ulong? Id { get; set; }
 
             /// <summary>
             /// Meta key.
             /// </summary>
             [DataMember(EmitDefaultValue = false)]
-            public string key { get; set; }
+            [JsonProperty("key")]
+            public string Key { get; set; }
 
             /// <summary>
             /// Meta value.
-            /// </summary>
-            private object preValue;
+            /// </summary>            
+            private object _preValue;
+
             [DataMember(EmitDefaultValue = false)]
-            public object value
+            [JsonProperty("value")]
+            public object Value
             {
-                get
-                {
-                    return preValue;
-                }
-                set
-                {
-                    if (MetaValueProcessor != null)
-                        preValue = MetaValueProcessor.Invoke(GetType().Name, value);
-                    else
-                        preValue = value;
-                }
+                get => _preValue;
+                set => _preValue = MetaValueProcessor != null ? MetaValueProcessor.Invoke(GetType().Name, value) : value;
             }
 
             /// <summary>
             /// Display key.
             /// </summary>
             [DataMember(EmitDefaultValue = false)]
-            public string display_key { get; set; }
+            [JsonProperty("display_key")]
+            public string DisplayKey { get; set; }
 
             /// <summary>
             /// Display value.
             /// </summary>
-            private object preDisplayValue;
+            private object _preDisplayValue;
             [DataMember(EmitDefaultValue = false)]
-            public object display_value 
+            [JsonProperty("display_value")]
+            public object DisplayValue 
             {
-                get => preDisplayValue;
+                get => _preDisplayValue;
                 set
                 {
                     if (MetaDisplayValueProcessor != null)
-                        preDisplayValue = MetaDisplayValueProcessor.Invoke(GetType().Name, value);
+                        _preDisplayValue = MetaDisplayValueProcessor.Invoke(GetType().Name, value);
                     else
-                        preDisplayValue = value;
+                        _preDisplayValue = value;
                 }
             }
         }
@@ -148,50 +151,53 @@ namespace WooCommerceNET.WooCommerce.v2
             /// read-only
             /// </summary>
             [DataMember(EmitDefaultValue = false)]
-            public ulong? id { get; set; }
+            [JsonProperty("id")]
+            public ulong? Id { get; set; }
 
             /// <summary>
             /// Meta key.
             /// </summary>
             [DataMember(EmitDefaultValue = false)]
-            public string key { get; set; }
+            [JsonProperty("key")]
+            public string Key { get; set; }
 
             /// <summary>
             /// Meta value.
             /// </summary>
-            private object preValue;
+            private object _preValue;
             [DataMember(EmitDefaultValue = false)]
-            public object value
+            [JsonProperty("value")]
+            public object Value
             {
                 get
                 {
-                    return preValue;
+                    return _preValue;
                 }
                 set
                 {
                     if (MetaValueProcessor != null)
-                        preValue = MetaValueProcessor.Invoke(GetType().Name, value);
+                        _preValue = MetaValueProcessor.Invoke(GetType().Name, value);
                     else
-                        preValue = value;
+                        _preValue = value;
                 }
             }
         }
 
-        public class WCCustomerItem : WCItem<T2>
+        public class WcCustomerItem : WCItem<T2>
         {
-            public WCCustomerItem(RestAPI api) : base(api)
+            public WcCustomerItem(RestApi api) : base(api)
             {
                 API = api;
             }
 
-            public virtual async Task<T2> Get(string email, Dictionary<string, string> parms = null)
+            public override async Task<T2> Get(string email, Dictionary<string, string> pars = null)
             {
-                if (parms == null)
-                    parms = new Dictionary<string, string>();
+                if (pars == null)
+                    pars = new Dictionary<string, string>();
 
-                parms.Add("email", email);
+                pars.Add("email", email);
 
-                var customers = await GetAll(parms);
+                var customers = await GetAll(pars);
 
                 if (customers == null || customers.Count == 0)
                     return null;
@@ -200,9 +206,9 @@ namespace WooCommerceNET.WooCommerce.v2
             }
         }
 
-        public class WCProductItem : WCItem<T3>
+        public class WcProductItem : WCItem<T3>
         {
-            public WCProductItem(RestAPI api) : base(api)
+            public WcProductItem(RestApi api) : base(api)
             {
                 API = api;
 
@@ -215,9 +221,9 @@ namespace WooCommerceNET.WooCommerce.v2
             public WCSubItem<T5> Variations { get; set; }
         }
 
-        public class WCOrderItem : WCItem<T6>
+        public class WcOrderItem : WCItem<T6>
         {
-            public WCOrderItem(RestAPI api) : base(api)
+            public WcOrderItem(RestApi api) : base(api)
             {
                 API = api;
 
@@ -230,9 +236,9 @@ namespace WooCommerceNET.WooCommerce.v2
             public WCSubItem<T8> Refunds { get; set; }
         }
 
-        public class WCAttributeItem : WCItem<T9>
+        public class WcAttributeItem : WCItem<T9>
         {
-            public WCAttributeItem(RestAPI api) : base(api)
+            public WcAttributeItem(RestApi api) : base(api)
             {
                 API = api;
 
@@ -242,9 +248,9 @@ namespace WooCommerceNET.WooCommerce.v2
             public WCSubItem<T10> Terms { get; set; }
         }
 
-        public class WCShippingZoneItem : WCItem<ShippingZone>
+        public class WcShippingZoneItem : WCItem<ShippingZone>
         {
-            public WCShippingZoneItem(RestAPI api) : base(api)
+            public WcShippingZoneItem(RestApi api) : base(api)
             {
                 API = api;
 
@@ -257,18 +263,18 @@ namespace WooCommerceNET.WooCommerce.v2
         }
     }
 
-    public class WCObject: WCObject<Coupon, Customer, Product, ProductReview, Variation, Order, OrderNote, OrderRefund, ProductAttribute, ProductAttributeTerm, 
+    public class WcObject: WcObject<Coupon, Customer, Product, ProductReview, Variation, Order, OrderNote, OrderRefund, ProductAttribute, ProductAttributeTerm, 
                                     ProductCategory, ShippingClass, ProductTag, TaxRate, TaxClass>
     {
-        public WCObject(RestAPI api) : base(api)
+        public WcObject(RestApi api) : base(api)
         {
         }
     }
 }
 
-namespace WooCommerceNET.WooCommerce.v2.Extension
+namespace WooCommerce.NET.WooCommerce.v2.Extension
 {
-    public static class WCExtension
+    public static class WcExtension
     {
         public static async Task<List<CustomerDownloads>> GetCustomerDownloads(this WCItem<Customer> item, int id, Dictionary<string, string> parms = null)
         {

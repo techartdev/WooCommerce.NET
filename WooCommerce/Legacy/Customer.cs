@@ -1,14 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
-namespace WooCommerceNET.WooCommerce.Legacy
+namespace WooCommerce.NET.WooCommerce.Legacy
 {
     [CollectionDataContract]
     public class CustomerList : List<Customer>
     {
         [DataMember]
-        public List<Customer> customers { get; set; }
+        [JsonProperty("customers")]
+        [JsonPropertyName("customers")]
+        public List<Customer> Customers { get; set; }
     }
 
     [DataContract]
@@ -19,100 +23,130 @@ namespace WooCommerceNET.WooCommerce.Legacy
         /// read-only
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// UTC DateTime when the customer was created 
         /// read-only
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public DateTime? created_at { get; set; }
+        [JsonProperty("created_at")]
+        [JsonPropertyName("created_at")]
+        public DateTime? CreatedAt { get; set; }
 
         /// <summary>
         /// Customer email address 
         /// mandatory when creating a new customer.
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string email { get; set; }
+        [JsonProperty("email")]
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
         /// <summary>
         /// Customer first name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string first_name { get; set; }
+        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Customer last name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string last_name { get; set; }
+        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
+        public string LastName { get; set; }
 
         /// <summary>
-        /// Customer username, can be generated automatically from the customer’s email addrees if the option woocommerce_registration_generate_username is equal to yes 
+        /// Customer username, can be generated automatically from the customer’s email address if the option woocommerce_registration_generate_username is equal to yes 
         /// cannot be changed
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string username { get; set; }
+        [JsonProperty("username")]
+        [JsonPropertyName("username")]
+        public string Username { get; set; }
 
         /// <summary>
         /// Customer password, can be generated automatically with wp_generate_password() if the “Automatically generate customer password” option is enabled, check the index meta for generate_password 
         /// write-only
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string password { get; set; }
+        [JsonProperty("password")]
+        [JsonPropertyName("password")]
+        public string Password { get; set; }
 
         /// <summary>
         /// Last order ID 
         /// read-only
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public int? last_order_id { get; set; }
+        [JsonProperty("last_order_id")]
+        [JsonPropertyName("last_order_id")]
+        public int? LastOrderId { get; set; }
 
         /// <summary>
         /// UTC DateTime of the customer last order 
         /// read-only
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public DateTime? last_order_date { get; set; }
+        [JsonProperty("last_order_date")]
+        [JsonPropertyName("last_order_date")]
+        public DateTime? LastOrderDate { get; set; }
 
         /// <summary>
         /// Quantity of orders that the customer have 
         /// read-only
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public int? orders_count { get; set; }
+        [JsonProperty("orders_count")]
+        [JsonPropertyName("orders_count")]
+        public int? OrdersCount { get; set; }
 
         /// <summary>
         /// Total amount spent 
         /// read-only
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public decimal? total_spent { get; set; }
+        [JsonProperty("total_spent")]
+        [JsonPropertyName("total_spent")]
+        public decimal? TotalSpent { get; set; }
 
         /// <summary>
         /// Gravatar URL
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string avatar_url { get; set; }
+        [JsonProperty("avatar_url")]
+        [JsonPropertyName("avatar_url")]
+        public string AvatarUrl { get; set; }
 
         /// <summary>
         /// List of Billing Address fields. See Billing Address Properties
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public BillingAddress billing_address { get; set; }
+        [JsonProperty("billing_address")]
+        [JsonPropertyName("billing_address")]
+        public BillingAddress BillingAddress { get; set; }
 
         /// <summary>
         /// List of Shipping Address fields. See Shipping Address Properties
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public ShippingAddress shipping_address { get; set; }
+        [JsonProperty("shipping_address")]
+        [JsonPropertyName("shipping_address")]
+        public ShippingAddress ShippingAddress { get; set; }
     }
 
     [CollectionDataContract]
     public class BillingAddressList : List<BillingAddress>
     {
         [DataMember]
-        public List<BillingAddress> billing_address { get; set; }
+        [JsonProperty("billing_address")]
+        [JsonPropertyName("billing_address")]
+        public List<BillingAddress> BillingAddress { get; set; }
     }
 
     [DataContract]
@@ -122,67 +156,89 @@ namespace WooCommerceNET.WooCommerce.Legacy
         /// First name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string first_name { get; set; }
+        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Last name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string last_name { get; set; }
+        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
+        public string LastName { get; set; }
 
         /// <summary>
         /// Company name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string company { get; set; }
+        [JsonProperty("company")]
+        [JsonPropertyName("company")]
+        public string Company { get; set; }
 
         /// <summary>
         /// Address line 1
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string address_1 { get; set; }
+        [JsonProperty("address_1")]
+        [JsonPropertyName("address_1")]
+        public string Address1 { get; set; }
 
         /// <summary>
         /// Address line 2
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string address_2 { get; set; }
+        [JsonProperty("address_2")]
+        [JsonPropertyName("address_2")]
+        public string Address2 { get; set; }
 
         /// <summary>
         /// City name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string city { get; set; }
+        [JsonProperty("city")]
+        [JsonPropertyName("city")]
+        public string City { get; set; }
 
         /// <summary>
         /// ISO code or name of the state, province or district
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string state { get; set; }
+        [JsonProperty("state")]
+        [JsonPropertyName("state")]
+        public string State { get; set; }
 
         /// <summary>
         /// Postal code
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string postcode { get; set; }
+        [JsonProperty("postcode")]
+        [JsonPropertyName("postcode")]
+        public string Postcode { get; set; }
 
         /// <summary>
         /// ISO code of the country
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string country { get; set; }
+        [JsonProperty("country")]
+        [JsonPropertyName("country")]
+        public string Country { get; set; }
 
         /// <summary>
         /// Email address
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string email { get; set; }
+        [JsonProperty("email")]
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
         /// <summary>
         /// Phone
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string phone { get; set; }
+        [JsonProperty("phone")]
+        [JsonPropertyName("phone")]
+        public string Phone { get; set; }
     }
 
 
@@ -190,7 +246,9 @@ namespace WooCommerceNET.WooCommerce.Legacy
     public class ShippingAddressList : List<ShippingAddress>
     {
         [DataMember]
-        public List<ShippingAddress> shipping_address { get; set; }
+        [JsonProperty("shipping_address")]
+        [JsonPropertyName("shipping_address")]
+        public List<ShippingAddress> ShippingAddress { get; set; }
     }
 
     [DataContract]
@@ -200,54 +258,72 @@ namespace WooCommerceNET.WooCommerce.Legacy
         /// First name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string first_name { get; set; }
+        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Last name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string last_name { get; set; }
+        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
+        public string LastName { get; set; }
 
         /// <summary>
         /// Company name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string company { get; set; }
+        [JsonProperty("company")]
+        [JsonPropertyName("company")]
+        public string Company { get; set; }
 
         /// <summary>
         /// Address line 1
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string address_1 { get; set; }
+        [JsonProperty("address_1")]
+        [JsonPropertyName("address_1")]
+        public string Address1 { get; set; }
 
         /// <summary>
         /// Address line 2
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string address_2 { get; set; }
+        [JsonProperty("address_2")]
+        [JsonPropertyName("address_2")]
+        public string Address2 { get; set; }
 
         /// <summary>
         /// City name
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string city { get; set; }
+        [JsonProperty("city")]
+        [JsonPropertyName("city")]
+        public string City { get; set; }
 
         /// <summary>
         /// ISO code or name of the state, province or district
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string state { get; set; }
+        [JsonProperty("state")]
+        [JsonPropertyName("state")]
+        public string State { get; set; }
 
         /// <summary>
         /// Postal code
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string postcode { get; set; }
+        [JsonProperty("postcode")]
+        [JsonPropertyName("postcode")]
+        public string Postcode { get; set; }
 
         /// <summary>
         /// ISO code of the country
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public string country { get; set; }
+        [JsonProperty("country")]
+        [JsonPropertyName("country")]
+        public string Country { get; set; }
     }
 }

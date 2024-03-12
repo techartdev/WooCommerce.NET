@@ -5,9 +5,10 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using WooCommerce.NET;
 using WooCommerce.NET.WordPress.v2;
 
-namespace WooCommerceNET.Base
+namespace WooCommerce.NET.Base
 {
     [DataContract]
     public class JsonObject
@@ -131,9 +132,9 @@ namespace WooCommerceNET.Base
     public class WCItem<T>
     {
         public string APIEndpoint { get; protected set; }
-        public RestAPI API { get; protected set; }
+        public RestApi API { get; protected set; }
 
-        public WCItem(RestAPI api)
+        public WCItem(RestApi api)
         {
             API = api;
             if(typeof(T).BaseType.GetRuntimeProperty("Endpoint") == null)
@@ -142,14 +143,14 @@ namespace WooCommerceNET.Base
                 APIEndpoint = typeof(T).BaseType.GetRuntimeProperty("Endpoint").GetValue(null).ToString();
         }
 
-        public virtual async Task<T> Get(ulong id, Dictionary<string, string> parms = null)
+        public virtual async Task<T> Get(ulong id, Dictionary<string, string> pars = null)
         {
-            return API.DeserializeJSon<T>(await API.GetRestful(APIEndpoint + "/" + id.ToString(), parms).ConfigureAwait(false));
+            return API.DeserializeJSon<T>(await API.GetRestful(APIEndpoint + "/" + id.ToString(), pars).ConfigureAwait(false));
         }
 
-        public virtual async Task<T> Get(string email, Dictionary<string, string> parms = null)
+        public virtual async Task<T> Get(string email, Dictionary<string, string> pars = null)
         {
-            return API.DeserializeJSon<T>(await API.GetRestful(APIEndpoint + "/" + email, parms).ConfigureAwait(false));
+            return API.DeserializeJSon<T>(await API.GetRestful(APIEndpoint + "/" + email, pars).ConfigureAwait(false));
         }
 
         public virtual async Task<List<T>> GetAll(Dictionary<string, string> parms = null)
@@ -258,9 +259,9 @@ namespace WooCommerceNET.Base
     {
         public string APIEndpoint { get; protected set; }
         public string APIParentEndpoint { get; protected set; }
-        public RestAPI API { get; protected set; }
+        public RestApi API { get; protected set; }
 
-        public WCSubItem(RestAPI api, string parentEndpoint)
+        public WCSubItem(RestApi api, string parentEndpoint)
         {
             API = api;
             if (typeof(T).BaseType.FullName.Contains("v2"))

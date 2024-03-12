@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace WooCommerceNET.Base
+namespace WooCommerce.NET.Base
 {
     public static class Common
     {

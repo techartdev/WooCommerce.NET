@@ -6,7 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace WooCommerceNET.Base
+namespace WooCommerce.NET.Base
 {
     public static class Extension
     {

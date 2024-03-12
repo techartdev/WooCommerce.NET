@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WooCommerceNET.Base
+namespace WooCommerce.NET.Base
 {
     //Thanks to Stephan Brumme's Portable C++ Hashing Library.   http://create.stephan-brumme.com/hash-library/
     public class HMAC_SHA256

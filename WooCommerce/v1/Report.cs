@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WooCommerceNET.WooCommerce.v1
+namespace WooCommerce.NET.WooCommerce.v1
 {
     [DataContract]
     public class Report

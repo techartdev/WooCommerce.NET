@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using WooCommerceNET.Base;
+using WooCommerce.NET.Base;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
     [DataContract]
     public class Variation : JsonObject
@@ -388,7 +388,7 @@ namespace WooCommerceNET.WooCommerce.v2
     }
     
     [DataContract]
-    public class VariationMeta : WCObject.MetaData
+    public class VariationMeta : WcObject.MetaData
     {
         
     }

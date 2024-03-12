@@ -2,55 +2,47 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using WooCommerceNET.Base;
+using WooCommerce.NET;
+using WooCommerce.NET.Base;
 
-namespace WooCommerceNET.WooCommerce.v3
+namespace WooCommerce.NET.WooCommerce.v3
 {
-    public class WCObject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
+    // ReSharper disable once UnusedTypeParameter
+    public class WcObject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
         where T1 : Coupon where T2 : Customer where T3 : Product where T4 : ProductReview where T5 : Variation
         where T6 : Order where T7 : OrderNote where T8 : OrderRefund where T9 : ProductAttribute
         where T10 : ProductAttributeTerm where T11 : ProductCategory where T12 : ShippingClass 
         where T13 : ProductTag where T14 : TaxRate where T15 : TaxClass where T16 : Data
     {
        
-        protected RestAPI API { get; set; }
+        protected RestApi Api { get; set; }
+
         public static Func<string, object, object> MetaValueProcessor
         {
-            get
-            {
-                return v2.WCObject.MetaValueProcessor;
-            }
-            set
-            {
-                v2.WCObject.MetaValueProcessor = value;
-            }
+            get => v2.WcObject.MetaValueProcessor;
+            set => v2.WcObject.MetaValueProcessor = value;
         }
+
         public static Func<string, object, object> MetaDisplayValueProcessor
         {
-            get 
-            {
-                return v2.WCObject.MetaDisplayValueProcessor;
-            }
-            set
-            {
-                v2.WCObject.MetaDisplayValueProcessor = value;
-            }
+            get => v2.WcObject.MetaDisplayValueProcessor;
+            set => v2.WcObject.MetaDisplayValueProcessor = value;
         }
 
 
-        public WCObject(RestAPI api)
+        public WcObject(RestApi api)
         {
-            if (api.Version != APIVersion.Version3 && api.Version != APIVersion.ThirdPartyPlugins)
+            if (api.Version != ApiVersion.Version3 && api.Version != ApiVersion.ThirdPartyPlugins)
                 throw new Exception("Please use WooCommerce Restful API Version 3 url for this WCObject. e.g.: http://www.yourstore.co.nz/wp-json/wc/v3/");
 
-            API = api;
+            Api = api;
 
             Coupon = new WCItem<T1>(api);
-            Customer = new WCCustomerItem(api);
-            Product = new WCProductItem(api);
+            Customer = new WcCustomerItem(api);
+            Product = new WcProductItem(api);
             ProductReview = new WCItem<T4>(api);
-            Order = new WCOrderItem(api);
-            Attribute = new WCAttributeItem(api);
+            Order = new WcOrderItem(api);
+            Attribute = new WcAttributeItem(api);
             Category = new WCItem<T11>(api);
             ShippingClass = new WCItem<T12>(api);
             Tag = new WCItem<T13>(api);
@@ -59,7 +51,7 @@ namespace WooCommerceNET.WooCommerce.v3
             TaxClass = new WCItem<T15>(api);
             Webhook = new WCItem<Webhook>(api);
             PaymentGateway = new WCItem<PaymentGateway>(api);
-            ShippingZone = new WCShippingZoneItem(api);
+            ShippingZone = new WcShippingZoneItem(api);
             ShippingMethod = new WCItem<ShippingMethod>(api);
             SystemStatus = new WCItem<SystemStatus>(api);
             SystemStatusTool = new WCItem<SystemStatusTool>(api);
@@ -70,15 +62,15 @@ namespace WooCommerceNET.WooCommerce.v3
 
         public WCItem<T1> Coupon { get; protected set; }
 
-        public WCCustomerItem Customer { get; protected set; }
+        public WcCustomerItem Customer { get; protected set; }
 
-        public WCProductItem Product { get; protected set; }
+        public WcProductItem Product { get; protected set; }
 
         public WCItem<T4> ProductReview { get; protected set; }
 
-        public WCOrderItem Order { get; protected set; }
+        public WcOrderItem Order { get; protected set; }
 
-        public WCAttributeItem Attribute { get; protected set; }
+        public WcAttributeItem Attribute { get; protected set; }
 
         public WCItem<T11> Category { get; protected set; }
 
@@ -96,7 +88,7 @@ namespace WooCommerceNET.WooCommerce.v3
 
         public WCItem<PaymentGateway> PaymentGateway { get; protected set; }
 
-        public WCShippingZoneItem ShippingZone { get; protected set; }
+        public WcShippingZoneItem ShippingZone { get; protected set; }
 
         public WCItem<ShippingMethod> ShippingMethod { get; protected set; }
 
@@ -110,21 +102,21 @@ namespace WooCommerceNET.WooCommerce.v3
 
         public WCItem<Plugins> Plugin { get; protected set; }
 
-        public class WCCustomerItem : WCItem<T2>
+        public class WcCustomerItem : WCItem<T2>
         {
-            public WCCustomerItem(RestAPI api) : base(api)
+            public WcCustomerItem(RestApi api) : base(api)
             {
                 API = api;
             }
 
-            public virtual async Task<T2> Get(string email, Dictionary<string, string> parms = null)
+            public override async Task<T2> Get(string email, Dictionary<string, string> pars = null)
             {
-                if (parms == null)
-                    parms = new Dictionary<string, string>();
+                if (pars == null)
+                    pars = new Dictionary<string, string>();
 
-                parms.Add("email", email);
+                pars.Add("email", email);
 
-                var customers = await GetAll(parms);
+                var customers = await GetAll(pars);
 
                 if (customers == null || customers.Count == 0)
                     return null;
@@ -133,9 +125,9 @@ namespace WooCommerceNET.WooCommerce.v3
             }
         }
 
-        public class WCProductItem : WCItem<T3>
+        public class WcProductItem : WCItem<T3>
         {
-            public WCProductItem(RestAPI api) : base(api)
+            public WcProductItem(RestApi api) : base(api)
             {
                 API = api;
 
@@ -148,9 +140,9 @@ namespace WooCommerceNET.WooCommerce.v3
             public WCSubItem<T5> Variations { get; set; }
         }
 
-        public class WCOrderItem : WCItem<T6>
+        public class WcOrderItem : WCItem<T6>
         {
-            public WCOrderItem(RestAPI api) : base(api)
+            public WcOrderItem(RestApi api) : base(api)
             {
                 API = api;
 
@@ -163,9 +155,9 @@ namespace WooCommerceNET.WooCommerce.v3
             public WCSubItem<T8> Refunds { get; set; }
         }
 
-        public class WCAttributeItem : WCItem<T9>
+        public class WcAttributeItem : WCItem<T9>
         {
-            public WCAttributeItem(RestAPI api) : base(api)
+            public WcAttributeItem(RestApi api) : base(api)
             {
                 API = api;
 
@@ -175,9 +167,9 @@ namespace WooCommerceNET.WooCommerce.v3
             public WCSubItem<T10> Terms { get; set; }
         }
 
-        public class WCShippingZoneItem : WCItem<ShippingZone>
+        public class WcShippingZoneItem : WCItem<ShippingZone>
         {
-            public WCShippingZoneItem(RestAPI api) : base(api)
+            public WcShippingZoneItem(RestApi api) : base(api)
             {
                 API = api;
 
@@ -190,23 +182,23 @@ namespace WooCommerceNET.WooCommerce.v3
         }
     }
 
-    public class WCObject: WCObject<Coupon, Customer, Product, ProductReview, Variation, Order, OrderNote, OrderRefund, ProductAttribute, ProductAttributeTerm, 
+    public class WcObject: WcObject<Coupon, Customer, Product, ProductReview, Variation, Order, OrderNote, OrderRefund, ProductAttribute, ProductAttributeTerm, 
                                     ProductCategory, ShippingClass, ProductTag, TaxRate, TaxClass, Data>
     {
-        public WCObject(RestAPI api) : base(api)
+        public WcObject(RestApi api) : base(api)
         {
         }
     }
 
     public class Plugins
     {
-        public static string Endpoint { get { return "plugins"; } }
+        public static string Endpoint => "plugins";
     }
 }
 
-namespace WooCommerceNET.WooCommerce.v3.Extension
+namespace WooCommerce.NET.WooCommerce.v3.Extension
 {
-    public static class WCExtension
+    public static class WcExtension
     {
         public static async Task<T> WithCancellation<T>(this Task<T> task, CancellationToken cancellationToken)
         {
@@ -233,7 +225,7 @@ namespace WooCommerceNET.WooCommerce.v3.Extension
 
         public static async Task<SystemStatus> Get(this WCItem<SystemStatus> item)
         {
-            return item.API.DeserializeJSon<SystemStatus>(await item.API.GetRestful(item.APIEndpoint, null).ConfigureAwait(false));
+            return item.API.DeserializeJSon<SystemStatus>(await item.API.GetRestful(item.APIEndpoint).ConfigureAwait(false));
         }
 
         public static async Task<SystemStatusTool> Run(this WCItem<SystemStatusTool> item, string id, Dictionary<string, string> parms = null)
@@ -273,22 +265,22 @@ namespace WooCommerceNET.WooCommerce.v3.Extension
 
         public static async Task<List<Continent>> GetContinents(this WCItem<Data> item)
         {
-            return item.API.DeserializeJSon<List<Continent>>(await item.API.GetRestful(item.APIEndpoint + "/continents", null).ConfigureAwait(false));
+            return item.API.DeserializeJSon<List<Continent>>(await item.API.GetRestful(item.APIEndpoint + "/continents").ConfigureAwait(false));
         }
 
         public static async Task<List<Country>> GetCountries(this WCItem<Data> item)
         {
-            return item.API.DeserializeJSon<List<Country>>(await item.API.GetRestful(item.APIEndpoint + "/countries", null).ConfigureAwait(false));
+            return item.API.DeserializeJSon<List<Country>>(await item.API.GetRestful(item.APIEndpoint + "/countries").ConfigureAwait(false));
         }
 
         public static async Task<List<Currency>> GetCurrencies(this WCItem<Data> item)
         {
-            return item.API.DeserializeJSon<List<Currency>>(await item.API.GetRestful(item.APIEndpoint + "/currencies", null).ConfigureAwait(false));
+            return item.API.DeserializeJSon<List<Currency>>(await item.API.GetRestful(item.APIEndpoint + "/currencies").ConfigureAwait(false));
         }
 
         public static async Task<Currency> GetCurrency(this WCItem<Data> item, string currency = "current")
         {
-            return item.API.DeserializeJSon<Currency>(await item.API.GetRestful(item.APIEndpoint + "/currencies/" + currency, null).ConfigureAwait(false));
+            return item.API.DeserializeJSon<Currency>(await item.API.GetRestful(item.APIEndpoint + "/currencies/" + currency).ConfigureAwait(false));
         }
 
         public static async Task<TaxClass> DeleteTaxClass(this WCItem<TaxClass> item, string slug, bool force = false, Dictionary<string, string> parms = null)

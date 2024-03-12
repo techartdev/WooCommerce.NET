@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using WooCommerceNET.Base;
+using WooCommerce.NET.Base;
 
-namespace WooCommerceNET.WooCommerce.v1
+namespace WooCommerce.NET.WooCommerce.v1
 {
     public class WebhookBatch : BatchObject<Webhook> { }
 

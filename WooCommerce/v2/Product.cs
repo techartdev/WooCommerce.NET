@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using WooCommerceNET.Base;
+using WooCommerce.NET.Base;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
     public class ProductBatch : BatchObject<Product> { }
 
@@ -673,7 +673,7 @@ namespace WooCommerceNET.WooCommerce.v2
     }
 
     [DataContract]
-    public class ProductMeta : WCObject.MetaData
+    public class ProductMeta : WcObject.MetaData
     {
 
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
-using WooCommerceNET.Base;
+using WooCommerce.NET.Base;
 
 namespace WooCommerce.NET.WordPress.v2
 {
