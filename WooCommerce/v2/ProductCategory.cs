@@ -1,125 +1,161 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
-    [DataContract]
+    
     public class ProductCategory
     {
-        public static string Endpoint { get { return "products/categories"; } }
+        public static string Endpoint => "products/categories";
 
         /// <summary>
         /// Unique identifier for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Category name. 
         /// mandatory
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// An alphanumeric identifier for the resource unique to its type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
         /// <summary>
         /// The ID for the parent of the resource.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? parent { get; set; }
+        
+        [JsonProperty("parent")]
+        [JsonPropertyName("parent")]
+        public ulong? Parent { get; set; }
 
         /// <summary>
         /// HTML description of the resource.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Category archive display type. Options: default, products, subcategories and both. Default is default.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string display { get; set; }
+        
+        [JsonProperty("display")]
+        [JsonPropertyName("display")]
+        public string Display { get; set; }
 
         /// <summary>
         /// Image data. See Product category - Image properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ProductCategoryImage image { get; set; }
+        
+        [JsonProperty("image")]
+        [JsonPropertyName("image")]
+        public ProductCategoryImage Image { get; set; }
 
         /// <summary>
         /// Menu order, used to custom sort the resource.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? menu_order { get; set; }
+        
+        [JsonProperty("menu_order")]
+        [JsonPropertyName("menu_order")]
+        public int? MenuOrder { get; set; }
 
         /// <summary>
         /// Number of published products for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? count { get; set; }
+        
+        [JsonProperty("count")]
+        [JsonPropertyName("count")]
+        public int? Count { get; set; }
     }
 
-    [DataContract]
+    
     public class ProductCategoryImage
     {
         /// <summary>
         /// Image ID.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// The date the image was created, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created { get; set; }
+        
+        [JsonProperty("date_created")]
+        [JsonPropertyName("date_created")]
+        public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// The date the image was created, as GMT 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created_gmt { get; set; }
+        
+        [JsonProperty("date_created_gmt")]
+        [JsonPropertyName("date_created_gmt")]
+        public DateTime? DateCreatedGmt { get; set; }
 
         /// <summary>
         /// The date the image was last modified, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified { get; set; }
+        
+        [JsonProperty("date_modified")]
+        [JsonPropertyName("date_modified")]
+        public DateTime? DateModified { get; set; }
 
         /// <summary>
         /// The date the image was last modified, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified_gmt { get; set; }
+        
+        [JsonProperty("date_modified_gmt")]
+        [JsonPropertyName("date_modified_gmt")]
+        public DateTime? DateModifiedGmt { get; set; }
 
         /// <summary>
         /// Image URL.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string src { get; set; }
+        
+        [JsonProperty("src")]
+        [JsonPropertyName("src")]
+        public string Src { get; set; }
 
         /// <summary>
         /// Image name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Image alternative text.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string alt { get; set; }
+        
+        [JsonProperty("alt")]
+        [JsonPropertyName("alt")]
+        public string Alt { get; set; }
 
     }
 }

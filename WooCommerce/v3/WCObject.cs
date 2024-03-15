@@ -2,129 +2,121 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using WooCommerceNET.Base;
+using WooCommerce.NET;
+using WooCommerce.NET.Base;
 
-namespace WooCommerceNET.WooCommerce.v3
+namespace WooCommerce.NET.WooCommerce.v3
 {
-    public class WCObject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
+    // ReSharper disable once UnusedTypeParameter
+    public class WcObject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
         where T1 : Coupon where T2 : Customer where T3 : Product where T4 : ProductReview where T5 : Variation
         where T6 : Order where T7 : OrderNote where T8 : OrderRefund where T9 : ProductAttribute
         where T10 : ProductAttributeTerm where T11 : ProductCategory where T12 : ShippingClass 
         where T13 : ProductTag where T14 : TaxRate where T15 : TaxClass where T16 : Data
     {
        
-        protected RestAPI API { get; set; }
+        protected RestApi Api { get; set; }
+
         public static Func<string, object, object> MetaValueProcessor
         {
-            get
-            {
-                return v2.WCObject.MetaValueProcessor;
-            }
-            set
-            {
-                v2.WCObject.MetaValueProcessor = value;
-            }
+            get => v2.WcObject.MetaValueProcessor;
+            set => v2.WcObject.MetaValueProcessor = value;
         }
+
         public static Func<string, object, object> MetaDisplayValueProcessor
         {
-            get 
-            {
-                return v2.WCObject.MetaDisplayValueProcessor;
-            }
-            set
-            {
-                v2.WCObject.MetaDisplayValueProcessor = value;
-            }
+            get => v2.WcObject.MetaDisplayValueProcessor;
+            set => v2.WcObject.MetaDisplayValueProcessor = value;
         }
 
 
-        public WCObject(RestAPI api)
+        public WcObject(RestApi api)
         {
-            if (api.Version != APIVersion.Version3 && api.Version != APIVersion.ThirdPartyPlugins)
+            if (api.Version != ApiVersion.Version3 && api.Version != ApiVersion.ThirdPartyPlugins)
                 throw new Exception("Please use WooCommerce Restful API Version 3 url for this WCObject. e.g.: http://www.yourstore.co.nz/wp-json/wc/v3/");
 
-            API = api;
+            Api = api;
 
-            Coupon = new WCItem<T1>(api);
-            Customer = new WCCustomerItem(api);
-            Product = new WCProductItem(api);
-            ProductReview = new WCItem<T4>(api);
-            Order = new WCOrderItem(api);
-            Attribute = new WCAttributeItem(api);
-            Category = new WCItem<T11>(api);
-            ShippingClass = new WCItem<T12>(api);
-            Tag = new WCItem<T13>(api);
-            Report = new WCItem<Report>(api);
-            TaxRate = new WCItem<T14>(api);
-            TaxClass = new WCItem<T15>(api);
-            Webhook = new WCItem<Webhook>(api);
-            PaymentGateway = new WCItem<PaymentGateway>(api);
-            ShippingZone = new WCShippingZoneItem(api);
-            ShippingMethod = new WCItem<ShippingMethod>(api);
-            SystemStatus = new WCItem<SystemStatus>(api);
-            SystemStatusTool = new WCItem<SystemStatusTool>(api);
-            Setting = new WCItem<Setting>(api);
-            Data = new WCItem<Data>(api);
-            Plugin = new WCItem<Plugins>(api);
+            Coupon = new WcItem<T1>(api);
+            Customer = new WcCustomerItem(api);
+            Product = new WcProductItem(api);
+            ProductReview = new WcItem<T4>(api);
+            Order = new WcOrderItem(api);
+            Attribute = new WcAttributeItem(api);
+            Category = new WcItem<T11>(api);
+            ShippingClass = new WcItem<T12>(api);
+            Tag = new WcItem<T13>(api);
+            Report = new WcItem<Report>(api);
+            TaxRate = new WcItem<T14>(api);
+            TaxClass = new WcItem<T15>(api);
+            Webhook = new WcItem<Webhook>(api);
+            PaymentGateway = new WcItem<PaymentGateway>(api);
+            ShippingZone = new WcShippingZoneItem(api);
+            ShippingMethod = new WcItem<ShippingMethod>(api);
+            SystemStatus = new WcItem<SystemStatus>(api);
+            SystemStatusTool = new WcItem<SystemStatusTool>(api);
+            Setting = new WcItem<Setting>(api);
+            Data = new WcItem<Data>(api);
+            Plugin = new WcItem<Plugins>(api);
         }
 
-        public WCItem<T1> Coupon { get; protected set; }
+        public WcItem<T1> Coupon { get; protected set; }
 
-        public WCCustomerItem Customer { get; protected set; }
+        public WcCustomerItem Customer { get; protected set; }
 
-        public WCProductItem Product { get; protected set; }
+        public WcProductItem Product { get; protected set; }
 
-        public WCItem<T4> ProductReview { get; protected set; }
+        public WcItem<T4> ProductReview { get; protected set; }
 
-        public WCOrderItem Order { get; protected set; }
+        public WcOrderItem Order { get; protected set; }
 
-        public WCAttributeItem Attribute { get; protected set; }
+        public WcAttributeItem Attribute { get; protected set; }
 
-        public WCItem<T11> Category { get; protected set; }
+        public WcItem<T11> Category { get; protected set; }
 
-        public WCItem<T12> ShippingClass { get; protected set; }
+        public WcItem<T12> ShippingClass { get; protected set; }
 
-        public WCItem<T13> Tag { get; protected set; }
+        public WcItem<T13> Tag { get; protected set; }
 
-        public WCItem<Report> Report { get; protected set; }
+        public WcItem<Report> Report { get; protected set; }
 
-        public WCItem<T14> TaxRate { get; protected set; }
+        public WcItem<T14> TaxRate { get; protected set; }
 
-        public WCItem<T15> TaxClass { get; protected set; }
+        public WcItem<T15> TaxClass { get; protected set; }
 
-        public WCItem<Webhook> Webhook { get; protected set; }
+        public WcItem<Webhook> Webhook { get; protected set; }
 
-        public WCItem<PaymentGateway> PaymentGateway { get; protected set; }
+        public WcItem<PaymentGateway> PaymentGateway { get; protected set; }
 
-        public WCShippingZoneItem ShippingZone { get; protected set; }
+        public WcShippingZoneItem ShippingZone { get; protected set; }
 
-        public WCItem<ShippingMethod> ShippingMethod { get; protected set; }
+        public WcItem<ShippingMethod> ShippingMethod { get; protected set; }
 
-        public WCItem<SystemStatus> SystemStatus { get; protected set; }
+        public WcItem<SystemStatus> SystemStatus { get; protected set; }
 
-        public WCItem<SystemStatusTool> SystemStatusTool { get; protected set; }
+        public WcItem<SystemStatusTool> SystemStatusTool { get; protected set; }
 
-        public WCItem<Setting> Setting { get; protected set; }
+        public WcItem<Setting> Setting { get; protected set; }
 
-        public WCItem<Data> Data { get; protected set; }
+        public WcItem<Data> Data { get; protected set; }
 
-        public WCItem<Plugins> Plugin { get; protected set; }
+        public WcItem<Plugins> Plugin { get; protected set; }
 
-        public class WCCustomerItem : WCItem<T2>
+        public class WcCustomerItem : WcItem<T2>
         {
-            public WCCustomerItem(RestAPI api) : base(api)
+            public WcCustomerItem(RestApi api) : base(api)
             {
-                API = api;
+                Api = api;
             }
 
-            public virtual async Task<T2> Get(string email, Dictionary<string, string> parms = null)
+            public override async Task<T2> Get(string email, Dictionary<string, string> pars = null)
             {
-                if (parms == null)
-                    parms = new Dictionary<string, string>();
+                if (pars == null)
+                    pars = new Dictionary<string, string>();
 
-                parms.Add("email", email);
+                pars.Add("email", email);
 
-                var customers = await GetAll(parms);
+                var customers = await GetAll(pars);
 
                 if (customers == null || customers.Count == 0)
                     return null;
@@ -133,80 +125,80 @@ namespace WooCommerceNET.WooCommerce.v3
             }
         }
 
-        public class WCProductItem : WCItem<T3>
+        public class WcProductItem : WcItem<T3>
         {
-            public WCProductItem(RestAPI api) : base(api)
+            public WcProductItem(RestApi api) : base(api)
             {
-                API = api;
+                Api = api;
 
                 //Reviews = new WCSubItem<T4>(api, APIEndpoint);
-                Variations = new WCSubItem<T5>(api, APIEndpoint);
+                Variations = new WcSubItem<T5>(api, ApiEndpoint);
             }
 
             //public WCSubItem<T4> Reviews { get; set; }
 
-            public WCSubItem<T5> Variations { get; set; }
+            public WcSubItem<T5> Variations { get; set; }
         }
 
-        public class WCOrderItem : WCItem<T6>
+        public class WcOrderItem : WcItem<T6>
         {
-            public WCOrderItem(RestAPI api) : base(api)
+            public WcOrderItem(RestApi api) : base(api)
             {
-                API = api;
+                Api = api;
 
-                Notes = new WCSubItem<T7>(api, APIEndpoint);
-                Refunds = new WCSubItem<T8>(api, APIEndpoint);
+                Notes = new WcSubItem<T7>(api, ApiEndpoint);
+                Refunds = new WcSubItem<T8>(api, ApiEndpoint);
             }
 
-            public WCSubItem<T7> Notes { get; set; }
+            public WcSubItem<T7> Notes { get; set; }
 
-            public WCSubItem<T8> Refunds { get; set; }
+            public WcSubItem<T8> Refunds { get; set; }
         }
 
-        public class WCAttributeItem : WCItem<T9>
+        public class WcAttributeItem : WcItem<T9>
         {
-            public WCAttributeItem(RestAPI api) : base(api)
+            public WcAttributeItem(RestApi api) : base(api)
             {
-                API = api;
+                Api = api;
 
-                Terms = new WCSubItem<T10>(api, APIEndpoint);
+                Terms = new WcSubItem<T10>(api, ApiEndpoint);
             }
 
-            public WCSubItem<T10> Terms { get; set; }
+            public WcSubItem<T10> Terms { get; set; }
         }
 
-        public class WCShippingZoneItem : WCItem<ShippingZone>
+        public class WcShippingZoneItem : WcItem<ShippingZone>
         {
-            public WCShippingZoneItem(RestAPI api) : base(api)
+            public WcShippingZoneItem(RestApi api) : base(api)
             {
-                API = api;
+                Api = api;
 
-                Locations = new WCSubItem<ShippingZoneLocation>(api, APIEndpoint);
-                Methods = new WCSubItem<ShippingZoneMethod>(api, APIEndpoint);
+                Locations = new WcSubItem<ShippingZoneLocation>(api, ApiEndpoint);
+                Methods = new WcSubItem<ShippingZoneMethod>(api, ApiEndpoint);
             }
 
-            public WCSubItem<ShippingZoneLocation> Locations { get; protected set; }
-            public WCSubItem<ShippingZoneMethod> Methods { get; protected set; }
+            public WcSubItem<ShippingZoneLocation> Locations { get; protected set; }
+            public WcSubItem<ShippingZoneMethod> Methods { get; protected set; }
         }
     }
 
-    public class WCObject: WCObject<Coupon, Customer, Product, ProductReview, Variation, Order, OrderNote, OrderRefund, ProductAttribute, ProductAttributeTerm, 
+    public class WcObject: WcObject<Coupon, Customer, Product, ProductReview, Variation, Order, OrderNote, OrderRefund, ProductAttribute, ProductAttributeTerm, 
                                     ProductCategory, ShippingClass, ProductTag, TaxRate, TaxClass, Data>
     {
-        public WCObject(RestAPI api) : base(api)
+        public WcObject(RestApi api) : base(api)
         {
         }
     }
 
     public class Plugins
     {
-        public static string Endpoint { get { return "plugins"; } }
+        public static string Endpoint => "plugins";
     }
 }
 
-namespace WooCommerceNET.WooCommerce.v3.Extension
+namespace WooCommerce.NET.WooCommerce.v3.Extension
 {
-    public static class WCExtension
+    public static class WcExtension
     {
         public static async Task<T> WithCancellation<T>(this Task<T> task, CancellationToken cancellationToken)
         {
@@ -226,72 +218,72 @@ namespace WooCommerceNET.WooCommerce.v3.Extension
             await task;
         }
 
-        public static async Task<List<CustomerDownloads>> GetCustomerDownloads(this WCItem<Customer> item, int id, Dictionary<string, string> parms = null)
+        public static async Task<List<CustomerDownloads>> GetCustomerDownloads(this WcItem<Customer> item, int id, Dictionary<string, string> parms = null)
         {
-            return item.API.DeserializeJSon<List<CustomerDownloads>>(await item.API.GetRestful(item.APIEndpoint + "/" + id.ToString() + "/downloads", parms).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<List<CustomerDownloads>>(await item.Api.GetRestful(item.ApiEndpoint + "/" + id.ToString() + "/downloads", parms).ConfigureAwait(false));
         }
 
-        public static async Task<SystemStatus> Get(this WCItem<SystemStatus> item)
+        public static async Task<SystemStatus> Get(this WcItem<SystemStatus> item)
         {
-            return item.API.DeserializeJSon<SystemStatus>(await item.API.GetRestful(item.APIEndpoint, null).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<SystemStatus>(await item.Api.GetRestful(item.ApiEndpoint).ConfigureAwait(false));
         }
 
-        public static async Task<SystemStatusTool> Run(this WCItem<SystemStatusTool> item, string id, Dictionary<string, string> parms = null)
+        public static async Task<SystemStatusTool> Run(this WcItem<SystemStatusTool> item, string id, Dictionary<string, string> parms = null)
         {
-            return item.API.DeserializeJSon<SystemStatusTool>(await item.API.PutRestful(item.APIEndpoint + "/" + id, parms).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<SystemStatusTool>(await item.Api.PutRestful(item.ApiEndpoint + "/" + id, parms).ConfigureAwait(false));
         }
 
-        public static async Task<List<SalesReport>> GetSalesReport(this WCItem<Report> item, Dictionary<string, string> parms = null)
+        public static async Task<List<SalesReport>> GetSalesReport(this WcItem<Report> item, Dictionary<string, string> parms = null)
         {
-            return item.API.DeserializeJSon<List<SalesReport>>(await item.API.GetRestful(item.APIEndpoint + "/sales", parms).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<List<SalesReport>>(await item.Api.GetRestful(item.ApiEndpoint + "/sales", parms).ConfigureAwait(false));
         }
 
-        public static async Task<List<TopSellersReport>> GetTopSellerReport(this WCItem<Report> item, Dictionary<string, string> parms = null)
+        public static async Task<List<TopSellersReport>> GetTopSellerReport(this WcItem<Report> item, Dictionary<string, string> parms = null)
         {
-            return item.API.DeserializeJSon<List<TopSellersReport>>(await item.API.GetRestful(item.APIEndpoint + "/top_sellers", parms).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<List<TopSellersReport>>(await item.Api.GetRestful(item.ApiEndpoint + "/top_sellers", parms).ConfigureAwait(false));
         }
 
-        public static async Task<List<SettingOption>> GetSettingOptions(this WCItem<Setting> item, string settingId, Dictionary<string, string> parms = null)
+        public static async Task<List<SettingOption>> GetSettingOptions(this WcItem<Setting> item, string settingId, Dictionary<string, string> parms = null)
         {
-            return item.API.DeserializeJSon<List<SettingOption>>(await item.API.GetRestful(item.APIEndpoint + "/" + settingId, parms).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<List<SettingOption>>(await item.Api.GetRestful(item.ApiEndpoint + "/" + settingId, parms).ConfigureAwait(false));
         }
 
-        public static async Task<SettingOption> GetSettingOption(this WCItem<Setting> item, string settingId, string optionId, Dictionary<string, string> parms = null)
+        public static async Task<SettingOption> GetSettingOption(this WcItem<Setting> item, string settingId, string optionId, Dictionary<string, string> parms = null)
         {
-            return item.API.DeserializeJSon<SettingOption>(await item.API.GetRestful(item.APIEndpoint + "/" + settingId + "/" + optionId, parms).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<SettingOption>(await item.Api.GetRestful(item.ApiEndpoint + "/" + settingId + "/" + optionId, parms).ConfigureAwait(false));
         }
 
-        public static async Task<SettingOption> UpdateSettingOption(this WCItem<Setting> item, string settingId, string optionId, Dictionary<string, string> parms = null)
+        public static async Task<SettingOption> UpdateSettingOption(this WcItem<Setting> item, string settingId, string optionId, Dictionary<string, string> parms = null)
         {
-            return item.API.DeserializeJSon<SettingOption>(await item.API.PostRestful(item.APIEndpoint + "/" + settingId + "/" + optionId, parms).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<SettingOption>(await item.Api.PostRestful(item.ApiEndpoint + "/" + settingId + "/" + optionId, parms).ConfigureAwait(false));
         }
 
-        public static async Task<List<SettingOption>> UpdateSettingOptions(this WCItem<Setting> item, string settingId, SettingOptionBatch batch, Dictionary<string, string> parms = null)
+        public static async Task<List<SettingOption>> UpdateSettingOptions(this WcItem<Setting> item, string settingId, SettingOptionBatch batch, Dictionary<string, string> parms = null)
         {
-            return item.API.DeserializeJSon<List<SettingOption>>(await item.API.PostRestful(item.APIEndpoint + "/" + settingId + "/batch", parms).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<List<SettingOption>>(await item.Api.PostRestful(item.ApiEndpoint + "/" + settingId + "/batch", parms).ConfigureAwait(false));
         }
 
-        public static async Task<List<Continent>> GetContinents(this WCItem<Data> item)
+        public static async Task<List<Continent>> GetContinents(this WcItem<Data> item)
         {
-            return item.API.DeserializeJSon<List<Continent>>(await item.API.GetRestful(item.APIEndpoint + "/continents", null).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<List<Continent>>(await item.Api.GetRestful(item.ApiEndpoint + "/continents").ConfigureAwait(false));
         }
 
-        public static async Task<List<Country>> GetCountries(this WCItem<Data> item)
+        public static async Task<List<Country>> GetCountries(this WcItem<Data> item)
         {
-            return item.API.DeserializeJSon<List<Country>>(await item.API.GetRestful(item.APIEndpoint + "/countries", null).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<List<Country>>(await item.Api.GetRestful(item.ApiEndpoint + "/countries").ConfigureAwait(false));
         }
 
-        public static async Task<List<Currency>> GetCurrencies(this WCItem<Data> item)
+        public static async Task<List<Currency>> GetCurrencies(this WcItem<Data> item)
         {
-            return item.API.DeserializeJSon<List<Currency>>(await item.API.GetRestful(item.APIEndpoint + "/currencies", null).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<List<Currency>>(await item.Api.GetRestful(item.ApiEndpoint + "/currencies").ConfigureAwait(false));
         }
 
-        public static async Task<Currency> GetCurrency(this WCItem<Data> item, string currency = "current")
+        public static async Task<Currency> GetCurrency(this WcItem<Data> item, string currency = "current")
         {
-            return item.API.DeserializeJSon<Currency>(await item.API.GetRestful(item.APIEndpoint + "/currencies/" + currency, null).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<Currency>(await item.Api.GetRestful(item.ApiEndpoint + "/currencies/" + currency).ConfigureAwait(false));
         }
 
-        public static async Task<TaxClass> DeleteTaxClass(this WCItem<TaxClass> item, string slug, bool force = false, Dictionary<string, string> parms = null)
+        public static async Task<TaxClass> DeleteTaxClass(this WcItem<TaxClass> item, string slug, bool force = false, Dictionary<string, string> parms = null)
         {
             if (force)
             {
@@ -302,7 +294,7 @@ namespace WooCommerceNET.WooCommerce.v3.Extension
                     parms.Add("force", "true");
             }
 
-            return item.API.DeserializeJSon<TaxClass>(await item.API.DeleteRestful(item.APIEndpoint + "/" + slug, parms).ConfigureAwait(false));
+            return item.Api.DeserializeJSon<TaxClass>(await item.Api.DeleteRestful(item.ApiEndpoint + "/" + slug, parms).ConfigureAwait(false));
         }
     }
 

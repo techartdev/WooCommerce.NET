@@ -1,83 +1,108 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
-    [DataContract]
+    
     public class TaxRate
     {
-        public static string Endpoint { get { return "taxes"; } }
+        public static string Endpoint => "taxes";
 
         /// <summary>
         /// Unique identifier for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("name")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Country ISO 3166 code. See ISO 3166 Codes (Countries) for more details
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string country { get; set; }
+        
+        [JsonProperty("country")]
+        [JsonPropertyName("country")]
+        public string Country { get; set; }
 
         /// <summary>
         /// State code.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string state { get; set; }
+        
+        [JsonProperty("state")]
+        [JsonPropertyName("state")]
+        public string State { get; set; }
 
         /// <summary>
         /// Postcode/ZIP.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string postcode { get; set; }
+        
+        [JsonProperty("postcode")]
+        [JsonPropertyName("postcode")]
+        public string Postcode { get; set; }
 
         /// <summary>
         /// City name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string city { get; set; }
+        
+        [JsonProperty("city")]
+        [JsonPropertyName("city")]
+        public string City { get; set; }
 
         /// <summary>
         /// Tax rate.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string rate { get; set; }
+        
+        [JsonProperty("rate")]
+        [JsonPropertyName("rate")]
+        public string Rate { get; set; }
 
         /// <summary>
         /// Tax rate name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Tax priority. Only 1 matching rate per priority will be used. To define multiple tax rates for a single area you need to specify a different priority per rate. Default is 1.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? priority { get; set; }
+        
+        [JsonProperty("priority")]
+        [JsonPropertyName("priority")]
+        public int? Priority { get; set; }
 
         /// <summary>
         /// Whether or not this is a compound rate. Compound tax rates are applied on top of other tax rates. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? compound { get; set; }
+        
+        [JsonProperty("compound")]
+        [JsonPropertyName("compound")]
+        public bool? Compound { get; set; }
 
         /// <summary>
         /// Whether or not this tax rate also gets applied to shipping. Default is true.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? shipping { get; set; }
+        
+        [JsonProperty("shipping")]
+        [JsonPropertyName("shipping")]
+        public bool? Shipping { get; set; }
 
         /// <summary>
         /// Indicates the order that will appear in queries.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? order { get; set; }
+        
+        [JsonProperty("order")]
+        [JsonPropertyName("order")]
+        public int? Order { get; set; }
 
         /// <summary>
         /// Tax class. Default is standard.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "class")]
-        public string _class { get; set; }
+        [JsonProperty("class")]
+        [JsonPropertyName("class")]
+        public string Class { get; set; }
     }
 }

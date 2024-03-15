@@ -1,176 +1,224 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
-    [DataContract]
+    
     public class Report
     {
-        public static string Endpoint { get { return "reports"; } }
+        public static string Endpoint => "reports";
 
         /// <summary>
         /// Report slug
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
         /// <summary>
         /// Report description
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
     }
 
-    [DataContract]
+    
     public class SalesReport
     {
         /// <summary>
         /// Gross sales in the period. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string total_sales { get; set; }
+        
+        [JsonProperty("total_sales")]
+        [JsonPropertyName("total_sales")]
+        public string TotalSales { get; set; }
 
         /// <summary>
         /// Net sales in the period. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string net_sales { get; set; }
+        
+        [JsonProperty("net_sales")]
+        [JsonPropertyName("net_sales")]
+        public string NetSales { get; set; }
 
         /// <summary>
         /// Average net daily sales. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string average_sales { get; set; }
+        
+        [JsonProperty("average_sales")]
+        [JsonPropertyName("average_sales")]
+        public string AverageSales { get; set; }
 
         /// <summary>
         /// Total of orders placed. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? total_orders { get; set; }
+        
+        [JsonProperty("total_orders")]
+        [JsonPropertyName("total_orders")]
+        public int? TotalOrders { get; set; }
 
         /// <summary>
         /// Total of items purchased. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? total_items { get; set; }
+        
+        [JsonProperty("total_items")]
+        [JsonPropertyName("total_items")]
+        public int? TotalItems { get; set; }
 
         /// <summary>
         /// Total charged for taxes. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string total_tax { get; set; }
+        
+        [JsonProperty("total_tax")]
+        [JsonPropertyName("total_tax")]
+        public string TotalTax { get; set; }
 
         /// <summary>
         /// Total charged for shipping. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string total_shipping { get; set; }
+        
+        [JsonProperty("total_shipping")]
+        [JsonPropertyName("total_shipping")]
+        public string TotalShipping { get; set; }
 
         /// <summary>
         /// Total of refunded orders. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? total_refunds { get; set; }
+        
+        [JsonProperty("total_refunds")]
+        [JsonPropertyName("total_refunds")]
+        public int? TotalRefunds { get; set; }
 
         /// <summary>
         /// Total of coupons used. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string total_discount { get; set; }
+        
+        [JsonProperty("total_discount")]
+        [JsonPropertyName("total_discount")]
+        public string TotalDiscount { get; set; }
 
         /// <summary>
         /// Group type. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string totals_grouped_by { get; set; }
+        
+        [JsonProperty("totals_grouped_by")]
+        [JsonPropertyName("totals_grouped_by")]
+        public string TotalsGroupedBy { get; set; }
 
         /// <summary>
         /// Totals. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public Dictionary<string, SalesReportTotal> totals { get; set; }
+        
+        [JsonProperty("totals")]
+        [JsonPropertyName("totals")]
+        public Dictionary<string, SalesReportTotal> Totals { get; set; }
     }
 
-    [DataContract]
+    
     public class SalesReportTotal
     {
         /// <summary>
         /// Total Sales
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string sales { get; set; }
+        
+        [JsonProperty("sales")]
+        [JsonPropertyName("sales")]
+        public string Sales { get; set; }
 
         /// <summary>
         /// Total number of orders
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? orders { get; set; }
+        
+        [JsonProperty("orders")]
+        [JsonPropertyName("orders")]
+        public int? Orders { get; set; }
 
         /// <summary>
         /// Total numbers of items
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? items { get; set; }
+        
+        [JsonProperty("items")]
+        [JsonPropertyName("items")]
+        public int? Items { get; set; }
         
         /// <summary>
         /// Total tax
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string tax { get; set; }
+        
+        [JsonProperty("tax")]
+        [JsonPropertyName("tax")]
+        public string Tax { get; set; }
 
         /// <summary>
         /// Total shipping
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string shipping { get; set; }
+        
+        [JsonProperty("shipping")]
+        [JsonPropertyName("shipping")]
+        public string Shipping { get; set; }
 
         /// <summary>
         /// Total discount
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string discount { get; set; }
+        
+        [JsonProperty("discount")]
+        [JsonPropertyName("discount")]
+        public string Discount { get; set; }
 
         /// <summary>
         /// Total number of customers
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? customers { get; set; }
+        
+        [JsonProperty("customers")]
+        [JsonPropertyName("customers")]
+        public int? Customers { get; set; }
     }
 
-    [DataContract]
+    
     public class TopSellersReport
     {
         /// <summary>
         /// Product title. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string title { get; set; }
+        
+        [JsonProperty("title")]
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
 
         /// <summary>
         /// Product ID. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? product_id { get; set; }
+        
+        [JsonProperty("product_id")]
+        [JsonPropertyName("product_id")]
+        public ulong? ProductId { get; set; }
 
         /// <summary>
         /// Total number of purchases. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? quantity { get; set; }
+        
+        [JsonProperty("quantity")]
+        [JsonPropertyName("quantity")]
+        public int? Quantity { get; set; }
 
     }
 

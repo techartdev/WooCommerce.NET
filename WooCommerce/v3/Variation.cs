@@ -1,340 +1,434 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using WooCommerceNET.Base;
+using System.Text.Json.Serialization;
+using WooCommerce.NET.Base;
+using WooCommerce.NET.Converters;
 
-namespace WooCommerceNET.WooCommerce.v3
+namespace WooCommerce.NET.WooCommerce.v3
 {
-    [DataContract]
+    
     public class Variation : JsonObject
     {
-        public static string Endpoint { get { return "variations"; } }
+        public static string Endpoint => "variations";
 
         /// <summary>
         /// Unique identifier for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// The date the variation was created, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created { get; set; }
+        
+        [JsonProperty("date_created")]
+        [JsonPropertyName("date_created")]
+        public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// The date the variation was created, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created_gmt { get; set; }
+        
+        [JsonProperty("date_created_gmt")]
+        [JsonPropertyName("date_created_gmt")]
+        public DateTime? DateCreatedGmt { get; set; }
 
         /// <summary>
         /// The date the variation was last modified, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified { get; set; }
+        
+        [JsonProperty("date_modified")]
+        [JsonPropertyName("date_modified")]
+        public DateTime? DateModified { get; set; }
 
         /// <summary>
         /// The date the variation was last modified, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified_gmt { get; set; }
+        
+        [JsonProperty("date_modified_gmt")]
+        [JsonPropertyName("date_modified_gmt")]
+        public DateTime? DateModifiedGmt { get; set; }
 
         /// <summary>
         /// Variation description.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Variation URL. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string permalink { get; set; }
+        
+        [JsonProperty("permalink")]
+        [JsonPropertyName("permalink")]
+        public string Permalink { get; set; }
 
         /// <summary>
         /// Unique identifier.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string sku { get; set; }
+        
+        [JsonProperty("sku")]
+        [JsonPropertyName("sku")]
+        public string Sku { get; set; }
 
-        [DataMember(EmitDefaultValue = false, Name = "price")]
-        protected object priceValue { get; set; }
         /// <summary>
         /// Current variation price. 
         /// read-only
         /// </summary>
-        public decimal? price { get; set; }
+        [JsonProperty("price")]
+        [JsonPropertyName("price")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public decimal? Price { get; set; }
 
-        [DataMember(EmitDefaultValue = false, Name = "regular_price")]
-        protected object regular_priceValue { get; set; }
         /// <summary>
         /// Variation regular price.
         /// </summary>
-        public decimal? regular_price { get; set; }
+        [JsonProperty("regular_price")]
+        [JsonPropertyName("regular_price")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public decimal? RegularPrice { get; set; }
 
-        [DataMember(EmitDefaultValue = false, Name = "sale_price")]
-        protected object sale_priceValue { get; set; }
         /// <summary>
         /// Variation sale price.
         /// </summary>
-        public decimal? sale_price { get; set; }
+        [JsonProperty("sale_price")]
+        [JsonPropertyName("sale_price")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public decimal? SalePrice { get; set; }
 
         /// <summary>
         /// Start date of sale price, in the site’s timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_on_sale_from { get; set; }
+        
+        [JsonProperty("date_on_sale_from")]
+        [JsonPropertyName("date_on_sale_from")]
+        public DateTime? DateOnSaleFrom { get; set; }
 
         /// <summary>
         /// Start date of sale price, as GMT.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_on_sale_from_gmt { get; set; }
+        
+        [JsonProperty("date_on_sale_from_gmt")]
+        [JsonPropertyName("date_on_sale_from_gmt")]
+        public DateTime? DateOnSaleFromGmt { get; set; }
 
         /// <summary>
         /// End date of sale price, in the site’s timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_on_sale_to { get; set; }
+        
+        [JsonProperty("date_on_sale_to")]
+        [JsonPropertyName("date_on_sale_to")]
+        public DateTime? DateOnSaleTo { get; set; }
 
         /// <summary>
         /// End date of sale price, in the site’s timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_on_sale_to_gmt { get; set; }
+        
+        [JsonProperty("date_on_sale_to_gmt")]
+        [JsonPropertyName("date_on_sale_to_gmt")]
+        public DateTime? DateOnSaleToGmt { get; set; }
 
         /// <summary>
         /// Shows if the variation is on sale. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? on_sale { get; set; }
+        
+        [JsonProperty("on_sale")]
+        [JsonPropertyName("on_sale")]
+        public bool? OnSale { get; set; }
 
         /// <summary>
         /// Variation status. Options: draft, pending, private and publish. Default is publish.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string status { get; set; }
+        
+        [JsonProperty("status")]
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
 
         /// <summary>
         /// Shows if the variation can be bought. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? purchasable { get; set; }
+        
+        [JsonProperty("purchasable")]
+        [JsonPropertyName("purchasable")]
+        public bool? Purchasable { get; set; }
 
         /// <summary>
         /// If the variation is virtual. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "virtual")]
-        public bool? _virtual { get; set; }
+        [JsonProperty("virtual")]
+        [JsonPropertyName("virtual")]
+        public bool? Virtual { get; set; }
 
         /// <summary>
         /// If the variation is downloadable. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? downloadable { get; set; }
+        
+        [JsonProperty("downloadable")]
+        [JsonPropertyName("downloadable")]
+        public bool? Downloadable { get; set; }
 
         /// <summary>
         /// List of downloadable files. See Product variation - Downloads properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<VariationDownload> downloads { get; set; }
+        
+        [JsonProperty("downloads")]
+        [JsonPropertyName("downloads")]
+        public List<VariationDownload> Downloads { get; set; }
 
         /// <summary>
         /// Number of times downloadable files can be downloaded after purchase. Default is -1.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? download_limit { get; set; }
+        
+        [JsonProperty("download_limit")]
+        [JsonPropertyName("download_limit")]
+        public int? DownloadLimit { get; set; }
 
         /// <summary>
         /// Number of days until access to downloadable files expires. Default is -1.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? download_expiry { get; set; }
+        
+        [JsonProperty("download_expiry")]
+        [JsonPropertyName("download_expiry")]
+        public int? DownloadExpiry { get; set; }
 
         /// <summary>
         /// Tax status. Options: taxable, shipping and none. Default is taxable.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string tax_status { get; set; }
+        
+        [JsonProperty("tax_status")]
+        [JsonPropertyName("tax_status")]
+        public string TaxStatus { get; set; }
 
         /// <summary>
         /// Tax class.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string tax_class { get; set; }
+        
+        [JsonProperty("tax_class")]
+        [JsonPropertyName("tax_class")]
+        public string TaxClass { get; set; }
 
         /// <summary>
         /// Stock management at variation level. Default is false.
         /// When Manage stock is checked, string value "parent" will be given, otherwise, it will be bool value false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public object manage_stock { get; set; }
+        
+        [JsonProperty("manage_stock")]
+        [JsonPropertyName("manage_stock")]
+        public object ManageStock { get; set; }
 
-        [DataMember(EmitDefaultValue = false, Name = "stock_quantity")]
-        protected object stock_quantityValue { get; set; }
         /// <summary>
         /// Stock quantity.
         /// </summary>
-        public int? stock_quantity { get; set; }
+        [JsonProperty("stock_quantity")]
+        [JsonPropertyName("stock_quantity")]
+        public int? StockQuantity { get; set; }
 
         /// <summary>
         /// Controls the stock status of the product. Options: instock, outofstock, onbackorder. Default is instock.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string stock_status { get; set; }
+        
+        [JsonProperty("stock_status")]
+        [JsonPropertyName("stock_status")]
+        public string StockStatus { get; set; }
 
         /// <summary>
         /// If managing stock, this controls if backorders are allowed. Options: no, notify and yes. Default is no.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string backorders { get; set; }
+        
+        [JsonProperty("backorders")]
+        [JsonPropertyName("backorders")]
+        public string Backorders { get; set; }
 
         /// <summary>
         /// Shows if backorders are allowed. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? backorders_allowed { get; set; }
+        
+        [JsonProperty("backorders_allowed")]
+        [JsonPropertyName("backorders_allowed")]
+        public bool? BackordersAllowed { get; set; }
 
         /// <summary>
         /// Shows if the variation is on backordered. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? backordered { get; set; }
+        
+        [JsonProperty("backordered")]
+        [JsonPropertyName("backordered")]
+        public bool? Backordered { get; set; }
 
-        [DataMember(EmitDefaultValue = false, Name = "weight")]
-        protected object weightValue { get; set; }
         /// <summary>
         /// Variation weight (kg).
         /// </summary>
-        public decimal? weight { get; set; }
+        [JsonProperty("weight")]
+        [JsonPropertyName("weight")]
+        public decimal? Weight { get; set; }
 
         /// <summary>
         /// Variation dimensions. See Product variation - Dimensions properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public VariationDimension dimensions { get; set; }
+        
+        [JsonProperty("dimensions")]
+        [JsonPropertyName("dimensions")]
+        public VariationDimension Dimensions { get; set; }
 
         /// <summary>
         /// Shipping class slug.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string shipping_class { get; set; }
+        
+        [JsonProperty("shipping_class")]
+        [JsonPropertyName("shipping_class")]
+        public string ShippingClass { get; set; }
 
         /// <summary>
         /// Shipping class ID. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string shipping_class_id { get; set; }
+        
+        [JsonProperty("shipping_class_id")]
+        [JsonPropertyName("shipping_class_id")]
+        public string ShippingClassId { get; set; }
 
         /// <summary>
         /// Variation image data. See Product variation - Image properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public VariationImage image { get; set; }
+        
+        [JsonProperty("image")]
+        [JsonPropertyName("image")]
+        public VariationImage Image { get; set; }
 
         /// <summary>
         /// List of attributes. See Product variation - Attributes properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<VariationAttribute> attributes { get; set; }
+        
+        [JsonProperty("attributes")]
+        [JsonPropertyName("attributes")]
+        public List<VariationAttribute> Attributes { get; set; }
 
         /// <summary>
         /// Menu order, used to custom sort products.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public uint menu_order { get; set; }
+        
+        [JsonProperty("menu_order")]
+        [JsonPropertyName("menu_order")]
+        public uint MenuOrder { get; set; }
 
         /// <summary>
         /// Meta data. See Product variation - Meta data properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<v2.VariationMeta> meta_data { get; set; }
+        
+        [JsonProperty("meta_data")]
+        [JsonPropertyName("meta_data")]
+        public List<v2.VariationMeta> MetaData { get; set; }
 
         /// <summary>
         /// Container for error information, if any
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public VariationError error { get; set; }
+        
+        [JsonProperty("error")]
+        [JsonPropertyName("error")]
+        public VariationError Error { get; set; }
     }
 
-    [DataContract]
+    
     public class VariationDownload : v2.VariationDownload { }
 
-    [DataContract]
+    
     public class VariationDimension : v2.VariationDimension { }
     
-    [DataContract]
+    
     public class VariationImage
     {
         /// <summary>
         /// Image ID.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// The date the image was created, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created { get; set; }
+        
+        [JsonProperty("date_created")]
+        [JsonPropertyName("date_created")]
+        public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// The date the image was created, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created_gmt { get; set; }
+        
+        [JsonProperty("date_created_gmt")]
+        [JsonPropertyName("date_created_gmt")]
+        public DateTime? DateCreatedGmt { get; set; }
 
         /// <summary>
         /// The date the image was last modified, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified { get; set; }
+        
+        [JsonProperty("date_modified")]
+        [JsonPropertyName("date_modified")]
+        public DateTime? DateModified { get; set; }
 
         /// <summary>
         /// The date the image was last modified, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified_gmt { get; set; }
+        
+        [JsonProperty("date_modified_gmt")]
+        [JsonPropertyName("date_modified_gmt")]
+        public DateTime? DateModifiedGmt { get; set; }
 
         /// <summary>
         /// Image URL.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string src { get; set; }
+        
+        [JsonProperty("src")]
+        [JsonPropertyName("src")]
+        public string Src { get; set; }
 
         /// <summary>
         /// Image name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Image alternative text.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string alt { get; set; }
+        
+        [JsonProperty("alt")]
+        [JsonPropertyName("alt")]
+        public string Alt { get; set; }
     }
 
-    [DataContract]
+    
     public class VariationAttribute : v2.VariationAttribute { }
 
-    [DataContract]
+    
     public class VariationError : v2.VariationError { }
 
 }

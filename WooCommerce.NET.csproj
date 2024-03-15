@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>WooCommerceNET</PackageId>
-    <Version>0.8.5</Version>
+    <Version>0.8.7</Version>
     <Authors>JamesYang@NZ</Authors>
     <Company>JamesYang@NZ</Company>
     <Description>A .NET Wrapper for WooCommerce/WordPress REST API</Description>
@@ -39,6 +39,11 @@ Changes Doc: https://github.com/XiaoFaye/WooCommerce.NET/blob/master/Changes.md
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Text.Json" Version="8.0.2" />
   </ItemGroup>
 
 </Project>

@@ -1,101 +1,118 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
-using WooCommerceNET.Base;
+using System.Text.Json.Serialization;
+using WooCommerce.NET.Base;
 
 namespace WooCommerce.NET.WordPress.v2
 {
-    [DataContract]
+    
     public class Taxonomies : JsonObject
     {
-        public static string Endpoint { get { return "taxonomies"; } }
+        public static string Endpoint => "taxonomies";
+
         /// <summary>
         ///  All capabilities used by the taxonomy.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "capabilities")]
-        protected ContentObject capabilitiesValue { get; set; }
+        [JsonProperty("capabilities")]
+        [JsonPropertyName("capabilities")]
+        protected ContentObject CapabilitiesValue { get; set; }
 
 
-        [IgnoreDataMember]
-        public string capabilities
+        
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string Capabilities
         {
-            get
-            {
-                return capabilitiesValue.rendered;
-            }
+            get => CapabilitiesValue.Rendered;
             set
             {
-                if (capabilitiesValue == null)
-                    capabilitiesValue = new ContentObject();
+                if (CapabilitiesValue == null)
+                    CapabilitiesValue = new ContentObject();
 
-                capabilitiesValue.rendered = value;
+                CapabilitiesValue.Rendered = value;
             }
         }
 
         /// <summary>
         ///  A human-readable description of the taxonomy.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         ///  Whether or not the taxonomy should have children.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool hierarchical { get; set; }
+        
+        [JsonProperty("hierarchical")]
+        [JsonPropertyName("hierarchical")]
+        public bool Hierarchical { get; set; }
 
         /// <summary>
         ///  Human-readable labels for the taxonomy for various contexts.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "labels")]
-        protected ContentObject labelsValue { get; set; }
+        [JsonProperty("labels")]
+        [JsonPropertyName("labels")]
+        protected ContentObject LabelsValue { get; set; }
 
-        [IgnoreDataMember]
-        public string labels
+        
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string Labels
         {
-            get
-            {
-                return labelsValue.rendered;
-            }
+            get => LabelsValue.Rendered;
             set
             {
-                if (labelsValue == null)
-                    labelsValue = new ContentObject();
+                if (LabelsValue == null)
+                    LabelsValue = new ContentObject();
 
-                labelsValue.rendered = value;
+                LabelsValue.Rendered = value;
             }
         }
 
         /// <summary>
         ///  The title for the taxonomy.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         ///  An alphanumeric identifier for the taxonomy.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
         /// <summary>
         ///  Whether or not the term cloud should be displayed.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool show_cloud { get; set; }
+        
+        [JsonProperty("show_cloud")]
+        [JsonPropertyName("show_cloud")]
+        public bool ShowCloud { get; set; }
 
         /// <summary>
         ///  Types associated with the taxonomy.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<object> types { get; set; }
+        
+        [JsonProperty("types")]
+        [JsonPropertyName("types")]
+        public List<object> Types { get; set; }
 
         /// <summary>
         ///  REST base route for the taxonomy.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string rest_base { get; set; }
+        
+        [JsonProperty("rest_base")]
+        [JsonPropertyName("rest_base")]
+        public string RestBase { get; set; }
 
         /// <summary>
         /// Format json string on Serialize
@@ -104,21 +121,18 @@ namespace WooCommerce.NET.WordPress.v2
         /// <returns></returns>
         public static string FormatJsonS(string json)
         {
-            int startIndex = json.IndexOf("{\"rendered\":");
-            int endIndex = 0;
-            string oldPart = string.Empty;
-            string newPart = string.Empty;
+            int startIndex = json.IndexOf("{\"rendered\":", StringComparison.Ordinal);
 
             while (startIndex > 0)
             {
-                endIndex = json.IndexOf("\"}", startIndex);
+                int endIndex = json.IndexOf("\"}", startIndex, StringComparison.Ordinal);
 
-                oldPart = json.Substring(startIndex, endIndex - startIndex + 2);
-                newPart = oldPart.Substring(12).TrimEnd('}');
+                string oldPart = json.Substring(startIndex, endIndex - startIndex + 2);
+                string newPart = oldPart.Substring(12).TrimEnd('}');
 
                 json = json.Replace(oldPart, newPart);
 
-                startIndex = json.IndexOf("{\"rendered\":");
+                startIndex = json.IndexOf("{\"rendered\":", StringComparison.Ordinal);
             }
 
             return json;
@@ -134,21 +148,19 @@ namespace WooCommerce.NET.WordPress.v2
             StringBuilder newJson = new StringBuilder();
             newJson.Append('[');
 
-            int headIndex = json.IndexOf("\":{\"name\":\"");
-            int nextIndex = 0;
-            int quoteIndex = 0;
+            int headIndex = json.IndexOf("\":{\"name\":\"", StringComparison.Ordinal);
 
             while (headIndex > 0)
             {
-                nextIndex = json.IndexOf("\":{\"name\":\"", headIndex + 10);
+                int nextIndex = json.IndexOf("\":{\"name\":\"", headIndex + 10, StringComparison.Ordinal);
 
                 if(nextIndex > 0)
                 {
-                    quoteIndex = json.LastIndexOf("\"", nextIndex - 2);
+                    int quoteIndex = json.LastIndexOf("\"", nextIndex - 2, StringComparison.Ordinal);
                     newJson.Append(json.Substring(headIndex + 2, nextIndex - headIndex - (nextIndex - quoteIndex) - 3));
                     newJson.Append(',');
 
-                    headIndex = json.IndexOf("\":{\"name\":\"", nextIndex);
+                    headIndex = json.IndexOf("\":{\"name\":\"", nextIndex, StringComparison.Ordinal);
                 }
                 else
                 {

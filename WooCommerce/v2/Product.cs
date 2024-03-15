@@ -1,751 +1,973 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using WooCommerceNET.Base;
+using System.Text.Json.Serialization;
+using WooCommerce.NET.Base;
+using WooCommerce.NET.Converters;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
     public class ProductBatch : BatchObject<Product> { }
 
-    [DataContract]
+    
     public class Product : JsonObject
     {
-        public static string Endpoint { get { return "products"; } }
+        public static string Endpoint => "products";
 
         /// <summary>
         /// Unique identifier for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Product name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Product slug.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
         /// <summary>
         /// Product URL. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string permalink { get; set; }
+        
+        [JsonProperty("permalink")]
+        [JsonPropertyName("permalink")]
+        public string Permalink { get; set; }
 
         /// <summary>
         /// The date the product was created, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created { get; set; }
+        
+        [JsonProperty("date_created")]
+        [JsonPropertyName("date_created")]
+        public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// The date the product was created, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created_gmt { get; set; }
+        
+        [JsonProperty("date_created_gmt")]
+        [JsonPropertyName("date_created_gmt")]
+        public DateTime? DateCreatedGmt { get; set; }
 
         /// <summary>
         /// The date the product was last modified, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified { get; set; }
+        
+        [JsonProperty("date_modified")]
+        [JsonPropertyName("date_modified")]
+        public DateTime? DateModified { get; set; }
 
         /// <summary>
         /// The date the product was last modified, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified_gmt { get; set; }
+        
+        [JsonProperty("date_modified_gmt")]
+        [JsonPropertyName("date_modified_gmt")]
+        public DateTime? DateModifiedGmt { get; set; }
 
         /// <summary>
         /// Product type. Options: simple, grouped, external and variable. Default is simple.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string type { get; set; }
+        
+        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// Product status (post status). Options: draft, pending, private and publish. Default is publish.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string status { get; set; }
+        
+        [JsonProperty("status")]
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
 
         /// <summary>
         /// Featured product. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? featured { get; set; }
+        
+        [JsonProperty("featured")]
+        [JsonPropertyName("featured")]
+        public bool? Featured { get; set; }
 
         /// <summary>
         /// Catalog visibility. Options: visible, catalog, search and hidden. Default is visible.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string catalog_visibility { get; set; }
+        
+        [JsonProperty("catalog_visibility")]
+        [JsonPropertyName("catalog_visibility")]
+        public string CatalogVisibility { get; set; }
 
         /// <summary>
         /// Product description.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Enable HTML for product description 
         /// write-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? enable_html_description { get; set; }
+        
+        [JsonProperty("enable_html_description")]
+        [JsonPropertyName("enable_html_description")]
+        public bool? EnableHtmlDescription { get; set; }
 
         /// <summary>
         /// Product short description.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string short_description { get; set; }
+        
+        [JsonProperty("short_description")]
+        [JsonPropertyName("short_description")]
+        public string ShortDescription { get; set; }
 
         /// <summary>
         /// Enable HTML for product short description 
         /// write-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string enable_html_short_description { get; set; }
+        
+        [JsonProperty("enable_html_short_description")]
+        [JsonPropertyName("enable_html_short_description")]
+        public string EnableHtmlShortDescription { get; set; }
 
         /// <summary>
         /// Unique identifier.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string sku { get; set; }
         
-        [DataMember(EmitDefaultValue = false, Name = "price")]
-        protected object priceValue { get; set; }
+        [JsonProperty("sku")]
+        [JsonPropertyName("sku")]
+        public string Sku { get; set; }
+
         /// <summary>
         /// Current product price. 
         /// read-only
         /// </summary>
-        public decimal? price { get; set; }
-        
-        [DataMember(EmitDefaultValue = false, Name = "regular_price")]
-        protected object regular_priceValue { get; set; }
+        [JsonProperty("price")]
+        [JsonPropertyName("price")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public decimal? Price { get; set; }
+
         /// <summary>
         /// Product regular price.
         /// </summary>
-        public decimal? regular_price { get; set; }
-        
-        [DataMember(EmitDefaultValue = false, Name = "sale_price")]
-        protected object sale_priceValue { get; set; }
+        [JsonProperty("regular_price")]
+        [JsonPropertyName("regular_price")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public decimal? RegularPrice { get; set; }
+
         /// <summary>
         /// Product sale price.
         /// </summary>
-        public decimal? sale_price { get; set; }
+        [JsonProperty("sale_price")]
+        [JsonPropertyName("sale_price")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public decimal? SalePrice { get; set; }
 
         /// <summary>
         /// Start date of sale price, in the site’s timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_on_sale_from { get; set; }
+        
+        [JsonProperty("date_on_sale_from")]
+        [JsonPropertyName("date_on_sale_from")]
+        public DateTime? DateOnSaleFrom { get; set; }
 
         /// <summary>
         /// Start date of sale price, as GMT.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_on_sale_from_gmt { get; set; }
+        
+        [JsonProperty("date_on_sale_from_gmt")]
+        [JsonPropertyName("date_on_sale_from_gmt")]
+        public DateTime? DateOnSaleFromGmt { get; set; }
 
         /// <summary>
         /// End date of sale price, in the site’s timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_on_sale_to { get; set; }
+        
+        [JsonProperty("date_on_sale_to")]
+        [JsonPropertyName("date_on_sale_to")]
+        public DateTime? DateOnSaleTo { get; set; }
 
         /// <summary>
         /// End date of sale price, in the site’s timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_on_sale_to_gmt { get; set; }
+        
+        [JsonProperty("date_on_sale_to_gmt")]
+        [JsonPropertyName("date_on_sale_to_gmt")]
+        public DateTime? DateOnSaleToGmt { get; set; }
 
         /// <summary>
         /// Price formatted in HTML. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string price_html { get; set; }
+        
+        [JsonProperty("price_html")]
+        [JsonPropertyName("price_html")]
+        public string PriceHtml { get; set; }
 
         /// <summary>
         /// Shows if the product is on sale. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? on_sale { get; set; }
+        
+        [JsonProperty("on_sale")]
+        [JsonPropertyName("on_sale")]
+        public bool? OnSale { get; set; }
 
         /// <summary>
         /// Shows if the product can be bought. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? purchasable { get; set; }
+        
+        [JsonProperty("purchasable")]
+        [JsonPropertyName("purchasable")]
+        public bool? Purchasable { get; set; }
 
         /// <summary>
         /// Amount of sales. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public long? total_sales { get; set; }
+        
+        [JsonProperty("total_sales")]
+        [JsonPropertyName("total_sales")]
+        public long? TotalSales { get; set; }
 
         /// <summary>
         /// If the product is virtual. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "virtual")]
-        public bool? _virtual { get; set; }
+        [JsonProperty("virtual")]
+        [JsonPropertyName("virtual")]
+        public bool? Virtual { get; set; }
 
         /// <summary>
         /// If the product is downloadable. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? downloadable { get; set; }
+        
+        [JsonProperty("downloadable")]
+        [JsonPropertyName("downloadable")]
+        public bool? Downloadable { get; set; }
 
         /// <summary>
         /// List of downloadable files. See Product - Downloads properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ProductDownloadLine> downloads { get; set; }
+        
+        [JsonProperty("downloads")]
+        [JsonPropertyName("downloads")]
+        public List<ProductDownloadLine> Downloads { get; set; }
 
         /// <summary>
         /// Number of times downloadable files can be downloaded after purchase. Default is -1.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? download_limit { get; set; }
+        
+        [JsonProperty("download_limit")]
+        [JsonPropertyName("download_limit")]
+        public int? DownloadLimit { get; set; }
 
         /// <summary>
         /// Number of days until access to downloadable files expires. Default is -1.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? download_expiry { get; set; }
+        
+        [JsonProperty("download_expiry")]
+        [JsonPropertyName("download_expiry")]
+        public int? DownloadExpiry { get; set; }
 
         /// <summary>
         /// Product external URL. Only for external products.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string external_url { get; set; }
+        
+        [JsonProperty("external_url")]
+        [JsonPropertyName("external_url")]
+        public string ExternalUrl { get; set; }
 
         /// <summary>
         /// Product external button text. Only for external products.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string button_text { get; set; }
+        
+        [JsonProperty("button_text")]
+        [JsonPropertyName("button_text")]
+        public string ButtonText { get; set; }
 
         /// <summary>
         /// Tax status. Options: taxable, shipping and none. Default is taxable.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string tax_status { get; set; }
+        
+        [JsonProperty("tax_status")]
+        [JsonPropertyName("tax_status")]
+        public string TaxStatus { get; set; }
 
         /// <summary>
         /// Tax class.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string tax_class { get; set; }
+        
+        [JsonProperty("tax_class")]
+        [JsonPropertyName("tax_class")]
+        public string TaxClass { get; set; }
 
         /// <summary>
         /// Stock management at product level. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? manage_stock { get; set; }
+        
+        [JsonProperty("manage_stock")]
+        [JsonPropertyName("manage_stock")]
+        public bool? ManageStock { get; set; }
 
-        [DataMember(EmitDefaultValue = false, Name = "stock_quantity")]
-        protected object stock_quantityValue { get; set; }
         /// <summary>
         /// Stock quantity.
         /// </summary>
-        public int? stock_quantity { get; set; }
+        [JsonProperty("stock_quantity")]
+        [JsonPropertyName("stock_quantity")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public int? StockQuantity { get; set; }
 
         /// <summary>
         /// Controls whether or not the product is listed as “in stock” or “out of stock” on the frontend. Default is true.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? in_stock { get; set; }
+        
+        [JsonProperty("in_stock")]
+        [JsonPropertyName("in_stock")]
+        public bool? InStock { get; set; }
 
         /// <summary>
         /// If managing stock, this controls if backorders are allowed. Options: no, notify and yes. Default is no.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string backorders { get; set; }
+        
+        [JsonProperty("backorders")]
+        [JsonPropertyName("backorders")]
+        public string Backorders { get; set; }
 
         /// <summary>
         /// Shows if backorders are allowed. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? backorders_allowed { get; set; }
+        
+        [JsonProperty("backorders_allowed")]
+        [JsonPropertyName("backorders_allowed")]
+        public bool? BackordersAllowed { get; set; }
 
         /// <summary>
         /// Shows if the product is on backordered. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? backordered { get; set; }
+        
+        [JsonProperty("backordered")]
+        [JsonPropertyName("backordered")]
+        public bool? Backordered { get; set; }
 
         /// <summary>
         /// Allow one item to be bought in a single order. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? sold_individually { get; set; }
+        
+        [JsonProperty("sold_individually")]
+        [JsonPropertyName("sold_individually")]
+        public bool? SoldIndividually { get; set; }
 
-        [DataMember(EmitDefaultValue = false, Name = "weight")]
-        protected object weightValue { get; set; }
         /// <summary>
         /// Product weight (kg).
         /// </summary>
-        public decimal? weight { get; set; }
+        [JsonProperty("weight")]
+        [JsonPropertyName("weight")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public decimal? Weight { get; set; }
 
         /// <summary>
         /// Product dimensions. See Product - Dimensions properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ProductDimension dimensions { get; set; }
+        
+        [JsonProperty("dimensions")]
+        [JsonPropertyName("dimensions")]
+        public ProductDimension Dimensions { get; set; }
 
         /// <summary>
         /// Shows if the product need to be shipped. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? shipping_required { get; set; }
+        
+        [JsonProperty("shipping_required")]
+        [JsonPropertyName("shipping_required")]
+        public bool? ShippingRequired { get; set; }
 
         /// <summary>
         /// Shows whether or not the product shipping is taxable. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? shipping_taxable { get; set; }
+        
+        [JsonProperty("shipping_taxable")]
+        [JsonPropertyName("shipping_taxable")]
+        public bool? ShippingTaxable { get; set; }
 
         /// <summary>
         /// Shipping class slug.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string shipping_class { get; set; }
+        
+        [JsonProperty("shipping_class")]
+        [JsonPropertyName("shipping_class")]
+        public string ShippingClass { get; set; }
 
         /// <summary>
         /// Shipping class ID. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string shipping_class_id { get; set; }
+        
+        [JsonProperty("shipping_class_id")]
+        [JsonPropertyName("shipping_class_id")]
+        public string ShippingClassId { get; set; }
 
         /// <summary>
         /// Allow reviews. Default is true.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? reviews_allowed { get; set; }
+        
+        [JsonProperty("reviews_allowed")]
+        [JsonPropertyName("reviews_allowed")]
+        public bool? ReviewsAllowed { get; set; }
 
         /// <summary>
         /// Reviews average rating. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string average_rating { get; set; }
+        
+        [JsonProperty("average_rating")]
+        [JsonPropertyName("average_rating")]
+        public string AverageRating { get; set; }
 
         /// <summary>
         /// Amount of reviews that the product have. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? rating_count { get; set; }
+        
+        [JsonProperty("rating_count")]
+        [JsonPropertyName("rating_count")]
+        public int? RatingCount { get; set; }
 
         /// <summary>
         /// List of related products IDs. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ulong> related_ids { get; set; }
+        
+        [JsonProperty("related_ids")]
+        [JsonPropertyName("related_ids")]
+        public List<ulong> RelatedIds { get; set; }
 
         /// <summary>
         /// List of up-sell products IDs.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ulong> upsell_ids { get; set; }
+        
+        [JsonProperty("upsell_ids")]
+        [JsonPropertyName("upsell_ids")]
+        public List<ulong> UpsellIds { get; set; }
 
         /// <summary>
         /// List of cross-sell products IDs.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ulong> cross_sell_ids { get; set; }
+        
+        [JsonProperty("cross_sell_ids")]
+        [JsonPropertyName("cross_sell_ids")]
+        public List<ulong> CrossSellIds { get; set; }
 
         /// <summary>
         /// Product parent ID.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? parent_id { get; set; }
+        
+        [JsonProperty("parent_id")]
+        [JsonPropertyName("parent_id")]
+        public ulong? ParentId { get; set; }
 
         /// <summary>
         /// Optional note to send the customer after purchase.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string purchase_note { get; set; }
+        
+        [JsonProperty("purchase_note")]
+        [JsonPropertyName("purchase_note")]
+        public string PurchaseNote { get; set; }
 
         /// <summary>
         /// List of categories. See Product - Categories properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ProductCategoryLine> categories { get; set; }
+        
+        [JsonProperty("categories")]
+        [JsonPropertyName("categories")]
+        public List<ProductCategoryLine> Categories { get; set; }
 
         /// <summary>
         /// List of tags. See Product - Tags properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ProductTagLine> tags { get; set; }
+        
+        [JsonProperty("tags")]
+        [JsonPropertyName("tags")]
+        public List<ProductTagLine> Tags { get; set; }
 
         /// <summary>
         /// List of images. See Product - Images properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ProductImage> images { get; set; }
+        
+        [JsonProperty("images")]
+        [JsonPropertyName("images")]
+        public List<ProductImage> Images { get; set; }
 
         /// <summary>
         /// List of attributes. See Product - Attributes properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ProductAttributeLine> attributes { get; set; }
+        
+        [JsonProperty("attributes")]
+        [JsonPropertyName("attributes")]
+        public List<ProductAttributeLine> Attributes { get; set; }
 
         /// <summary>
         /// Defaults variation attributes. See Product - Default attributes properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ProductDefaultAttribute> default_attributes { get; set; }
+        
+        [JsonProperty("default_attributes")]
+        [JsonPropertyName("default_attributes")]
+        public List<ProductDefaultAttribute> DefaultAttributes { get; set; }
 
         /// <summary>
         /// List of variations IDs. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<int> variations { get; set; }
+        
+        [JsonProperty("variations")]
+        [JsonPropertyName("variations")]
+        public List<int> Variations { get; set; }
 
         /// <summary>
         /// List of grouped products ID. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<int> grouped_products { get; set; }
+        
+        [JsonProperty("grouped_products")]
+        [JsonPropertyName("grouped_products")]
+        public List<int> GroupedProducts { get; set; }
 
         /// <summary>
         /// Menu order, used to custom sort products.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? menu_order { get; set; }
+        
+        [JsonProperty("menu_order")]
+        [JsonPropertyName("menu_order")]
+        public int? MenuOrder { get; set; }
 
         /// <summary>
         /// Meta data. See Product - Meta data properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<ProductMeta> meta_data { get; set; }
+        
+        [JsonProperty("meta_data")]
+        [JsonPropertyName("meta_data")]
+        public List<ProductMeta> MetaData { get; set; }
 
         /// <summary>
         /// Container for error information, if any
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ProductError error { get; set; }
+        
+        [JsonProperty("error")]
+        [JsonPropertyName("error")]
+        public ProductError Error { get; set; }
     }
+
     
-    [DataContract]
     public class ProductDownloadLine
     {
         /// <summary>
         /// File MD5 hash. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
 
         /// <summary>
         /// File name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// File URL.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string file { get; set; }
+        
+        [JsonProperty("file")]
+        [JsonPropertyName("file")]
+        public string File { get; set; }
 
     }
+
     
-    [DataContract]
     public class ProductDimension
     {
         /// <summary>
         /// Product length (cm).
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string length { get; set; }
+        
+        [JsonProperty("length")]
+        [JsonPropertyName("length")]
+        public string Length { get; set; }
 
         /// <summary>
         /// Product width (cm).
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string width { get; set; }
+        
+        [JsonProperty("width")]
+        [JsonPropertyName("width")]
+        public string Width { get; set; }
 
         /// <summary>
         /// Product height (cm).
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string height { get; set; }
+        
+        [JsonProperty("height")]
+        [JsonPropertyName("height")]
+        public string Height { get; set; }
     }
+
     
-    [DataContract]
     public class ProductCategoryLine
     {
         /// <summary>
         /// Category ID.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Category name. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Category slug. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
     }
+
     
-    [DataContract]
     public class ProductTagLine
     {
         /// <summary>
         /// Tag ID.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Tag name. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Tag slug. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
     }
+
     
-    [DataContract]
     public class ProductImage
     {
         /// <summary>
         /// Image ID.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// The date the image was created, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created { get; set; }
+        
+        [JsonProperty("date_created")]
+        [JsonPropertyName("date_created")]
+        public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// The date the image was created, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created_gmt { get; set; }
+        
+        [JsonProperty("date_created_gmt")]
+        [JsonPropertyName("date_created_gmt")]
+        public DateTime? DateCreatedGmt { get; set; }
 
         /// <summary>
         /// The date the image was last modified, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified { get; set; }
+        
+        [JsonProperty("date_modified")]
+        [JsonPropertyName("date_modified")]
+        public DateTime? DateModified { get; set; }
 
         /// <summary>
         /// The date the image was last modified, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified_gmt { get; set; }
+        
+        [JsonProperty("date_modified_gmt")]
+        [JsonPropertyName("date_modified_gmt")]
+        public DateTime? DateModifiedGmt { get; set; }
 
         /// <summary>
         /// Image URL.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string src { get; set; }
+        
+        [JsonProperty("src")]
+        [JsonPropertyName("src")]
+        public string Src { get; set; }
 
         /// <summary>
         /// Image name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Image alternative text.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string alt { get; set; }
+        
+        [JsonProperty("alt")]
+        [JsonPropertyName("alt")]
+        public string Alt { get; set; }
 
         /// <summary>
         /// Image position. 0 means that the image is featured.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? position { get; set; }
+        
+        [JsonProperty("position")]
+        [JsonPropertyName("position")]
+        public int? Position { get; set; }
 
     }
+
     
-    [DataContract]
     public class ProductAttributeLine
     {
         /// <summary>
         /// Attribute ID.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Attribute name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Attribute position.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? position { get; set; }
+        
+        [JsonProperty("position")]
+        [JsonPropertyName("position")]
+        public int? Position { get; set; }
 
         /// <summary>
         /// Define if the attribute is visible on the “Additional information” tab in the product’s page. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? visible { get; set; }
+        
+        [JsonProperty("visible")]
+        [JsonPropertyName("visible")]
+        public bool? Visible { get; set; }
 
         /// <summary>
         /// Define if the attribute can be used as variation. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? variation { get; set; }
+        
+        [JsonProperty("variation")]
+        [JsonPropertyName("variation")]
+        public bool? Variation { get; set; }
 
         /// <summary>
         /// List of available term names of the attribute.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<string> options { get; set; }
+        
+        [JsonProperty("options")]
+        [JsonPropertyName("options")]
+        public List<string> Options { get; set; }
 
     }
+
     
-    [DataContract]
     public class ProductDefaultAttribute
     {
         /// <summary>
         /// Attribute ID.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Attribute name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Selected attribute term name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string option { get; set; }
+        
+        [JsonProperty("option")]
+        [JsonPropertyName("option")]
+        public string Option { get; set; }
 
     }
 
-    [DataContract]
-    public class ProductMeta : WCObject.MetaData
+    
+    public class ProductMeta : WcObject.MetaData
     {
 
     }
 
-    [DataContract]
+    
     public class ProductReview
     {
-        public static string Endpoint { get { return "reviews"; } }
+        public static string Endpoint => "reviews";
 
         /// <summary>
         /// Unique identifier for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// The content of the review. 
         /// mandatory
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string review { get; set; }
+        
+        [JsonProperty("review")]
+        [JsonPropertyName("review")]
+        public string Review { get; set; }
 
         /// <summary>
         /// The date the review was created, in the site’s timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created { get; set; }
+        
+        [JsonProperty("date_created")]
+        [JsonPropertyName("date_created")]
+        public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// The date the review was created, as GMT.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created_gmt { get; set; }
+        
+        [JsonProperty("date_created_gmt")]
+        [JsonPropertyName("date_created_gmt")]
+        public DateTime? DateCreatedGmt { get; set; }
 
         /// <summary>
         /// Review rating (0 to 5).
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? rating { get; set; }
+        
+        [JsonProperty("rating")]
+        [JsonPropertyName("rating")]
+        public int? Rating { get; set; }
 
         /// <summary>
         /// Reviewer name. 
         /// mandatory
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Reviewer email. 
         /// mandatory
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string email { get; set; }
+        
+        [JsonProperty("email")]
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
         /// <summary>
         /// Shows if the reviewer bought the product or not. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? verified { get; set; }
+        
+        [JsonProperty("verified")]
+        [JsonPropertyName("verified")]
+        public bool? Verified { get; set; }
 
     }
 
-    [DataContract]
+    
     public class ProductError : JsonObject
     {
-        [DataMember( EmitDefaultValue = false )]
-        public string code { get; set; }
-        [DataMember( EmitDefaultValue = false )]
-        public string message { get; set; }
-        [DataMember( EmitDefaultValue = false )]
-        public object data { get; set; }
+        
+        [JsonProperty("code")]
+        [JsonPropertyName("code")]
+        public string Code { get; set; }
+
+        
+        [JsonProperty("message")]
+        [JsonPropertyName("message")]
+        public string Message { get; set; }
+
+        
+        [JsonProperty("data")]
+        [JsonPropertyName("data")]
+        public object Data { get; set; }
     }
 }

@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
-namespace WooCommerceNET.WooCommerce.Legacy
+namespace WooCommerce.NET.WooCommerce.Legacy
 {
-    [DataContract]
+    
     public class Store
     {
         public List<WCRoute> GetRoutes(string json)
         {
             json = json.Replace(" ", string.Empty).Replace("\n", string.Empty);
 
-            int startIndex = json.IndexOf("routes");
-            int endIndex = json.LastIndexOf("meta");
+            int startIndex = json.IndexOf("routes", StringComparison.Ordinal);
+            int endIndex = json.LastIndexOf("meta", StringComparison.Ordinal);
             string result = json.Substring(startIndex + 8, endIndex - startIndex - 11);
 
-            string[] res = result.Split(new string[] { "\"\\" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] res = result.Split(new[] { "\"\\" }, StringSplitOptions.RemoveEmptyEntries);
             
             List<WCRoute> routes = new List<WCRoute>();
             foreach (var r in res)
@@ -23,12 +25,16 @@ namespace WooCommerceNET.WooCommerce.Legacy
                 if (r.Contains(":{"))
                 {
                     string temp = r.TrimEnd(',');
-                    WCRoute sr = new WCRoute();
-                    sr.Resoure = temp.Substring(0, temp.IndexOf("\":{"));
-                    sr.AcceptData = temp.Contains("accepts_data");
-                    sr.Method = temp.Substring(temp.IndexOf("supports") + 11, temp.IndexOf("]") - temp.IndexOf("supports") - 12 + 1).Replace("\"", string.Empty).Split(',');
-                    if (!sr.Resoure.Contains("<"))
-                        sr.Self = temp.Substring(temp.IndexOf("self\":") + 7, temp.IndexOf("\"}", temp.IndexOf("self\":")) - temp.IndexOf("self\":") - 7);
+
+                    WCRoute sr = new WCRoute
+                    {
+                        Resource = temp.Substring(0, temp.IndexOf("\":{", StringComparison.Ordinal)),
+                        AcceptData = temp.Contains("accepts_data"),
+                        Method = temp.Substring(temp.IndexOf("supports", StringComparison.Ordinal) + 11, temp.IndexOf("]", StringComparison.Ordinal) - temp.IndexOf("supports", StringComparison.Ordinal) - 12 + 1).Replace("\"", string.Empty).Split(',')
+                    };
+
+                    if (!sr.Resource.Contains("<"))
+                        sr.Self = temp.Substring(temp.IndexOf("self\":", StringComparison.Ordinal) + 7, temp.IndexOf("\"}", temp.IndexOf("self\":", StringComparison.Ordinal), StringComparison.Ordinal) - temp.IndexOf("self\":", StringComparison.Ordinal) - 7);
                     routes.Add(sr);
                 }
             }
@@ -36,50 +42,83 @@ namespace WooCommerceNET.WooCommerce.Legacy
             return routes;
         }
 
-        [DataMember]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
-        [DataMember]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
-        [DataMember]
-        public string URL { get; set; }
+        
+        [JsonProperty("URL")]
+        [JsonPropertyName("URL")]
+        public string Url { get; set; }
 
-        [DataMember]
-        public string wc_version { get; set; }
+        
+        [JsonProperty("wc_version")]
+        [JsonPropertyName("wc_version")]
+        public string WcVersion { get; set; }
 
-        public List<WCRoute> WCRoutes { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public List<WCRoute> WcRoutes { get; set; }
 
-        [DataMember]
-        public StoreMeta meta { get; set; }
+        
+        [JsonProperty("routes")]
+        [JsonPropertyName("routes")]
+        public StoreMeta Meta { get; set; }
     }
 
     public class WCRoute
     {
-        public string Resoure { get; set; }
+        public string Resource { get; set; }
+
         public string[] Method { get; set; }
+
         public bool AcceptData { get; set; }
+
         public string Self { get; set; }
     }
 
     public class StoreMeta
     {
-        public string timezone { get; set; }
+        [JsonProperty("timezone")]
+        [JsonPropertyName("timezone")]
+        public string Timezone { get; set; }
 
-        public string currency { get; set; }
+        [JsonProperty("currency")]
+        [JsonPropertyName("currency")]
+        public string Currency { get; set; }
 
-        public string currency_format { get; set; }
+        [JsonProperty("currency_format")]
+        [JsonPropertyName("currency_format")]
+        public string CurrencyFormat { get; set; }
 
-        public bool tax_included { get; set; }
+        [JsonProperty("tax_included")]
+        [JsonPropertyName("tax_included")]
+        public bool TaxIncluded { get; set; }
 
-        public string weight_unit { get; set; }
+        [JsonProperty("weight_unit")]
+        [JsonPropertyName("weight_unit")]
+        public string WeightUnit { get; set; }
 
-        public string dimension_unit { get; set; }
+        [JsonProperty("dimension_unit")]
+        [JsonPropertyName("dimension_unit")]
+        public string DimensionUnit { get; set; }
 
-        public bool ssl_enabled { get; set; }
+        [JsonProperty("ssl_enabled")]
+        [JsonPropertyName("ssl_enabled")]
+        public bool SslEnabled { get; set; }
 
-        public bool permalinks_enabled { get; set; }
+        [JsonProperty("permalinks_enabled")]
+        [JsonPropertyName("permalinks_enabled")]
+        public bool PermalinksEnabled { get; set; }
 
-        public object links { get; set; }
+        [JsonProperty("links")]
+        [JsonPropertyName("links")]
+        public object Links { get; set; }
     }
 }

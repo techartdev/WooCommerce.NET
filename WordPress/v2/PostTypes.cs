@@ -1,67 +1,88 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WordPress.v2
 {
-    [DataContract]
+    
     public class PostTypes
     {
-        public static string Endpoint { get { return "types"; } }
+        public static string Endpoint => "types";
+
         /// <summary>
         /// All capabilities used by the post type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public object capabilities { get; set; }
+        
+        [JsonProperty("capabilities")]
+        [JsonPropertyName("capabilities")]
+        public object Capabilities { get; set; }
 
         /// <summary>
         /// A human-readable description of the post type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Whether or not the post type should have children.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool hierarchical { get; set; }
+        
+        [JsonProperty("hierarchical")]
+        [JsonPropertyName("hierarchical")]
+        public bool Hierarchical { get; set; }
 
         /// <summary>
         /// Human-readable labels for the post type for various contexts.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public object labels { get; set; }
+        
+        [JsonProperty("labels")]
+        [JsonPropertyName("labels")]
+        public object Labels { get; set; }
 
         /// <summary>
         /// The title for the post type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("label")]
+        [JsonPropertyName("label")]
+        public string Name { get; set; }
 
         /// <summary>
         /// An alphanumeric identifier for the post type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Slug { get; set; }
 
         /// <summary>
         /// All features, supported by the post type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public object supports { get; set; }
+        
+        [JsonProperty("supports")]
+        [JsonPropertyName("supports")]
+        public object Supports { get; set; }
 
         /// <summary>
         /// Taxonomies associated with post type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<object> taxonomies { get; set; }
+        
+        [JsonProperty("taxonomies")]
+        [JsonPropertyName("taxonomies")]
+        public List<object> Taxonomies { get; set; }
 
         /// <summary>
         /// REST base route for the post type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string rest_base { get; set; }
+        
+        [JsonProperty("rest_base")]
+        [JsonPropertyName("rest_base")]
+        public string RestBase { get; set; }
 
         /// <summary>
         /// Format json string on Deserialize
@@ -73,21 +94,19 @@ namespace WooCommerce.NET.WordPress.v2
             StringBuilder newJson = new StringBuilder();
             newJson.Append('[');
 
-            int headIndex = json.IndexOf("\":{\"description\":\"");
-            int nextIndex = 0;
-            int quoteIndex = 0;
+            int headIndex = json.IndexOf("\":{\"description\":\"", StringComparison.Ordinal);
 
             while (headIndex > 0)
             {
-                nextIndex = json.IndexOf("\":{\"description\":\"", headIndex + 10);
+                int nextIndex = json.IndexOf("\":{\"description\":\"", headIndex + 10, StringComparison.Ordinal);
 
                 if (nextIndex > 0)
                 {
-                    quoteIndex = json.LastIndexOf("\"", nextIndex - 2);
+                    int quoteIndex = json.LastIndexOf("\"", nextIndex - 2, StringComparison.Ordinal);
                     newJson.Append(json.Substring(headIndex + 2, nextIndex - headIndex - (nextIndex - quoteIndex) - 3));
                     newJson.Append(',');
 
-                    headIndex = json.IndexOf("\":{\"description\":\"", nextIndex);
+                    headIndex = json.IndexOf("\":{\"description\":\"", nextIndex, StringComparison.Ordinal);
                 }
                 else
                 {

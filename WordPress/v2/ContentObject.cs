@@ -1,18 +1,23 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
-using WooCommerceNET.Base;
+using System.Text.Json.Serialization;
+using WooCommerce.NET.Base;
 
 namespace WooCommerce.NET.WordPress.v2
 {
-    [DataContract]
+    
     public class ContentObject
     {
-        [DataMember(EmitDefaultValue = false)]
-        public string rendered { get; set; }
+        
+        [JsonProperty("rendered")]
+        [JsonPropertyName("rendered")]
+        public string Rendered { get; set; }
 
-        [DataMember(EmitDefaultValue = false, Name = "protected")]
-        public bool _protected { get; set; }
+        [JsonProperty("protected")]
+        [JsonPropertyName("protected")]
+        public bool Protected { get; set; }
     }
 }

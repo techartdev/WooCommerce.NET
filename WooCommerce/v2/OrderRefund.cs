@@ -1,175 +1,223 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using WooCommerceNET.Base;
+using System.Text.Json.Serialization;
+using WooCommerce.NET.Base;
+using WooCommerce.NET.Converters;
 
-namespace WooCommerceNET.WooCommerce.v2
+namespace WooCommerce.NET.WooCommerce.v2
 {
-    [DataContract]
+    
     public class OrderRefund : JsonObject
     {
-        public static string Endpoint { get { return "refunds"; } }
+        public static string Endpoint => "refunds";
 
         /// <summary>
         /// Unique identifier for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// The date the order refund was created, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created { get; set; }
+        
+        [JsonProperty("date_created")]
+        [JsonPropertyName("date_created")]
+        public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// The date the order refund was created, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created_gmt { get; set; }
-
-        [DataMember(EmitDefaultValue = false, Name = "amount")]
-        protected object amountValue { get; set; }
+        
+        [JsonProperty("date_created_gmt")]
+        [JsonPropertyName("date_created_gmt")]
+        public DateTime? DateCreatedGmt { get; set; }
 
         /// <summary>
         /// Refund amount.
         /// </summary>
-        public decimal? amount { get; set; }
+        [JsonProperty("amount")]
+        [JsonPropertyName("amount")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public decimal? Amount { get; set; }
 
         /// <summary>
         /// Reason for refund.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string reason { get; set; }
+        
+        [JsonProperty("reason")]
+        [JsonPropertyName("reason")]
+        public string Reason { get; set; }
 
         /// <summary>
         /// User ID of user who created the refund.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? refunded_by { get; set; }
+        
+        [JsonProperty("refunded_by")]
+        [JsonPropertyName("refunded_by")]
+        public ulong? RefundedBy { get; set; }
 
         /// <summary>
         /// Meta data. See Order refund - Meta data properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<OrderRefundMeta> meta_data { get; set; }
+        
+        [JsonProperty("meta_data")]
+        [JsonPropertyName("meta_data")]
+        public List<OrderRefundMeta> MetaData { get; set; }
 
         /// <summary>
         /// Line items data. See Order refund - Line items properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<OrderRefundItem> line_items { get; set; }
+        
+        [JsonProperty("line_items")]
+        [JsonPropertyName("line_items")]
+        public List<OrderRefundItem> LineItems { get; set; }
 
         /// <summary>
         /// When true, the payment gateway API is used to generate the refund. Default is true. 
         /// write-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? api_refund { get; set; }
+        
+        [JsonProperty("api_refund")]
+        [JsonPropertyName("api_refund")]
+        public bool? ApiRefund { get; set; }
 
     }
 
-    [DataContract]
-    public class OrderRefundMeta : WCObject.MetaData
+    
+    public class OrderRefundMeta : WcObject.MetaData
     {
 
     }
 
-    [DataContract]
+    
     public class OrderRefundItem
     {
         /// <summary>
         /// Item ID. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Product name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Product ID.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? product_id { get; set; }
+        
+        [JsonProperty("product_id")]
+        [JsonPropertyName("product_id")]
+        public ulong? ProductId { get; set; }
 
         /// <summary>
         /// Variation ID, if applicable.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? variation_id { get; set; }
+        
+        [JsonProperty("variation_id")]
+        [JsonPropertyName("variation_id")]
+        public ulong? VariationId { get; set; }
 
         /// <summary>
         /// Quantity ordered.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? quantity { get; set; }
+        
+        [JsonProperty("quantity")]
+        [JsonPropertyName("quantity")]
+        public int? Quantity { get; set; }
 
         /// <summary>
         /// Tax class of product.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string tax_class { get; set; }
+        
+        [JsonProperty("tax_class")]
+        [JsonPropertyName("tax_class")]
+        public string TaxClass { get; set; }
 
         /// <summary>
         /// Line subtotal (before discounts).
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public decimal? subtotal { get; set; }
+        
+        [JsonProperty("subtotal")]
+        [JsonPropertyName("subtotal")]
+        public decimal? Subtotal { get; set; }
 
         /// <summary>
         /// Line subtotal tax (before discounts). 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public decimal? subtotal_tax { get; set; }
+        
+        [JsonProperty("subtotal_tax")]
+        [JsonPropertyName("subtotal_tax")]
+        public decimal? SubtotalTax { get; set; }
 
         /// <summary>
         /// Line total (after discounts).
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public decimal? total { get; set; }
+        
+        [JsonProperty("total")]
+        [JsonPropertyName("total")]
+        public decimal? Total { get; set; }
 
         /// <summary>
         /// Line total tax (after discounts). 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public decimal? total_tax { get; set; }
+        
+        [JsonProperty("total_tax")]
+        [JsonPropertyName("total_tax")]
+        public decimal? TotalTax { get; set; }
 
         /// <summary>
         /// Line taxes. See Order refund - Taxes properties 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<object> taxes { get; set; }
+        
+        [JsonProperty("taxes")]
+        [JsonPropertyName("taxes")]
+        public List<object> Taxes { get; set; }
 
         /// <summary>
         /// Meta data. See Order refund - Meta data properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<OrderRefundMeta> meta_data { get; set; }
+        
+        [JsonProperty("meta_data")]
+        [JsonPropertyName("meta_data")]
+        public List<OrderRefundMeta> MetaData { get; set; }
 
         /// <summary>
         /// Product SKU. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string sku { get; set; }
+        
+        [JsonProperty("sku")]
+        [JsonPropertyName("sku")]
+        public string Sku { get; set; }
 
         /// <summary>
         /// Product price. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public decimal? price { get; set; }
+        
+        [JsonProperty("price")]
+        [JsonPropertyName("price")]
+        public decimal? Price { get; set; }
 
     }
 }

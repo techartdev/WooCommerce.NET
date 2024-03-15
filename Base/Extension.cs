@@ -6,7 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace WooCommerceNET.Base
+namespace WooCommerce.NET.Base
 {
     public static class Extension
     {
@@ -76,7 +76,7 @@ namespace WooCommerceNET.Base
     /// </summary>
     public static class HttpWebRequestExtensions
     {
-        static string[] RestrictedHeaders = new string[] {
+        static readonly string[] RestrictedHeaders = new string[] {
             "Accept",
             "Connection",
             "Content-Length",
@@ -93,7 +93,7 @@ namespace WooCommerceNET.Base
             "User-Agent"
     };
 
-        static Dictionary<string, PropertyInfo> HeaderProperties = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
+        static readonly Dictionary<string, PropertyInfo> HeaderProperties = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
 
         static HttpWebRequestExtensions()
         {
@@ -108,9 +108,8 @@ namespace WooCommerceNET.Base
 
         public static void SetRawHeader(this HttpWebRequest request, string name, string value)
         {
-            if (HeaderProperties.ContainsKey(name))
+            if (HeaderProperties.TryGetValue(name, out var property))
             {
-                PropertyInfo property = HeaderProperties[name];
                 if (property.PropertyType == typeof(DateTime))
                     property.SetValue(request, DateTime.Parse(value), null);
                 else if (property.PropertyType == typeof(bool))
