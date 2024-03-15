@@ -28,27 +28,27 @@ namespace WooCommerce.NET.Base
             return "0." + unixtime.ToString().Substring(10, 6) + "00 " + unixtime.ToString().Substring(0, 10);
         }
 
-        public static string GetSHA1(string key, string message)
+        public static string GetSha1(string key, string message)
         {
             var encoding = new ASCIIEncoding();
 
             byte[] keyBytes = encoding.GetBytes(key);
             byte[] messageBytes = encoding.GetBytes(message);
 
-            string Sha1Result = string.Empty;
+            string sha1Result;
 
-            using (HMACSHA1 SHA1 = new HMACSHA1(keyBytes))
+            using (HMACSHA1 sha1 = new HMACSHA1(keyBytes))
             {
-                var Hashed = SHA1.ComputeHash(messageBytes);
-                Sha1Result = Convert.ToBase64String(Hashed);
+                var hashed = sha1.ComputeHash(messageBytes);
+                sha1Result = Convert.ToBase64String(hashed);
             }
 
-            return Sha1Result;
+            return sha1Result;
         }
 
-        public static string GetSHA256(string key, string message)
+        public static string GetSha256(string key, string message)
         {
-            return HMAC_SHA256.HMAC(Encoding.UTF8.GetBytes(message), Encoding.UTF8.GetBytes(key));
+            return HmacSha256.Hmac(Encoding.UTF8.GetBytes(message), Encoding.UTF8.GetBytes(key));
             //MacAlgorithmProvider sha256 = MacAlgorithmProvider.OpenAlgorithm("HMAC_SHA256");
             //IBuffer contentBuffer = CryptographicBuffer.ConvertStringToBinary(message, BinaryStringEncoding.Utf8);
 
@@ -60,7 +60,7 @@ namespace WooCommerce.NET.Base
             //return CryptographicBuffer.EncodeToBase64String(digest);
         }
 
-        public static string GetMD5(string content)
+        public static string GetMd5(string content)
         {
             using (MD5 md5Hash = MD5.Create())
             {

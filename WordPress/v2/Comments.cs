@@ -1,131 +1,164 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.Runtime.Serialization;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WordPress.v2
 {
-    [DataContract]
+    
     public class Comments
     {
-        public static string Endpoint { get { return "comments"; } }
+        public static string Endpoint => "comments";
+
         /// <summary>
         /// Unique identifier for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id  { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id  { get; set; }
 
         /// <summary>
         /// The ID of the user object, if author was a user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? author { get; set; }
+        
+        [JsonProperty("author")]
+        [JsonPropertyName("author")]
+        public ulong? Author { get; set; }
 
         /// <summary>
         /// Email address for the object author.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string author_email { get; set; }
+        
+        [JsonProperty("author_email")]
+        [JsonPropertyName("author_email")]
+        public string AuthorEmail { get; set; }
 
         /// <summary>
         /// IP address for the object author.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string author_ip { get; set; }
+        
+        [JsonProperty("author_ip")]
+        [JsonPropertyName("author_ip")]
+        public string AuthorIp { get; set; }
 
         /// <summary>
         /// Display name for the object author.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string author_name { get; set; }
+        
+        [JsonProperty("author_name")]
+        [JsonPropertyName("author_name")]
+        public string AuthorName { get; set; }
 
         /// <summary>
         /// URL for the object author.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string author_url { get; set; }
+        
+        [JsonProperty("author_url")]
+        [JsonPropertyName("author_url")]
+        public string AuthorUrl { get; set; }
 
         /// <summary>
         /// User agent for the object author.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string author_user_agent { get; set; }
+        
+        [JsonProperty("author_user_agent")]
+        [JsonPropertyName("author_user_agent")]
+        public string AuthorUserAgent { get; set; }
 
         /// <summary>
         /// The content for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "content")]
-        protected ContentObject contentValue { get; set; }
+        [JsonProperty("content")]
+        [JsonPropertyName("content")]
+        protected ContentObject ContentValue { get; set; }
 
-        [IgnoreDataMember]
-        public string content
+        
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string Content
         {
-            get
-            {
-                return contentValue.rendered;
-            }
+            get => ContentValue.Rendered;
             set
             {
-                if (contentValue == null)
-                    contentValue = new ContentObject();
+                if (ContentValue == null)
+                    ContentValue = new ContentObject();
 
-                contentValue.rendered = value;
+                ContentValue.Rendered = value;
             }
         }
 
         /// <summary>
         /// The date the object was published, in the site's timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string date { get; set; }
+        
+        [JsonProperty("date")]
+        [JsonPropertyName("date")]
+        public string Date { get; set; }
 
         /// <summary>
         /// The date the object was published, as GMT.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string date_gmt { get; set; }
+        
+        [JsonProperty("date_gmt")]
+        [JsonPropertyName("date_gmt")]
+        public string DateGmt { get; set; }
 
         /// <summary>
         /// URL to the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string link { get; set; }
+        
+        [JsonProperty("link")]
+        [JsonPropertyName("link")]
+        public string Link { get; set; }
 
         /// <summary>
         /// The ID for the parent of the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? parent { get; set; }
+        
+        [JsonProperty("parent")]
+        [JsonPropertyName("parent")]
+        public ulong? Parent { get; set; }
 
         /// <summary>
         /// The ID of the associated post object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? post { get; set; }
+        
+        [JsonProperty("post")]
+        [JsonPropertyName("post")]
+        public ulong? Post { get; set; }
 
         /// <summary>
         /// State of the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string status { get; set; }
+        
+        [JsonProperty("status")]
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
 
         /// <summary>
         /// Type of Comment for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string type { get; set; }
+        
+        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// Avatar URLs for the object author.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public object author_avatar_urls { get; set; }
+        
+        [JsonProperty("author_avatar_urls")]
+        [JsonPropertyName("author_avatar_urls")]
+        public object AuthorAvatarUrls { get; set; }
 
         /// <summary>
         /// Meta fields.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public object meta { get; set; }
+        
+        [JsonProperty("meta")]
+        [JsonPropertyName("meta")]
+        public object Meta { get; set; }
 
         /// <summary>
         /// Format json string on Serialize
@@ -134,21 +167,18 @@ namespace WooCommerce.NET.WordPress.v2
         /// <returns></returns>
         public static string FormatJsonS(string json)
         {
-            int startIndex = json.IndexOf("{\"rendered\":");
-            int endIndex = 0;
-            string oldPart = string.Empty;
-            string newPart = string.Empty;
+            int startIndex = json.IndexOf("{\"rendered\":", StringComparison.Ordinal);
 
             while (startIndex > 0)
             {
-                endIndex = json.IndexOf("\"}", startIndex);
+                int endIndex = json.IndexOf("\"}", startIndex, StringComparison.Ordinal);
 
-                oldPart = json.Substring(startIndex, endIndex - startIndex + 2);
-                newPart = oldPart.Substring(12).TrimEnd('}');
+                string oldPart = json.Substring(startIndex, endIndex - startIndex + 2);
+                string newPart = oldPart.Substring(12).TrimEnd('}');
 
                 json = json.Replace(oldPart, newPart);
 
-                startIndex = json.IndexOf("{\"rendered\":");
+                startIndex = json.IndexOf("{\"rendered\":", StringComparison.Ordinal);
             }
 
             return json;

@@ -7,7 +7,7 @@ namespace WooCommerce.NET.WooCommerce.v3
 {
     public class OrderBatch : BatchObject<Order> { }
 
-    [DataContract]
+    
     public class Order : v2.Order { }
     
 }

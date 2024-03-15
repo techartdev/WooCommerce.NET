@@ -1,128 +1,168 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WordPress.v2
 {
-    [DataContract]
+    
     public class Users
     {
-        public static string Endpoint { get { return "users"; } }
+        public static string Endpoint => "users";
 
         /// <summary>
         /// Unique identifier for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Login name for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string username { get; set; }
+        
+        [JsonProperty("username")]
+        [JsonPropertyName("username")]
+        public string Username { get; set; }
 
         /// <summary>
         /// Display name for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// First name for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string first_name { get; set; }
+        
+        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Last name for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string last_name { get; set; }
+        
+        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
+        public string LastName { get; set; }
 
         /// <summary>
         /// The email address for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string email { get; set; }
+        
+        [JsonProperty("email")]
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
         /// <summary>
         /// URL of the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string url { get; set; }
+        
+        [JsonProperty("url")]
+        [JsonPropertyName("url")]
+        public string Url { get; set; }
 
         /// <summary>
         /// Description of the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Author URL of the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string link { get; set; }
+        
+        [JsonProperty("link")]
+        [JsonPropertyName("link")]
+        public string Link { get; set; }
 
         /// <summary>
         /// Locale for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string locale { get; set; }
+        
+        [JsonProperty("locale")]
+        [JsonPropertyName("locale")]
+        public string Locale { get; set; }
 
         /// <summary>
         /// The nickname for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string nickname { get; set; }
+        
+        [JsonProperty("nickname")]
+        [JsonPropertyName("nickname")]
+        public string Nickname { get; set; }
 
         /// <summary>
         /// An alphanumeric identifier for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
         /// <summary>
         /// Registration date for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string registered_date { get; set; }
+        
+        [JsonProperty("registered_date")]
+        [JsonPropertyName("registered_date")]
+        public string RegisteredDate { get; set; }
 
         /// <summary>
         /// Roles assigned to the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<string> roles { get; set; }
+        
+        [JsonProperty("roles")]
+        [JsonPropertyName("roles")]
+        public List<string> Roles { get; set; }
 
         /// <summary>
         /// Password for the user (never included).
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string password { get; set; }
+        
+        [JsonProperty("password")]
+        [JsonPropertyName("password")]
+        public string Password { get; set; }
 
         /// <summary>
         /// All capabilities assigned to the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public Capabilities capabilities { get; set; }
+        
+        [JsonProperty("capabilities")]
+        [JsonPropertyName("capabilities")]
+        public Capabilities Capabilities { get; set; }
 
         /// <summary>
         /// Any extra capabilities assigned to the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ExtraCapabilities extra_capabilities { get; set; }
+        
+        [JsonProperty("extra_capabilities")]
+        [JsonPropertyName("extra_capabilities")]
+        public ExtraCapabilities ExtraCapabilities { get; set; }
 
         /// <summary>
         /// Avatar URLs for the user.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public object avatar_urls { get; set; }
+        
+        [JsonProperty("avatar_urls")]
+        [JsonPropertyName("avatar_urls")]
+        public object AvatarUrls { get; set; }
 
         /// <summary>
         /// Meta fields.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<object> meta { get; set; }
+        
+        [JsonProperty("meta")]
+        [JsonPropertyName("meta")]
+        public object Meta { get; set; }
     }
 
     public class Capabilities
@@ -245,10 +285,12 @@ namespace WooCommerce.NET.WordPress.v2
         public bool manage_berocket { get; set; }
         public bool manage_berocket_account { get; set; }
 
-        [DataMember(Name = "vc_access_rules_post_types/page")]
+        [JsonProperty("vc_access_rules_post_types/page")]
+        [JsonPropertyName("vc_access_rules_post_types/page")]
         public bool VcAccessRulesPostTypesPage { get; set; }
 
-        [DataMember(Name = "vc_access_rules_post_types/product")]
+        [JsonProperty("vc_access_rules_post_types/product")]
+        [JsonPropertyName("vc_access_rules_post_types/product")]
         public bool VcAccessRulesPostTypesProduct { get; set; }
         public string vc_access_rules_post_types { get; set; }
         public bool vc_access_rules_backend_editor { get; set; }
@@ -357,12 +399,32 @@ namespace WooCommerce.NET.WordPress.v2
 
     public class ExtraCapabilities
     {
-        public bool administrator { get; set; }
-        public bool frm_view_forms { get; set; }
-        public bool frm_edit_forms { get; set; }
-        public bool frm_delete_forms { get; set; }
-        public bool frm_change_settings { get; set; }
-        public bool frm_view_entries { get; set; }
-        public bool frm_delete_entries { get; set; }
+        [JsonProperty("administrator")]
+        [JsonPropertyName("administrator")]
+        public bool Administrator { get; set; }
+
+        [JsonProperty("frm_view_forms")]
+        [JsonPropertyName("frm_view_forms")]
+        public bool FrmViewForms { get; set; }
+
+        [JsonProperty("frm_edit_forms")]
+        [JsonPropertyName("frm_edit_forms")]
+        public bool FrmEditForms { get; set; }
+
+        [JsonProperty("frm_delete_forms")]
+        [JsonPropertyName("frm_delete_forms")]
+        public bool FrmDeleteForms { get; set; }
+
+        [JsonProperty("frm_change_settings")]
+        [JsonPropertyName("frm_change_settings")]
+        public bool FrmChangeSettings { get; set; }
+
+        [JsonProperty("frm_view_entries")]
+        [JsonPropertyName("frm_view_entries")]
+        public bool FrmViewEntries { get; set; }
+
+        [JsonProperty("frm_edit_entries")]
+        [JsonPropertyName("frm_edit_entries")]
+        public bool FrmDeleteEntries { get; set; }
     }
 }

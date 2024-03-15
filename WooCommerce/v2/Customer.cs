@@ -1,370 +1,475 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using WooCommerce.NET.Base;
+using WooCommerce.NET.Converters;
 
 namespace WooCommerce.NET.WooCommerce.v2
 {
     public class CustomerBatch : BatchObject<Customer> { }
 
-    [DataContract]
+    
     public class Customer : JsonObject
     {
-        public static string Endpoint { get { return "customers"; } }
+        public static string Endpoint => "customers";
 
         /// <summary>
         /// Unique identifier for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// The date the customer was created, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created { get; set; }
+        
+        [JsonProperty("date_created")]
+        [JsonPropertyName("date_created")]
+        public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// The date the order was created, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_created_gmt { get; set; }
+        
+        [JsonProperty("date_created_gmt")]
+        [JsonPropertyName("date_created_gmt")]
+        public DateTime? DateCreatedGmt { get; set; }
 
         /// <summary>
         /// The date the customer was last modified, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified { get; set; }
+        
+        [JsonProperty("date_modified")]
+        [JsonPropertyName("date_modified")]
+        public DateTime? DateModified { get; set; }
 
         /// <summary>
         /// The date the customer was last modified, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public DateTime? date_modified_gmt { get; set; }
+        
+        [JsonProperty("date_modified_gmt")]
+        [JsonPropertyName("date_modified_gmt")]
+        public DateTime? DateModifiedGmt { get; set; }
 
         /// <summary>
         /// The email address for the customer. 
         /// mandatory
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string email { get; set; }
+        
+        [JsonProperty("email")]
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
         /// <summary>
         /// Customer first name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string first_name { get; set; }
+        
+        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Customer last name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string last_name { get; set; }
+        
+        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
+        public string LastName { get; set; }
 
         /// <summary>
         /// Customer role. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string role { get; set; }
+        
+        [JsonProperty("role")]
+        [JsonPropertyName("role")]
+        public string Role { get; set; }
 
         /// <summary>
         /// Customer login name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string username { get; set; }
+        
+        [JsonProperty("username")]
+        [JsonPropertyName("username")]
+        public string Username { get; set; }
 
         /// <summary>
         /// Customer password. 
         /// write-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string password { get; set; }
+        
+        [JsonProperty("password")]
+        [JsonPropertyName("password")]
+        public string Password { get; set; }
 
         /// <summary>
         /// List of billing address data. See Customer - Billing properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public CustomerBilling billing { get; set; }
+        
+        [JsonProperty("billing")]
+        [JsonPropertyName("billing")]
+        public CustomerBilling Billing { get; set; }
 
         /// <summary>
         /// List of shipping address data. See Customer - Shipping properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public CustomerShipping shipping { get; set; }
+        
+        [JsonProperty("shipping")]
+        [JsonPropertyName("shipping")]
+        public CustomerShipping Shipping { get; set; }
 
         /// <summary>
         /// Is the customer a paying customer? 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? is_paying_customer { get; set; }
+        
+        [JsonProperty("is_paying_customer")]
+        [JsonPropertyName("is_paying_customer")]
+        public bool? IsPayingCustomer { get; set; }
 
         /// <summary>
         /// Quantity of orders made by the customer. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? orders_count { get; set; }
+        
+        [JsonProperty("orders_count")]
+        [JsonPropertyName("orders_count")]
+        public int? OrdersCount { get; set; }
 
-        [DataMember(EmitDefaultValue = false, Name = "total_spent")]
-        protected object total_spentValue { get; set; }
         /// <summary>
         /// Total amount spent. 
         /// read-only
         /// </summary>
-        public decimal? total_spent { get; set; }
+        [JsonProperty("total_spent")]
+        [JsonPropertyName("total_spent")]
+        [Newtonsoft.Json.JsonConverter(typeof(NumericToStringConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(NumericToStringConverterNet))]
+        public decimal? TotalSpent { get; set; }
 
         /// <summary>
         /// Avatar URL. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url { get; set; }
+        
+        [JsonProperty("avatar_url")]
+        [JsonPropertyName("avatar_url")]
+        public string AvatarUrl { get; set; }
 
         /// <summary>
         /// Meta data. See Customer - Meta data properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public List<CustomerMeta> meta_data { get; set; }
+        
+        [JsonProperty("meta_data")]
+        [JsonPropertyName("meta_data")]
+        public List<CustomerMeta> MetaData { get; set; }
     }
 
-    [DataContract]
+    
     public class CustomerBilling
     {
         /// <summary>
         /// First name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string first_name { get; set; }
+        
+        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Last name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string last_name { get; set; }
+        
+        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
+        public string LastName { get; set; }
 
         /// <summary>
         /// Company name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string company { get; set; }
+        
+        [JsonProperty("company")]
+        [JsonPropertyName("company")]
+        public string Company { get; set; }
 
         /// <summary>
         /// Address line 1
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string address_1 { get; set; }
+        
+        [JsonProperty("address_1")]
+        [JsonPropertyName("address_1")]
+        public string Address1 { get; set; }
 
         /// <summary>
         /// Address line 2
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string address_2 { get; set; }
+        
+        [JsonProperty("address_2")]
+        [JsonPropertyName("address_2")]
+        public string Address2 { get; set; }
 
         /// <summary>
         /// City name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string city { get; set; }
+        
+        [JsonProperty("city")]
+        [JsonPropertyName("city")]
+        public string City { get; set; }
 
         /// <summary>
         /// ISO code or name of the state, province or district.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string state { get; set; }
+        
+        [JsonProperty("state")]
+        [JsonPropertyName("state")]
+        public string State { get; set; }
 
         /// <summary>
         /// Postal code.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string postcode { get; set; }
+        
+        [JsonProperty("postcode")]
+        [JsonPropertyName("postcode")]
+        public string Postcode { get; set; }
 
         /// <summary>
         /// ISO code of the country.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string country { get; set; }
+        
+        [JsonProperty("country")]
+        [JsonPropertyName("country")]
+        public string Country { get; set; }
 
         /// <summary>
         /// Email address.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string email { get; set; }
+        
+        [JsonProperty("email")]
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
         /// <summary>
         /// Phone number.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string phone { get; set; }
+        
+        [JsonProperty("phone")]
+        [JsonPropertyName("phone")]
+        public string Phone { get; set; }
 
     }
 
-    [DataContract]
+    
     public class CustomerShipping
     {
         /// <summary>
         /// First name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string first_name { get; set; }
+        
+        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Last name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string last_name { get; set; }
+        
+        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
+        public string LastName { get; set; }
 
         /// <summary>
         /// Company name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string company { get; set; }
+        
+        [JsonProperty("company")]
+        [JsonPropertyName("company")]
+        public string Company { get; set; }
 
         /// <summary>
         /// Address line 1
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string address_1 { get; set; }
+        
+        [JsonProperty("address_1")]
+        [JsonPropertyName("address_1")]
+        public string Address1 { get; set; }
 
         /// <summary>
         /// Address line 2
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string address_2 { get; set; }
+        
+        [JsonProperty("address_2")]
+        [JsonPropertyName("address_2")]
+        public string Address2 { get; set; }
 
         /// <summary>
         /// City name.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string city { get; set; }
+        
+        [JsonProperty("city")]
+        [JsonPropertyName("city")]
+        public string City { get; set; }
 
         /// <summary>
         /// ISO code or name of the state, province or district.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string state { get; set; }
+        
+        [JsonProperty("state")]
+        [JsonPropertyName("state")]
+        public string State { get; set; }
 
         /// <summary>
         /// Postal code.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string postcode { get; set; }
+        
+        [JsonProperty("postcode")]
+        [JsonPropertyName("postcode")]
+        public string Postcode { get; set; }
 
         /// <summary>
         /// ISO code of the country.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string country { get; set; }
+        
+        [JsonProperty("country")]
+        [JsonPropertyName("country")]
+        public string Country { get; set; }
 
     }
 
-    [DataContract]
+    
     public class CustomerMeta : WcObject.MetaData
     {
 
     }
 
-    [DataContract]
+    
     public class CustomerDownloads
     {
         /// <summary>
         /// Download ID (MD5). 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string download_id { get; set; }
+        
+        [JsonProperty("download_id")]
+        [JsonPropertyName("download_id")]
+        public string DownloadId { get; set; }
 
         /// <summary>
         /// Download file URL. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string download_url { get; set; }
+        
+        [JsonProperty("download_url")]
+        [JsonPropertyName("download_url")]
+        public string DownloadUrl { get; set; }
 
         /// <summary>
         /// Downloadable product ID. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? product_id { get; set; }
+        
+        [JsonProperty("product_id")]
+        [JsonPropertyName("product_id")]
+        public ulong? ProductId { get; set; }
 
         /// <summary>
         /// Product name. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string product_name { get; set; }
+        
+        [JsonProperty("product_name")]
+        [JsonPropertyName("product_name")]
+        public string ProductName { get; set; }
 
         /// <summary>
         /// Downloadable file name. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string download_name { get; set; }
+        
+        [JsonProperty("download_name")]
+        [JsonPropertyName("download_name")]
+        public string DownloadName { get; set; }
 
         /// <summary>
         /// Order ID. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? order_id { get; set; }
+        
+        [JsonProperty("order_id")]
+        [JsonPropertyName("order_id")]
+        public ulong? OrderId { get; set; }
 
         /// <summary>
         /// Order key. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string order_key { get; set; }
+        
+        [JsonProperty("order_key")]
+        [JsonPropertyName("order_key")]
+        public string OrderKey { get; set; }
 
         /// <summary>
         /// Number of downloads remaining. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string downloads_remaining { get; set; }
+        
+        [JsonProperty("downloads_remaining")]
+        [JsonPropertyName("downloads_remaining")]
+        public string DownloadsRemaining { get; set; }
 
         /// <summary>
         /// The date when download access expires, in the site’s timezone. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string access_expires { get; set; }
+        
+        [JsonProperty("access_expires")]
+        [JsonPropertyName("access_expires")]
+        public string AccessExpires { get; set; }
 
         /// <summary>
         /// The date when download access expires, as GMT. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string access_expires_gmt { get; set; }
+        
+        [JsonProperty("access_expires_gmt")]
+        [JsonPropertyName("access_expires_gmt")]
+        public string AccessExpiresGmt { get; set; }
 
         /// <summary>
         /// File details. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public CustomerDownloadFile file { get; set; }
+        
+        [JsonProperty("file")]
+        [JsonPropertyName("file")]
+        public CustomerDownloadFile File { get; set; }
 
     }
 
-    [DataContract]
+    
     public class CustomerDownloadFile
     {
         /// <summary>
         /// File name
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// File URL
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string file { get; set; }
+        
+        [JsonProperty("file")]
+        [JsonPropertyName("file")]
+        public string File { get; set; }
     }
 }

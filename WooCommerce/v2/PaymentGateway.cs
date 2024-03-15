@@ -1,123 +1,156 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WooCommerce.v2
 {
-    [DataContract]
+    
     public class PaymentGateway
     {
-        public static string Endpoint { get { return "payment_gateways"; } }
+        public static string Endpoint => "payment_gateways";
 
         /// <summary>
         /// Payment gateway ID. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
 
         /// <summary>
         /// Payment gateway title on checkout.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string title { get; set; }
+        
+        [JsonProperty("title")]
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
 
         /// <summary>
         /// Payment gateway description on checkout.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Payment gateway sort order.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string order { get; set; }
+        
+        [JsonProperty("order")]
+        [JsonPropertyName("order")]
+        public string Order { get; set; }
 
         /// <summary>
         /// Payment gateway enabled status.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? enabled { get; set; }
+        
+        [JsonProperty("enabled")]
+        [JsonPropertyName("enabled")]
+        public bool? Enabled { get; set; }
 
         /// <summary>
         /// Payment gateway method title. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string method_title { get; set; }
+        
+        [JsonProperty("method_title")]
+        [JsonPropertyName("method_title")]
+        public string MethodTitle { get; set; }
 
         /// <summary>
         /// Payment gateway method description. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string method_description { get; set; }
+        
+        [JsonProperty("method_description")]
+        [JsonPropertyName("method_description")]
+        public string MethodDescription { get; set; }
 
         /// <summary>
         /// Payment gateway settings. See Payment gateway - Settings properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public Dictionary<string, PaymentGatewaySetting> settings { get; set; }
+        
+        [JsonProperty("settings")]
+        [JsonPropertyName("settings")]
+        public Dictionary<string, PaymentGatewaySetting> Settings { get; set; }
 
     }
 
-    [DataContract]
+    
     public class PaymentGatewaySetting
     {
         /// <summary>
         /// A unique identifier for the setting. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
 
         /// <summary>
         /// A human readable label for the setting used in interfaces. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string label { get; set; }
+        
+        [JsonProperty("label")]
+        [JsonPropertyName("label")]
+        public string Label { get; set; }
 
         /// <summary>
         /// A human readable description for the setting used in interfaces. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Type of setting. Options: text, email, number, color, password, textarea, select, multiselect, radio, image_width and checkbox. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string type { get; set; }
+        
+        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// Setting value.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string value { get; set; }
+        
+        [JsonProperty("value")]
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
 
         /// <summary>
         /// Default value for the setting. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "default")]
-        public string _default { get; set; }
+        [JsonProperty("default")]
+        [JsonPropertyName("default")]
+        public string Default { get; set; }
 
         /// <summary>
         /// Additional help text shown to the user about the setting. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string tip { get; set; }
+        
+        [JsonProperty("tip")]
+        [JsonPropertyName("tip")]
+        public string Tip { get; set; }
 
         /// <summary>
         /// Placeholder text to be displayed in text inputs. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string placeholder { get; set; }
+        
+        [JsonProperty("placeholder")]
+        [JsonPropertyName("placeholder")]
+        public string Placeholder { get; set; }
 
     }
 }

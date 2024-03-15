@@ -1,55 +1,69 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WordPress.v2
 {
-    [DataContract]
+    
     public class PostStatuses
     {
-        public static string Endpoint { get { return "statuses"; } }
+        public static string Endpoint => "statuses";
+
         /// <summary>
         /// The title for the status.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Whether posts with this status should be private.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "private")]
-        public bool _private  { get; set; }
+        [JsonProperty("private")]
+        [JsonPropertyName("private")]
+        public bool Private  { get; set; }
 
         /// <summary>
         /// Whether posts with this status should be protected.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "protected")]
-        public bool _protected  { get; set; }
+        [JsonProperty("protected")]
+        [JsonPropertyName("protected")]
+        public bool Protected  { get; set; }
 
         /// <summary>
         /// Whether posts of this status should be shown in the front end of the site.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "public")]
-        public bool _public  { get; set; }
+        [JsonProperty("public")]
+        [JsonPropertyName("public")]
+        public bool Public  { get; set; }
 
         /// <summary>
         /// Whether posts with this status should be publicly-queryable.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool queryable { get; set; }
+        
+        [JsonProperty("queryable")]
+        [JsonPropertyName("queryable")]
+        public bool Queryable { get; set; }
 
         /// <summary>
         /// Whether to include posts in the edit listing for their post type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool show_in_list { get; set; }
+        
+        [JsonProperty("show_in_list")]
+        [JsonPropertyName("show_in_list")]
+        public bool ShowInList { get; set; }
 
         /// <summary>
         /// An alphanumeric identifier for the status.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
         /// <summary>
         /// Format json string on Deserialize
@@ -61,21 +75,19 @@ namespace WooCommerce.NET.WordPress.v2
             StringBuilder newJson = new StringBuilder();
             newJson.Append('[');
 
-            int headIndex = json.IndexOf("\":{\"name\":\"");
-            int nextIndex = 0;
-            int quoteIndex = 0;
+            int headIndex = json.IndexOf("\":{\"name\":\"", StringComparison.Ordinal);
 
             while (headIndex > 0)
             {
-                nextIndex = json.IndexOf("\":{\"name\":\"", headIndex + 10);
+                int nextIndex = json.IndexOf("\":{\"name\":\"", headIndex + 10, StringComparison.Ordinal);
 
                 if (nextIndex > 0)
                 {
-                    quoteIndex = json.LastIndexOf("\"", nextIndex - 2);
+                    int quoteIndex = json.LastIndexOf("\"", nextIndex - 2, StringComparison.Ordinal);
                     newJson.Append(json.Substring(headIndex + 2, nextIndex - headIndex - (nextIndex - quoteIndex) - 3));
                     newJson.Append(',');
 
-                    headIndex = json.IndexOf("\":{\"name\":\"", nextIndex);
+                    headIndex = json.IndexOf("\":{\"name\":\"", nextIndex, StringComparison.Ordinal);
                 }
                 else
                 {

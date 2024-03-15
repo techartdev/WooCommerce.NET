@@ -1,73 +1,91 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WooCommerce.v3
 {
-    [DataContract]
+    
     public class ShippingZone : v2.ShippingZone { }
 
-    [DataContract]
+    
     public class ShippingZoneLocation : v2.ShippingZoneLocation { }
     
-    [DataContract]
+    
     public class ShippingZoneMethod
     {
-        public static string Endpoint { get { return "methods"; } }
+        public static string Endpoint => "methods";
 
         /// <summary>
         /// Shipping method instance ID. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? instance_id { get; set; }
+        
+        [JsonProperty("instance_id")]
+        [JsonPropertyName("instance_id")]
+        public int? InstanceId { get; set; }
 
         /// <summary>
         /// Shipping method customer facing title. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string title { get; set; }
+        
+        [JsonProperty("title")]
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
 
         /// <summary>
         /// Shipping method sort order.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? order { get; set; }
+        
+        [JsonProperty("order")]
+        [JsonPropertyName("order")]
+        public int? Order { get; set; }
 
         /// <summary>
         /// Shipping method enabled status.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? enabled { get; set; }
+        
+        [JsonProperty("enabled")]
+        [JsonPropertyName("enabled")]
+        public bool? Enabled { get; set; }
 
         /// <summary>
         /// Shipping method ID. read-only 
         /// read-only</i> <i class="label label-info">mandatory
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string method_id { get; set; }
+        
+        [JsonProperty("method_id")]
+        [JsonPropertyName("method_id")]
+        public string MethodId { get; set; }
 
         /// <summary>
         /// Shipping method title. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string method_title { get; set; }
+        
+        [JsonProperty("method_title")]
+        [JsonPropertyName("method_title")]
+        public string MethodTitle { get; set; }
 
         /// <summary>
         /// Shipping method description. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string method_description { get; set; }
+        
+        [JsonProperty("method_description")]
+        [JsonPropertyName("method_description")]
+        public string MethodDescription { get; set; }
 
         /// <summary>
         /// Shipping method settings. See Shipping method - Settings properties
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public Dictionary<string, ShippingZoneMethodSetting> settings { get; set; }
+        
+        [JsonProperty("settings")]
+        [JsonPropertyName("settings")]
+        public Dictionary<string, ShippingZoneMethodSetting> Settings { get; set; }
     }
 
-    [DataContract]
+    
     public class ShippingZoneMethodSetting : v2.ShippingZoneMethodSetting { }
 }

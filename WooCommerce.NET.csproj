@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>WooCommerceNET</PackageId>
-    <Version>0.8.5</Version>
+    <Version>0.8.7</Version>
     <Authors>JamesYang@NZ</Authors>
     <Company>JamesYang@NZ</Company>
     <Description>A .NET Wrapper for WooCommerce/WordPress REST API</Description>

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WooCommerce.Legacy
 {
-    [DataContract]
+    
     public class Store
     {
         public List<WCRoute> GetRoutes(string json)
@@ -42,22 +42,22 @@ namespace WooCommerce.NET.WooCommerce.Legacy
             return routes;
         }
 
-        [DataMember]
+        
         [JsonProperty("name")]
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [DataMember]
+        
         [JsonProperty("description")]
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [DataMember]
+        
         [JsonProperty("URL")]
         [JsonPropertyName("URL")]
         public string Url { get; set; }
 
-        [DataMember]
+        
         [JsonProperty("wc_version")]
         [JsonPropertyName("wc_version")]
         public string WcVersion { get; set; }
@@ -66,7 +66,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         [System.Text.Json.Serialization.JsonIgnore]
         public List<WCRoute> WcRoutes { get; set; }
 
-        [DataMember]
+        
         [JsonProperty("routes")]
         [JsonPropertyName("routes")]
         public StoreMeta Meta { get; set; }

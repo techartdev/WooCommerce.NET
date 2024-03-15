@@ -1,94 +1,120 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WooCommerce.v2
 {
-    [DataContract]
+    
     public class ProductAttribute
     {
-        public static string Endpoint { get { return "products/attributes"; } }
+        public static string Endpoint => "products/attributes";
 
         /// <summary>
         /// Unique identifier for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Attribute name. 
         /// mandatory
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// An alphanumeric identifier for the resource unique to its type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
         /// <summary>
         /// Type of attribute. Options: select and text. Default is select.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string type { get; set; }
+        
+        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// Default sort order. Options: menu_order, name, name_num and id. Default is menu_order.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string order_by { get; set; }
+        
+        [JsonProperty("order_by")]
+        [JsonPropertyName("order_by")]
+        public string OrderBy { get; set; }
 
         /// <summary>
         /// Enable/Disable attribute archives. Default is false.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool? has_archives { get; set; }
+        
+        [JsonProperty("has_archives")]
+        [JsonPropertyName("has_archives")]
+        public bool? HasArchives { get; set; }
 
     }
 
-    [DataContract]
+    
     public class ProductAttributeTerm
     {
-        public static string Endpoint { get { return "terms"; } }
+        public static string Endpoint => "terms";
 
         /// <summary>
         /// Unique identifier for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// Term name. 
         /// mandatory
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        
+        [JsonProperty("name")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// An alphanumeric identifier for the resource unique to its type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
         /// <summary>
         /// HTML description of the resource.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Menu order, used to custom sort the resource.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? menu_order { get; set; }
+        
+        [JsonProperty("menu_order")]
+        [JsonPropertyName("menu_order")]
+        public int? MenuOrder { get; set; }
 
         /// <summary>
         /// Number of published products for the resource. 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int? count { get; set; }
+        
+        [JsonProperty("count")]
+        [JsonPropertyName("count")]
+        public int? Count { get; set; }
     }
 }

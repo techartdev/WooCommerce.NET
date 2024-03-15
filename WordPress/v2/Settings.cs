@@ -1,90 +1,119 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WordPress.v2
 {
-    [DataContract]
+    
     public class Settings
     {
-        public static string Endpoint { get { return "settings"; } }
+        public static string Endpoint => "settings";
+
         /// <summary>
         /// Site title.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string title { get; set; }
+        
+        [JsonProperty("title")]
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
 
         /// <summary>
         /// Site tagline.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        
+        [JsonProperty("description")]
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// A city in the same timezone as you.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string timezone { get; set; }
+        
+        [JsonProperty("timezone")]
+        [JsonPropertyName("timezone")]
+        public string Timezone { get; set; }
 
         /// <summary>
         /// A date format for all date strings.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string date_format { get; set; }
+        
+        [JsonProperty("date_format")]
+        [JsonPropertyName("date_format")]
+        public string DateFormat { get; set; }
 
         /// <summary>
         /// A time format for all time strings.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string time_format { get; set; }
+        
+        [JsonProperty("time_format")]
+        [JsonPropertyName("time_format")]
+        public string TimeFormat { get; set; }
 
         /// <summary>
         /// A day number of the week that the week should start on.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int start_of_week { get; set; }
+        
+        [JsonProperty("start_of_week")]
+        [JsonPropertyName("start_of_week")]
+        public int StartOfWeek { get; set; }
 
         /// <summary>
         /// WordPress locale code.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string language { get; set; }
+        
+        [JsonProperty("language")]
+        [JsonPropertyName("language")]
+        public string Language { get; set; }
 
         /// <summary>
         /// Convert emoticons like :-) and :-P to graphics on display.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool use_smilies { get; set; }
+        
+        [JsonProperty("use_smilies")]
+        [JsonPropertyName("use_smilies")]
+        public bool UseSmilies { get; set; }
 
         /// <summary>
         /// Default post category.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int default_category { get; set; }
+        
+        [JsonProperty("default_category")]
+        [JsonPropertyName("default_category")]
+        public int DefaultCategory { get; set; }
 
         /// <summary>
         /// Default post format.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string default_post_format { get; set; }
+        
+        [JsonProperty("default_post_format")]
+        [JsonPropertyName("default_post_format")]
+        public string DefaultPostFormat { get; set; }
 
         /// <summary>
         /// Blog pages show at most.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int posts_per_page { get; set; }
+        
+        [JsonProperty("posts_per_page")]
+        [JsonPropertyName("posts_per_page")]
+        public int PostsPerPage { get; set; }
 
         /// <summary>
         /// Allow link notifications from other blogs (pingbacks and trackbacks) on new articles.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string default_ping_status { get; set; }
+        
+        [JsonProperty("default_ping_status")]
+        [JsonPropertyName("default_ping_status")]
+        public string DefaultPingStatus { get; set; }
 
         /// <summary>
         /// Allow people to post comments on new articles.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string default_comment_status { get; set; }
+        
+        [JsonProperty("default_comment_status")]
+        [JsonPropertyName("default_comment_status")]
+        public string DefaultCommentStatus { get; set; }
     }
 }

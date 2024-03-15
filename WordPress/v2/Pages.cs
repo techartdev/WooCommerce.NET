@@ -1,144 +1,168 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace WooCommerce.NET.WordPress.v2
 {
-    [DataContract]
+    
     public class Pages
     {
-        public static string Endpoint { get { return "pages"; } }
+        public static string Endpoint => "pages";
 
         /// <summary>
         /// The date the object was published, in the site's timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string date { get; set; }
+        
+        [JsonProperty("date")]
+        [JsonPropertyName("date")]
+        public string Date { get; set; }
 
         /// <summary>
         /// The date the object was published, as GMT.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string date_gmt { get; set; }
+        
+        [JsonProperty("date_gmt")]
+        [JsonPropertyName("date_gmt")]
+        public string DateGmt { get; set; }
 
         /// <summary>
         /// The globally unique identifier for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "guid")]
-        protected ContentObject guidValue { get; set; }
+        [JsonProperty("guid")]
+        [JsonPropertyName("guid")]
+        protected ContentObject GuidValue { get; set; }
 
-        [IgnoreDataMember]
-        public string guid
+        
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string Guid
         {
-            get
-            {
-                return guidValue.rendered;
-            }
+            get => GuidValue.Rendered;
             set
             {
-                if (guidValue == null)
-                    guidValue = new ContentObject();
+                if (GuidValue == null)
+                    GuidValue = new ContentObject();
 
-                guidValue.rendered = value;
+                GuidValue.Rendered = value;
             }
         }
 
         /// <summary>
         /// Unique identifier for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? id { get; set; }
+        
+        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        public ulong? Id { get; set; }
 
         /// <summary>
         /// URL to the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string link { get; set; }
+        
+        [JsonProperty("link")]
+        [JsonPropertyName("link")]
+        public string Link { get; set; }
 
         /// <summary>
         /// The date the object was last modified, in the site's timezone.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string modified { get; set; }
+        
+        [JsonProperty("modified")]
+        [JsonPropertyName("modified")]
+        public string Modified { get; set; }
 
         /// <summary>
         /// The date the object was last modified, as GMT.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string modified_gmt { get; set; }
+        
+        [JsonProperty("modified_gmt")]
+        [JsonPropertyName("modified_gmt")]
+        public string ModifiedGmt { get; set; }
 
         /// <summary>
         /// An alphanumeric identifier for the object unique to its type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+        
+        [JsonProperty("slug")]
+        [JsonPropertyName("slug")]
+        public string Slug { get; set; }
 
         /// <summary>
         /// A named status for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string status { get; set; }
+        
+        [JsonProperty("status")]
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
 
         /// <summary>
         /// Type of Post for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string type { get; set; }
+        
+        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// A password to protect access to the content and excerpt.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string password { get; set; }
+        
+        [JsonProperty("password")]
+        [JsonPropertyName("password")]
+        public string Password { get; set; }
 
         /// <summary>
         /// The ID for the parent of the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? parent  { get; set; }
+        
+        [JsonProperty("parent")]
+        [JsonPropertyName("parent")]
+        public ulong? Parent  { get; set; }
 
         /// <summary>
         /// The title for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "title")]
-        protected ContentObject titleValue { get; set; }
+        [JsonProperty("title")]
+        [JsonPropertyName("title")]
+        protected ContentObject TitleValue { get; set; }
 
-        [IgnoreDataMember]
-        public string title
+        
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string Title
         {
-            get
-            {
-                return titleValue.rendered;
-            }
+            get => TitleValue.Rendered;
             set
             {
-                if (titleValue == null)
-                    titleValue = new ContentObject();
+                if (TitleValue == null)
+                    TitleValue = new ContentObject();
 
-                titleValue.rendered = value;
+                TitleValue.Rendered = value;
             }
         }
 
         /// <summary>
         /// The content for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "content")]
-        protected ContentObject contentValue { get; set; }
+        [JsonProperty("content")]
+        [JsonPropertyName("content")]
+        protected ContentObject ContentValue { get; set; }
 
-        [IgnoreDataMember]
-        public string content
+        
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string Content
         {
-            get
-            {
-                return contentValue.rendered;
-            }
+            get => ContentValue.Rendered;
             set
             {
-                if (contentValue == null)
-                    contentValue = new ContentObject();
+                if (ContentValue == null)
+                    ContentValue = new ContentObject();
 
-                contentValue.rendered = value;
+                ContentValue.Rendered = value;
             }
         }
 
@@ -146,66 +170,80 @@ namespace WooCommerce.NET.WordPress.v2
         /// <summary>
         /// The ID for the author of the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? author  { get; set; }
+        
+        [JsonProperty("author")]
+        [JsonPropertyName("author")]
+        public ulong? Author  { get; set; }
 
         /// <summary>
         /// The excerpt for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false, Name = "excerpt")]
-        protected ContentObject excerptValue { get; set; }
+        [JsonProperty("excerpt")]
+        [JsonPropertyName("excerpt")]
+        protected ContentObject ExcerptValue { get; set; }
 
-        [IgnoreDataMember]
-        public string excerpt
+        
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string Excerpt
         {
-            get
-            {
-                return excerptValue.rendered;
-            }
+            get => ExcerptValue.Rendered;
             set
             {
-                if (excerptValue == null)
-                    excerptValue = new ContentObject();
+                if (ExcerptValue == null)
+                    ExcerptValue = new ContentObject();
 
-                excerptValue.rendered = value;
+                ExcerptValue.Rendered = value;
             }
         }
 
         /// <summary>
         /// The ID of the featured media for the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public ulong? featured_media  { get; set; }
+        
+        [JsonProperty("featured_media")]
+        [JsonPropertyName("featured_media")]
+        public ulong? FeaturedMedia  { get; set; }
 
         /// <summary>
         /// Whether or not comments are open on the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string comment_status { get; set; }
+        
+        [JsonProperty("comment_status")]
+        [JsonPropertyName("comment_status")]
+        public string CommentStatus { get; set; }
 
         /// <summary>
         /// Whether or not the object can be pinged.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string ping_status  { get; set; }
+        
+        [JsonProperty("ping_status")]
+        [JsonPropertyName("ping_status")]
+        public string PingStatus  { get; set; }
 
         /// <summary>
         /// The order of the object in relation to other object of its type.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public int menu_order  { get; set; }
+        
+        [JsonProperty("menu_order")]
+        [JsonPropertyName("menu_order")]
+        public int MenuOrder  { get; set; }
 
         /// <summary>
         /// Meta fields.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public object meta  { get; set; }
+        
+        [JsonProperty("meta")]
+        [JsonPropertyName("meta")]
+        public object Meta  { get; set; }
 
         /// <summary>
         /// The theme file to use to display the object.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string template { get; set; }
+        
+        [JsonProperty("template")]
+        [JsonPropertyName("template")]
+        public string Template { get; set; }
 
         /// <summary>
         /// Format json string on Serialize
@@ -214,21 +252,18 @@ namespace WooCommerce.NET.WordPress.v2
         /// <returns></returns>
         public static string FormatJsonS(string json)
         {
-            int startIndex = json.IndexOf("{\"rendered\":");
-            int endIndex = 0;
-            string oldPart = string.Empty;
-            string newPart = string.Empty;
+            int startIndex = json.IndexOf("{\"rendered\":", StringComparison.Ordinal);
 
             while (startIndex > 0)
             {
-                endIndex = json.IndexOf("\"}", startIndex);
+                int endIndex = json.IndexOf("\"}", startIndex, StringComparison.Ordinal);
 
-                oldPart = json.Substring(startIndex, endIndex - startIndex + 2);
-                newPart = oldPart.Substring(12).TrimEnd('}');
+                string oldPart = json.Substring(startIndex, endIndex - startIndex + 2);
+                string newPart = oldPart.Substring(12).TrimEnd('}');
 
                 json = json.Replace(oldPart, newPart);
 
-                startIndex = json.IndexOf("{\"rendered\":");
+                startIndex = json.IndexOf("{\"rendered\":", StringComparison.Ordinal);
             }
 
             return json;

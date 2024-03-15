@@ -76,7 +76,7 @@ namespace WooCommerce.NET.Base
     /// </summary>
     public static class HttpWebRequestExtensions
     {
-        static string[] RestrictedHeaders = new string[] {
+        static readonly string[] RestrictedHeaders = new string[] {
             "Accept",
             "Connection",
             "Content-Length",
@@ -93,7 +93,7 @@ namespace WooCommerce.NET.Base
             "User-Agent"
     };
 
-        static Dictionary<string, PropertyInfo> HeaderProperties = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
+        static readonly Dictionary<string, PropertyInfo> HeaderProperties = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
 
         static HttpWebRequestExtensions()
         {
@@ -108,9 +108,8 @@ namespace WooCommerce.NET.Base
 
         public static void SetRawHeader(this HttpWebRequest request, string name, string value)
         {
-            if (HeaderProperties.ContainsKey(name))
+            if (HeaderProperties.TryGetValue(name, out var property))
             {
-                PropertyInfo property = HeaderProperties[name];
                 if (property.PropertyType == typeof(DateTime))
                     property.SetValue(request, DateTime.Parse(value), null);
                 else if (property.PropertyType == typeof(bool))

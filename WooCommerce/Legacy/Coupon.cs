@@ -10,20 +10,19 @@ namespace WooCommerce.NET.WooCommerce.Legacy
     [CollectionDataContract]
     public class CouponList : List<Coupon>
     {
-        [DataMember]
         [JsonProperty("coupons")]
         [JsonPropertyName("coupons")]
         public List<Coupon> Coupons { get; set; }
     }
 
-    [DataContract]
+    
     public class Coupon : JsonObject
     {
         /// <summary>
         /// Coupon ID (post ID) 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("id")]
         [JsonPropertyName("id")]
         public ulong? Id { get; set; }
@@ -32,7 +31,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// Coupon code, always lowercase 
         /// mandatory when creating a new coupon.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("code")]
         [JsonPropertyName("code")]
         public string Code { get; set; }
@@ -40,7 +39,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Coupon type, valid core types are: fixed_cart, percent, fixed_product and percent_product. Default is fixed_cart
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("type")]
         [JsonPropertyName("type")]
         public string Type { get; set; }
@@ -49,7 +48,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// UTC DateTime when the coupon was created 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("created_at")]
         [JsonPropertyName("created_at")]
         public DateTime? CreatedAt { get; set; }
@@ -58,7 +57,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// UTC DateTime when the coupon was last updated 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("updated_at")]
         [JsonPropertyName("updated_at")]
         public DateTime? UpdatedAt { get; set; }
@@ -66,7 +65,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// The amount of discount
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("amount")]
         [JsonPropertyName("amount")]
         public decimal? Amount { get; set; }
@@ -74,7 +73,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Whether coupon can only be used individually
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("individual_use")]
         [JsonPropertyName("individual_use")]
         public bool? IndividualUse { get; set; }
@@ -82,7 +81,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Array of product ID’s the coupon can be used on
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("product_ids")]
         [JsonPropertyName("product_ids")]
         public List<int> ProductIds { get; set; }
@@ -90,7 +89,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Array of product ID’s the coupon cannot be used on
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("exclude_product_ids")]
         [JsonPropertyName("exclude_product_ids")]
         public List<int> ExcludeProductIds { get; set; }
@@ -98,7 +97,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// How many times the coupon can be used
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("usage_limit")]
         [JsonPropertyName("usage_limit")]
         public int? UsageLimit { get; set; }
@@ -106,7 +105,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// How many times the coupon can be user per customer
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("usage_limit_per_user")]
         [JsonPropertyName("usage_limit_per_user")]
         public int? UsageLimitPerUser { get; set; }
@@ -114,7 +113,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Max number of items in the cart the coupon can be applied to
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("limit_usage_to_x_items")]
         [JsonPropertyName("limit_usage_to_x_items")]
         public int? LimitUsageToXItems { get; set; }
@@ -123,7 +122,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// Number of times the coupon has been used already 
         /// read-only
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("usage_count")]
         [JsonPropertyName("usage_count")]
         public int? UsageCount { get; set; }
@@ -131,7 +130,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// UTC DateTime`when the coupon expires
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("expiry_date")]
         [JsonPropertyName("expiry_date")]
         public DateTime? ExpiryDate { get; set; }
@@ -139,7 +138,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Is the coupon for free shipping
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("enable_free_shipping")]
         [JsonPropertyName("enable_free_shipping")]
         public bool? EnableFreeShipping { get; set; }
@@ -147,7 +146,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Array of category ID’s the coupon applies to
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("product_category_ids")]
         [JsonPropertyName("product_category_ids")]
         public List<int> ProductCategoryIds { get; set; }
@@ -155,7 +154,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Array of category ID’s the coupon does not apply to
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("exclude_product_category_ids")]
         [JsonPropertyName("exclude_product_category_ids")]
         public List<int> ExcludeProductCategoryIds { get; set; }
@@ -163,7 +162,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Exclude sale items from the coupon
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("exclude_sale_items")]
         [JsonPropertyName("exclude_sale_items")]
         public bool? ExcludeSaleItems { get; set; }
@@ -171,7 +170,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Minimum order amount that needs to be in the cart before coupon applies
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("minimum_amount")]
         [JsonPropertyName("minimum_amount")]
         public decimal? MinimumAmount { get; set; }
@@ -179,7 +178,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Maximum order amount allowed when using the coupon
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("maximum_amount")]
         [JsonPropertyName("maximum_amount")]
         public decimal? MaximumAmount { get; set; }
@@ -187,7 +186,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Array of email addresses that can use this coupon
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("customer_emails")]
         [JsonPropertyName("customer_emails")]
         public List<string> CustomerEmails { get; set; }
@@ -195,7 +194,7 @@ namespace WooCommerce.NET.WooCommerce.Legacy
         /// <summary>
         /// Coupon description
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        
         [JsonProperty("description")]
         [JsonPropertyName("description")]
         public string Description { get; set; }
