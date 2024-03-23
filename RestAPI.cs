@@ -22,7 +22,6 @@ namespace WooCommerce.NET
         public string WcKey { get; set; }
 
         public string WcSecret { get; set; }
-        //private bool wc_Proxy = false;
 
         protected bool AuthorizedHeader { get; set; }
 
@@ -91,13 +90,8 @@ namespace WooCommerce.NET
                 throw new Exception("Please use a valid WooCommerce Restful API url.");
 
             string urlLower = url.Trim().ToLower().TrimEnd('/');
-            if (urlLower.EndsWith("wc-api/v1") || urlLower.EndsWith("wc-api/v2") || urlLower.EndsWith("wc-api/v3"))
-                Version = ApiVersion.Legacy;
-            else if (urlLower.EndsWith("wp-json/wc/v1"))
-                Version = ApiVersion.Version1;
-            else if (urlLower.EndsWith("wp-json/wc/v2"))
-                Version = ApiVersion.Version2;
-            else if (urlLower.EndsWith("wp-json/wc/v3"))
+
+            if (urlLower.EndsWith("wp-json/wc/v3"))
                 Version = ApiVersion.Version3;
             else if (urlLower.Contains("wp-json/wc-"))
                 Version = ApiVersion.ThirdPartyPlugins;
@@ -119,7 +113,7 @@ namespace WooCommerce.NET
             AuthorizedHeader = authorizedHeader;
 
             //Why extra '&'? look here: https://wordpress.org/support/topic/woocommerce-rest-api-v3-problem-woocommerce_api_authentication_error/
-            if ((url.ToLower().Contains("wc-api/v3") || !IsLegacy) && !WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase) && !(Version == ApiVersion.WordPressAPI || Version == ApiVersion.WordPressAPIJWT))
+            if (url.ToLower().Contains("wc-api/v3") && !WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase) && !(Version == ApiVersion.WordPressAPI || Version == ApiVersion.WordPressAPIJWT))
                 WcSecret = secret + "&";
             else
                 WcSecret = secret;
@@ -128,18 +122,6 @@ namespace WooCommerce.NET
             JsonDeserializeFilter = jsonDeserializeFilter;
             WebRequestFilter = requestFilter;
             WebResponseFilter = responseFilter;
-
-            //wc_Proxy = useProxy;
-        }
-
-
-
-        public bool IsLegacy
-        {
-            get
-            {
-                return Version == ApiVersion.Legacy;
-            }
         }
 
         public ApiVersion Version { get; }
@@ -157,157 +139,171 @@ namespace WooCommerce.NET
         /// <returns>json string</returns>
         public virtual async Task<string> SendHttpClientRequest<T>(string endpoint, RequestMethod method, T requestBody, Dictionary<string, string> pars = null)
         {
+            System.Diagnostics.Debug.WriteLine(WcUrl + GetOAuthEndPoint(method.ToString(), endpoint, pars));
             HttpWebRequest httpWebRequest = null;
             try
             {
-                //if (Version == APIVersion.WordPressAPI)
-                //{
-                //    if (string.IsNullOrEmpty(oauth_token) || string.IsNullOrEmpty(oauth_token_secret))
-                //        throw new Exception($"oauth_token and oauth_token_secret parameters are required when using WordPress REST API.");
-                //}
-
                 if ((Version == ApiVersion.WordPressAPIJWT || WcAuthWithJwt) && JwtObject == null)
                 {
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(WcUrl.Replace("wp/v2", "jwt-auth/v1/token")
-                                                                                        .Replace("wc/v1", "jwt-auth/v1/token")
-                                                                                        .Replace("wc/v2", "jwt-auth/v1/token")
-                                                                                        .Replace("wc/v3", "jwt-auth/v1/token"));
-                    request.Method = "POST";
-                    request.ContentType = "application/x-www-form-urlencoded";
-
-                    if (JwtRequestFilter != null)
-                        JwtRequestFilter.Invoke(request);
-
-                    var buffer = Encoding.UTF8.GetBytes($"username={WcKey}&password={WebUtility.UrlEncode(WcSecret)}");
-                    using (Stream dataStream = await request.GetRequestStreamAsync().ConfigureAwait(false))
-                    {
-                        await dataStream.WriteAsync(buffer, 0, buffer.Length);
-                    }
-                    WebResponse response = await request.GetResponseAsync().ConfigureAwait(false);
-                    Stream resStream = response.GetResponseStream();
-                    string result = await GetStreamContent(resStream, "UTF-8").ConfigureAwait(false);
-
-                    if (JwtDeserializeFilter != null)
-                        result = JwtDeserializeFilter.Invoke(result);
-
-                    JwtObject = DeserializeJSon<WpJwtObject>(result);
+                    JwtObject = await JwtAuthenticate().ConfigureAwait(false);
                 }
 
-                if (WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase) && Version != ApiVersion.WordPressAPI && Version != ApiVersion.WordPressAPIJWT)
-                {
-                    if (AuthorizedHeader)
-                    {
-                        httpWebRequest = (HttpWebRequest)WebRequest.Create(WcUrl + GetOAuthEndPoint(method.ToString(), endpoint, pars));
-                        if (WcAuthWithJwt && JwtObject != null)
-                            httpWebRequest.Headers["Authorization"] = "Bearer " + JwtObject.Token;
-                        else
-                            httpWebRequest.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(WcKey + ":" + WcSecret));
-                    }
-                    else
-                    {
-                        if (pars == null)
-                            pars = new Dictionary<string, string>();
+                httpWebRequest = InitializeWebRequest(endpoint, method, ref pars);
 
-                        if (!pars.ContainsKey("consumer_key"))
-                            pars.Add("consumer_key", WcKey);
-                        if (!pars.ContainsKey("consumer_secret"))
-                            pars.Add("consumer_secret", WcSecret);
-
-                        httpWebRequest = (HttpWebRequest)WebRequest.Create(WcUrl + GetOAuthEndPoint(method.ToString(), endpoint, pars));
-                    }
-                }
-                else
-                {
-                    httpWebRequest = (HttpWebRequest)WebRequest.Create(WcUrl + GetOAuthEndPoint(method.ToString(), endpoint, pars));
-                    if (Version == ApiVersion.WordPressAPIJWT || (Version == ApiVersion.WordPressAPI && JwtObject != null))
-                        httpWebRequest.Headers["Authorization"] = "Bearer " + JwtObject.Token;
-                }
-
-                // start the stream immediately
-                httpWebRequest.Method = method.ToString();
-                httpWebRequest.AllowReadStreamBuffering = false;
-
-                if (WebRequestFilter != null)
-                    WebRequestFilter.Invoke(httpWebRequest);
-
-                //if (wc_Proxy)
-                //    httpWebRequest.Proxy.Credentials = CredentialCache.DefaultCredentials;
-                //else
-                //    httpWebRequest.Proxy = null;
-
-                if (requestBody != null && requestBody.GetType() != typeof(string))
-                {
-                    httpWebRequest.ContentType = "application/json";
-                    var buffer = Encoding.UTF8.GetBytes(SerializeJSon(requestBody));
-                    using (Stream dataStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
-                    {
-                        await dataStream.WriteAsync(buffer, 0, buffer.Length);
-                    }
-                }
-                else
-                {
-                    if (requestBody != null && requestBody.ToString() != string.Empty)
-                    {
-                        // ReSharper disable once StringLiteralTypo
-                        if (requestBody.ToString() == "fileupload")
-                        {
-                            if (pars != null)
-                            {
-                                httpWebRequest.Headers["Content-Disposition"] =
-                                    $"attachment; filename=\"{pars["name"]}\"";
-                                httpWebRequest.ContentType = "image/jpeg";
-
-                                using (Stream dataStream =
-                                       await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
-                                {
-                                    //FileStream fileStream = new FileStream(pars["path"], FileMode.Open, FileAccess.Read);
-                                    //byte[] buffer = new byte[4096];
-                                    //int bytesRead = 0;
-
-                                    //while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
-                                    //{
-                                    //    dataStream.Write(buffer, 0, bytesRead);
-                                    //}
-                                    //fileStream.Close();
-
-                                    byte[] fileBytes = File.ReadAllBytes(pars["path"]);
-                                    await dataStream.WriteAsync(fileBytes, 0, fileBytes.Length);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            httpWebRequest.ContentType = "application/json";
-                            var buffer = Encoding.UTF8.GetBytes(requestBody.ToString());
-                            using (Stream dataStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
-                            {
-                                await dataStream.WriteAsync(buffer, 0, buffer.Length);
-                            }
-                        }
-                    }
-                }
-
-                // asynchronously get a response
-                WebResponse wr = await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
-
-                WebResponseFilter?.Invoke((HttpWebResponse)wr);
-
-                return await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
+                return await DoHttpRequest(requestBody, pars, httpWebRequest).ConfigureAwait(false);
             }
             catch (WebException we)
             {
-                if (httpWebRequest != null && httpWebRequest.HaveResponse)
-                    if (we.Response != null)
-                        throw new WebException(await GetStreamContent(we.Response.GetResponseStream(), we.Response.ContentType.Contains("=") ? we.Response.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false), we.InnerException, we.Status, we.Response);
-                    else
-                        throw;
-                else
+                if (httpWebRequest == null || !httpWebRequest.HaveResponse)
                     throw;
+
+                if (we.Response != null)
+                    throw new WebException(await GetStreamContent(we.Response.GetResponseStream(), we.Response.ContentType.Contains("=") ? we.Response.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false), we.InnerException, we.Status, we.Response);
+
+                throw;
             }
             catch (Exception e)
             {
                 return e.Message;
             }
+        }
+
+        private async Task<string> DoHttpRequest<T>(T requestBody, Dictionary<string, string> pars, HttpWebRequest httpWebRequest)
+        {
+            if (requestBody != null && requestBody.GetType() != typeof(string))
+            {
+                httpWebRequest.ContentType = "application/json";
+                var buffer = Encoding.UTF8.GetBytes(SerializeJSon(requestBody));
+                using (Stream dataStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
+                {
+                    await dataStream.WriteAsync(buffer, 0, buffer.Length);
+                }
+            }
+            else
+            {
+                if (requestBody != null && requestBody.ToString() != string.Empty)
+                {
+                    // ReSharper disable once StringLiteralTypo
+                    if (requestBody.ToString() == "fileupload")
+                    {
+                        await WriteUploadFile(pars, httpWebRequest);
+                    }
+                    else
+                    {
+                        httpWebRequest.ContentType = "application/json";
+                        var buffer = Encoding.UTF8.GetBytes(requestBody.ToString());
+                        using (Stream dataStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
+                        {
+                            await dataStream.WriteAsync(buffer, 0, buffer.Length);
+                        }
+                    }
+                }
+            }
+
+            // asynchronously get a response
+            WebResponse wr = await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
+
+            WebResponseFilter?.Invoke((HttpWebResponse)wr);
+
+            string contentType = wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8";
+
+            return await GetStreamContent(wr.GetResponseStream(), contentType).ConfigureAwait(false);
+        }
+
+        private static async Task WriteUploadFile(Dictionary<string, string> pars, HttpWebRequest httpWebRequest)
+        {
+            if (pars != null)
+            {
+                httpWebRequest.Headers["Content-Disposition"] = $"attachment; filename=\"{pars["name"]}\"";
+                httpWebRequest.ContentType = "image/jpeg";
+
+                using (Stream dataStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
+                {
+                    //FileStream fileStream = new FileStream(pars["path"], FileMode.Open, FileAccess.Read);
+                    //byte[] buffer = new byte[4096];
+                    //int bytesRead = 0;
+
+                    //while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+                    //{
+                    //    dataStream.Write(buffer, 0, bytesRead);
+                    //}
+                    //fileStream.Close();
+
+                    byte[] fileBytes = File.ReadAllBytes(pars["path"]);
+                    await dataStream.WriteAsync(fileBytes, 0, fileBytes.Length);
+                }
+            }
+        }
+
+        private HttpWebRequest InitializeWebRequest(string endpoint, RequestMethod method, ref Dictionary<string, string> pars)
+        {
+            HttpWebRequest httpWebRequest;
+            if (WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase) && Version != ApiVersion.WordPressAPI &&
+                Version != ApiVersion.WordPressAPIJWT)
+            {
+                if (AuthorizedHeader)
+                {
+                    httpWebRequest = (HttpWebRequest)WebRequest.Create(WcUrl + GetOAuthEndPoint(method.ToString(), endpoint, pars));
+
+                    if (WcAuthWithJwt && JwtObject != null)
+                        httpWebRequest.Headers["Authorization"] = "Bearer " + JwtObject.Token;
+                    else
+                        httpWebRequest.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(WcKey + ":" + WcSecret));
+                }
+                else
+                {
+                    if (pars == null)
+                        pars = new Dictionary<string, string>();
+
+                    if (!pars.ContainsKey("consumer_key"))
+                        pars.Add("consumer_key", WcKey);
+                    if (!pars.ContainsKey("consumer_secret"))
+                        pars.Add("consumer_secret", WcSecret);
+
+                    httpWebRequest = (HttpWebRequest)WebRequest.Create(WcUrl + GetOAuthEndPoint(method.ToString(), endpoint, pars));
+                }
+            }
+            else
+            {
+                httpWebRequest = (HttpWebRequest)WebRequest.Create(WcUrl + GetOAuthEndPoint(method.ToString(), endpoint, pars));
+                if (Version == ApiVersion.WordPressAPIJWT || (Version == ApiVersion.WordPressAPI && JwtObject != null))
+                    httpWebRequest.Headers["Authorization"] = "Bearer " + JwtObject.Token;
+            }
+
+            // start the stream immediately
+            httpWebRequest.Method = method.ToString();
+            httpWebRequest.AllowReadStreamBuffering = false;
+
+            WebRequestFilter?.Invoke(httpWebRequest);
+            return httpWebRequest;
+        }
+
+        private async Task<WpJwtObject> JwtAuthenticate()
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(WcUrl.Replace("wp/v2", "jwt-auth/v1/token")
+                .Replace("wc/v1", "jwt-auth/v1/token")
+                .Replace("wc/v2", "jwt-auth/v1/token")
+                .Replace("wc/v3", "jwt-auth/v1/token"));
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+
+            if (JwtRequestFilter != null)
+                JwtRequestFilter.Invoke(request);
+
+            var buffer = Encoding.UTF8.GetBytes($"username={WcKey}&password={WebUtility.UrlEncode(WcSecret)}");
+            using (Stream dataStream = await request.GetRequestStreamAsync().ConfigureAwait(false))
+            {
+                await dataStream.WriteAsync(buffer, 0, buffer.Length);
+            }
+
+            WebResponse response = await request.GetResponseAsync().ConfigureAwait(false);
+            Stream resStream = response.GetResponseStream();
+            string result = await GetStreamContent(resStream, "UTF-8").ConfigureAwait(false);
+
+            if (JwtDeserializeFilter != null)
+                result = JwtDeserializeFilter.Invoke(result);
+
+            return DeserializeJSon<WpJwtObject>(result);
         }
 
         public async Task<string> GetRestful(string endpoint, Dictionary<string, string> pars = null)
@@ -407,7 +403,8 @@ namespace WooCommerce.NET
                 DateFormatString = DateTimeFormat, // Assuming DateTimeFormat is defined elsewhere
                 // Note: Json.NET automatically handles dictionaries in a simple format
                 ContractResolver = new NullToEmptyStringResolver(),
-                Converters = new List<JsonConverter> { new NumericToStringConverter() }
+                Converters = new List<JsonConverter> { new TypeToStringConverter() },
+                NullValueHandling = NullValueHandling.Ignore
             };
 
             string jsonString = JsonConvert.SerializeObject(t, settings);
@@ -417,13 +414,6 @@ namespace WooCommerce.NET
             if (formatJsonSMethod != null)
             {
                 jsonString = (string)formatJsonSMethod.Invoke(null, new object[] { jsonString });
-            }
-
-            // Legacy support
-            if (IsLegacy)
-            {
-                string typeName = typeof(T).IsArray ? typeof(T).Name.ToLower().Replace("[]", "s") : typeof(T).Name.ToLower();
-                jsonString = $"{{\"{typeName}\":{jsonString}}}";
             }
 
             // Filter, assuming JsonSerializeFilter is a Func<string, string> defined elsewhere
@@ -481,87 +471,7 @@ namespace WooCommerce.NET
             }
         }
 
-        //public virtual string SerializeJSon<T>(T t)
-        //{
-        //    DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings()
-        //    {
-        //        DateTimeFormat = new DateTimeFormat(DateTimeFormat),
-        //        UseSimpleDictionaryFormat = true
-        //    };
-
-        //    MemoryStream stream = new MemoryStream();
-        //    DataContractJsonSerializer ds = new DataContractJsonSerializer(t.GetType(), settings);
-        //    ds.WriteObject(stream, t);
-        //    byte[] data = stream.ToArray();
-        //    string jsonString = Encoding.UTF8.GetString(data, 0, data.Length);
-
-        //    if (t.GetType().GetMethod("FormatJsonS") != null)
-        //    {
-        //        jsonString = t.GetType().GetMethod("FormatJsonS")?.Invoke(null, new object[] { jsonString }).ToString();
-        //    }
-
-        //    if (IsLegacy)
-        //        if (typeof(T).IsArray)
-        //            jsonString = "{\"" + typeof(T).Name.ToLower().Replace("[]", "s") + "\":" + jsonString + "}";
-        //        else
-        //            jsonString = "{\"" + typeof(T).Name.ToLower() + "\":" + jsonString + "}";
-
-        //    stream.Dispose();
-
-        //    if (JsonSerializeFilter != null)
-        //        jsonString = JsonSerializeFilter.Invoke(jsonString);
-
-        //    return jsonString;
-        //}
-
-        //public virtual T DeserializeJSon<T>(string jsonString)
-        //{
-        //    if (JsonDeserializeFilter != null)
-        //        jsonString = JsonDeserializeFilter.Invoke(jsonString);
-
-        //    Type dT = typeof(T);
-
-        //    try
-        //    {
-        //        if (dT.Name.EndsWith("List"))
-        //            dT = dT.GetTypeInfo().DeclaredProperties.First().PropertyType.GenericTypeArguments[0];
-
-        //        if (dT.FullName != null && dT.FullName.StartsWith("System.Collections.Generic.List"))
-        //        {
-        //            dT = dT.GetProperty("Item")?.PropertyType;
-        //        }
-
-        //        if (dT != null && dT.GetMethod("FormatJsonD") != null)
-        //        {
-        //            jsonString = dT.GetMethod("FormatJsonD")?.Invoke(null, new object[] { jsonString }).ToString();
-        //        }
-
-        //        DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings()
-        //        {
-        //            DateTimeFormat = new DateTimeFormat(DateTimeFormat),
-        //            UseSimpleDictionaryFormat = true
-        //        };
-
-        //        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(T), settings);
-        //        if (jsonString != null)
-        //        {
-        //            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonString));
-        //            T obj = (T)ser.ReadObject(stream);
-        //            stream.Dispose();
-        //            return obj;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        if (Debug)
-        //            throw new Exception(ex.Message + Environment.NewLine + Environment.NewLine + jsonString);
-        //        throw;
-        //    }
-
-        //    return default;
-        //}
-
-        public string DateTimeFormat => IsLegacy ? "yyyy-MM-ddTHH:mm:ssZ" : "yyyy-MM-ddTHH:mm:ssK";
+        public string DateTimeFormat => "yyyy-MM-ddTHH:mm:ssK";
     }
 
 

@@ -17,10 +17,7 @@ namespace WooCommerce.NET.Base
     public enum ApiVersion
     {
         Unknown = 0,
-        Legacy = 1,
-        Version1 = 2,
-        Version2 = 3,
-        Version3 = 4,
+        Version3 = 1,
         WordPressAPI = 90,
         WordPressAPIJWT = 91,
         ThirdPartyPlugins = 99
