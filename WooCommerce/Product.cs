@@ -522,6 +522,11 @@ namespace WooCommerce.NET.WooCommerce
         [JsonProperty("meta_data")]
         [JsonPropertyName("meta_data")]
         public List<MetaData> MetaData { get; set; }
+
+        public void UpdatePrice()
+        {
+            Price = SalePrice ?? RegularPrice;
+        }
     }
 
     public class ProductDownloadLine
@@ -769,7 +774,7 @@ namespace WooCommerce.NET.WooCommerce
         [JsonProperty("id")]
         [JsonPropertyName("id")]
         public ulong Id { get; private set; }
-                
+
 
         /// <summary>
         /// The date the review was created, in the site’s timezone.
