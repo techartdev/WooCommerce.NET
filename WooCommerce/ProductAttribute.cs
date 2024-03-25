@@ -43,7 +43,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("order_by")]
         [JsonPropertyName("order_by")]
-        public string OrderBy { get; set; }
+        public string OrderBy { get; set; } = "menu_order";
 
         /// <summary>
         /// Enable/Disable attribute archives. Default is false.
@@ -96,7 +96,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("menu_order")]
         [JsonPropertyName("menu_order")]
-        public int MenuOrder { get; set; }
+        public int? MenuOrder { get; set; }
 
         /// <summary>
         /// Number of published products for the resource. 

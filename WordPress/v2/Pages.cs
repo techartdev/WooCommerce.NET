@@ -227,7 +227,7 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("menu_order")]
         [JsonPropertyName("menu_order")]
-        public int MenuOrder  { get; set; }
+        public int? MenuOrder  { get; set; }
 
         /// <summary>
         /// Meta fields.

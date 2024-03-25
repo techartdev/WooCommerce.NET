@@ -404,7 +404,8 @@ namespace WooCommerce.NET
                 // Note: Json.NET automatically handles dictionaries in a simple format
                 ContractResolver = new NullToEmptyStringResolver(),
                 Converters = new List<JsonConverter> { new TypeToStringConverter() },
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
             };
 
             string jsonString = JsonConvert.SerializeObject(t, settings);

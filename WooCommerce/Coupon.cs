@@ -85,7 +85,7 @@ namespace WooCommerce.NET.WooCommerce
 
         [JsonProperty("discount_type")]
         [JsonPropertyName("discount_type")]
-        public string DiscountType { get; set; }
+        public string DiscountType { get; set; } = "fixed_cart";
 
         /// <summary>
         /// Coupon description.

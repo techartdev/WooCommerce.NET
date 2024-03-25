@@ -30,7 +30,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("status")]
         [JsonPropertyName("status")]
-        public string Status { get; set; }
+        public string Status { get; set; } = "active";
 
         /// <summary>
         /// Webhook topic. Required!  

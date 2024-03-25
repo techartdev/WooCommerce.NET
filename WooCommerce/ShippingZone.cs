@@ -53,7 +53,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("type")]
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string Type { get; set; } = "country";
 
     }
 

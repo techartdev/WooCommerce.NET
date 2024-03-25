@@ -143,7 +143,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("status")]
         [JsonPropertyName("status")]
-        public string Status { get; set; }
+        public string Status { get; set; } = "publish";
 
         /// <summary>
         /// Shows if the variation can be bought. 
@@ -193,7 +193,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("tax_status")]
         [JsonPropertyName("tax_status")]
-        public string TaxStatus { get; set; }
+        public string TaxStatus { get; set; } = "taxable";
 
         /// <summary>
         /// Tax class.
@@ -223,7 +223,7 @@ namespace WooCommerce.NET.WooCommerce
 
         [JsonProperty("stock_status")]
         [JsonPropertyName("stock_status")]
-        public string StockStatus { get; set; }
+        public string StockStatus { get; set; } = "instock";
 
         /// <summary>
         /// If managing stock, this controls if backorders are allowed. Options: no, notify and yes. Default is no.
@@ -231,7 +231,7 @@ namespace WooCommerce.NET.WooCommerce
 
         [JsonProperty("backorders")]
         [JsonPropertyName("backorders")]
-        public string Backorders { get; set; }
+        public string Backorders { get; set; } = "no";
 
         /// <summary>
         /// Shows if backorders are allowed. 
@@ -301,7 +301,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("menu_order")]
         [JsonPropertyName("menu_order")]
-        public int MenuOrder { get; set; }
+        public int? MenuOrder { get; set; }
 
         /// <summary>
         /// Meta data. See Product variation - Meta data properties

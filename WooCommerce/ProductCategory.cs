@@ -54,7 +54,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("display")]
         [JsonPropertyName("display")]
-        public string Display { get; set; }
+        public string Display { get; set; } = "default";
 
         /// <summary>
         /// Image data. See Product category - Image properties
@@ -68,7 +68,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("menu_order")]
         [JsonPropertyName("menu_order")]
-        public int MenuOrder { get; set; }
+        public int? MenuOrder { get; set; }
 
         /// <summary>
         /// Number of published products for the resource. 

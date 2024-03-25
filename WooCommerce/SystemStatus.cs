@@ -737,7 +737,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("confirm")]
         [JsonPropertyName("confirm")]
-        public bool? Confirm { get; set; }
+        public bool Confirm { get; set; }
 
     }
 }

@@ -82,14 +82,14 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>
         [JsonProperty("type")]
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string Type { get; set; } = "simple";
 
         /// <summary>
         /// Product status (post status). Options: draft, pending, private and publish. Default is publish.
         /// </summary>
         [JsonProperty("status")]
         [JsonPropertyName("status")]
-        public string Status { get; set; }
+        public string Status { get; set; } = "publish";
 
         /// <summary>
         /// Featured product. Default is false.
@@ -103,7 +103,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>
         [JsonProperty("catalog_visibility")]
         [JsonPropertyName("catalog_visibility")]
-        public string CatalogVisibility { get; set; }
+        public string CatalogVisibility { get; set; } = "visible";
 
         /// <summary>
         /// Product description.
@@ -284,7 +284,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>
         [JsonProperty("tax_status")]
         [JsonPropertyName("tax_status")]
-        public string TaxStatus { get; set; }
+        public string TaxStatus { get; set; } = "taxable";
 
         /// <summary>
         /// Tax class.
@@ -312,21 +312,21 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>
         [JsonProperty("in_stock")]
         [JsonPropertyName("in_stock")]
-        public bool? InStock { get; set; }
+        public bool InStock { get; set; } = true;
 
         /// <summary>
         /// Controls the stock status of the product. Options: instock, outofstock, onbackorder. Default is instock.
         /// </summary>
         [JsonProperty("stock_status")]
         [JsonPropertyName("stock_status")]
-        public string StockStatus { get; set; }
+        public string StockStatus { get; set; } = "instock";
 
         /// <summary>
         /// If managing stock, this controls if backorders are allowed. Options: no, notify and yes. Default is no.
         /// </summary>
         [JsonProperty("backorders")]
         [JsonPropertyName("backorders")]
-        public string Backorders { get; set; }
+        public string Backorders { get; set; } = "no";
 
         /// <summary>
         /// Shows if backorders are allowed. 
@@ -404,7 +404,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>
         [JsonProperty("reviews_allowed")]
         [JsonPropertyName("reviews_allowed")]
-        public bool ReviewsAllowed { get; set; }
+        public bool ReviewsAllowed { get; set; } = true;
 
         /// <summary>
         /// Reviews average rating. 
@@ -614,7 +614,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("name")]
         [JsonPropertyName("name")]
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Tag slug. 
@@ -709,7 +709,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>        
         [JsonProperty("position")]
         [JsonPropertyName("position")]
-        public int Position { get; set; }
+        public int? Position { get; set; }
 
         /// <summary>
         /// Define if the attribute is visible on the “Additional information” tab in the product’s page. Default is false.
@@ -798,7 +798,7 @@ namespace WooCommerce.NET.WooCommerce
         /// </summary>
         [JsonProperty("status")]
         [JsonPropertyName("status")]
-        public string Status { get; set; }
+        public string Status { get; set; } = "approved";
 
         /// <summary>
         /// Reviewer name. 
