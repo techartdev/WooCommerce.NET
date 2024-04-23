@@ -154,7 +154,7 @@ namespace WooCommerce.NET.WooCommerce
 
         [JsonProperty("usage_limit")]
         [JsonPropertyName("usage_limit")]
-        public int UsageLimit { get; set; }
+        public int? UsageLimit { get; set; }
 
         /// <summary>
         /// How many times the coupon can be used per customer.
@@ -162,7 +162,7 @@ namespace WooCommerce.NET.WooCommerce
 
         [JsonProperty("usage_limit_per_user")]
         [JsonPropertyName("usage_limit_per_user")]
-        public int UsageLimitPerUser { get; set; }
+        public int? UsageLimitPerUser { get; set; }
 
         /// <summary>
         /// Max number of items in the cart the coupon can be applied to.
@@ -170,7 +170,7 @@ namespace WooCommerce.NET.WooCommerce
 
         [JsonProperty("limit_usage_to_x_items")]
         [JsonPropertyName("limit_usage_to_x_items")]
-        public int LimitUsageToXItems { get; set; }
+        public int? LimitUsageToXItems { get; set; }
 
         /// <summary>
         /// If true and if the free shipping method requires a coupon, this coupon will enable free shipping. Default is false.
