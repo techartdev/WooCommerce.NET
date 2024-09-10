@@ -153,6 +153,11 @@ namespace WooCommerce.NET
                     JwtObject = await JwtAuthenticate().ConfigureAwait(false);
                 }
 
+                if (JwtObject != null && DateTime.UtcNow > JwtObject.ExpireDate)
+                {
+                    JwtObject = await JwtAuthenticate().ConfigureAwait(false);
+                }
+
                 httpWebRequest = InitializeWebRequest(endpoint, method, ref pars);
 
                 return await DoHttpRequest(requestBody, pars, httpWebRequest).ConfigureAwait(false);
