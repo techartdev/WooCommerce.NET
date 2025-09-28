@@ -153,6 +153,11 @@ namespace WooCommerce.NET
                     JwtObject = await JwtAuthenticate().ConfigureAwait(false);
                 }
 
+                if (JwtObject != null && DateTime.UtcNow > JwtObject.ExpireDate)
+                {
+                    JwtObject = await JwtAuthenticate().ConfigureAwait(false);
+                }
+
                 httpWebRequest = InitializeWebRequest(endpoint, method, ref pars);
 
                 return await DoHttpRequest(requestBody, pars, httpWebRequest).ConfigureAwait(false);
@@ -278,6 +283,7 @@ namespace WooCommerce.NET
             // start the stream immediately
             httpWebRequest.Method = method.ToString();
             httpWebRequest.AllowReadStreamBuffering = false;
+            httpWebRequest.UserAgent = "CakeToolsPOS";
 
             WebRequestFilter?.Invoke(httpWebRequest);
             return httpWebRequest;
@@ -291,6 +297,7 @@ namespace WooCommerce.NET
                 .Replace("wc/v3", "jwt-auth/v1/token"));
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
+            request.UserAgent = "CakeToolsPOS";
 
             if (JwtRequestFilter != null)
                 JwtRequestFilter.Invoke(request);
