@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -153,7 +153,7 @@ namespace WooCommerce.NET
                     JwtObject = await JwtAuthenticate().ConfigureAwait(false);
                 }
 
-                if (JwtObject != null && DateTime.UtcNow > JwtObject.ExpireDate)
+                if (JwtObject != null && DateTime.Now > JwtObject.ExpireDate)
                 {
                     JwtObject = await JwtAuthenticate().ConfigureAwait(false);
                 }
@@ -341,6 +341,73 @@ namespace WooCommerce.NET
         public async Task<string> DeleteRestful(string endpoint, object jsonObject, Dictionary<string, string> pars = null)
         {
             return await SendHttpClientRequest(endpoint, RequestMethod.DELETE, jsonObject, pars).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get request with custom full endpoint URL (bypasses WcUrl base path)
+        /// Useful for calling endpoints outside the standard WooCommerce API paths (e.g., wc-analytics)
+        /// </summary>
+        /// <param name="fullEndpoint">Full endpoint path relative to wp-json (e.g., "wc-analytics/reports/performance-indicators")</param>
+        /// <param name="pars">Query parameters</param>
+        /// <returns>JSON response string</returns>
+        public async Task<string> GetRawEndpoint(string fullEndpoint, Dictionary<string, string> pars = null)
+        {
+            HttpWebRequest httpWebRequest = null;
+            try
+            {
+                if ((Version == ApiVersion.WordPressAPIJWT || WcAuthWithJwt) && JwtObject == null)
+                {
+                    JwtObject = await JwtAuthenticate().ConfigureAwait(false);
+                }
+
+                if (JwtObject != null && DateTime.Now > JwtObject.ExpireDate)
+                {
+                    JwtObject = await JwtAuthenticate().ConfigureAwait(false);
+                }
+
+                // Build the full URL by replacing the version path with the custom endpoint
+                string baseUrl = WcUrl.Replace("/wc/v1/", "/").Replace("/wc/v2/", "/").Replace("/wc/v3/", "/").Replace("/wp/v2/", "/");
+                string queryString = "";
+                
+                if (pars != null && pars.Count > 0)
+                {
+                    queryString = "?" + string.Join("&", pars.Select(p => $"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value)}"));
+                }
+
+                httpWebRequest = (HttpWebRequest)WebRequest.Create(baseUrl + fullEndpoint + queryString);
+                httpWebRequest.Method = "GET";
+                httpWebRequest.AllowReadStreamBuffering = false;
+                httpWebRequest.UserAgent = "CakeToolsPOS";
+
+                if (WcAuthWithJwt && JwtObject != null)
+                    httpWebRequest.Headers["Authorization"] = "Bearer " + JwtObject.Token;
+                else if (WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                    httpWebRequest.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(WcKey + ":" + WcSecret));
+
+                WebRequestFilter?.Invoke(httpWebRequest);
+
+                WebResponse response = await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
+                Stream resStream = response.GetResponseStream();
+                string result = await GetStreamContent(resStream, "UTF-8").ConfigureAwait(false);
+
+                WebResponseFilter?.Invoke((HttpWebResponse)response);
+
+                if (JsonDeserializeFilter != null)
+                    result = JsonDeserializeFilter.Invoke(result);
+
+                return result;
+            }
+            catch (WebException e)
+            {
+                if (Debug)
+                {
+                    Stream resStream = e.Response.GetResponseStream();
+                    string result = await GetStreamContent(resStream, "UTF-8").ConfigureAwait(false);
+                    throw new WebException(result, e);
+                }
+                else
+                    throw;
+            }
         }
 
         protected string GetOAuthEndPoint(string method, string endpoint, Dictionary<string, string> pars = null)

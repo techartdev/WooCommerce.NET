@@ -15,7 +15,7 @@ namespace WooCommerce.NET.Base
 
         public static string GetUnixTime(bool micro)
         {
-            long unixtime = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).Ticks;
+            long unixtime = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).Ticks;
 
             if (!micro)
             {
