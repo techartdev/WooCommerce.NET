@@ -6,20 +6,20 @@ namespace WooCommerce.NET.Base
 {
     public enum RequestMethod
     {
-        HEAD = 1,
-        GET = 2,
-        POST = 3,
-        PUT = 4,
-        PATCH = 5,
-        DELETE = 6
+        Head = 1,
+        Get = 2,
+        Post = 3,
+        Put = 4,
+        Patch = 5,
+        Delete = 6
     }
 
     public enum ApiVersion
     {
         Unknown = 0,
         Version3 = 1,
-        WordPressAPI = 90,
-        WordPressAPIJWT = 91,
+        WordPressApi = 90,
+        WordPressApijwt = 91,
         ThirdPartyPlugins = 99
     }
 }

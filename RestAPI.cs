@@ -101,10 +101,10 @@ namespace WooCommerce.NET
             else if (urlLower.Contains("wp-json/wc-"))
                 Version = ApiVersion.ThirdPartyPlugins;
             else if (urlLower.EndsWith("wp-json/wp/v2") || urlLower.EndsWith("wp-json"))
-                Version = ApiVersion.WordPressAPI;
+                Version = ApiVersion.WordPressApi;
             else if (urlLower.EndsWith("jwt-auth/v1/token"))
             {
-                Version = ApiVersion.WordPressAPIJWT;
+                Version = ApiVersion.WordPressApijwt;
                 url = urlLower.Replace("jwt-auth/v1/token", "wp/v2");
             }
             else
@@ -118,7 +118,7 @@ namespace WooCommerce.NET
             AuthorizedHeader = authorizedHeader;
 
             //Why extra '&'? look here: https://wordpress.org/support/topic/woocommerce-rest-api-v3-problem-woocommerce_api_authentication_error/
-            if (url.ToLower().Contains("wc-api/v3") && !WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase) && !(Version == ApiVersion.WordPressAPI || Version == ApiVersion.WordPressAPIJWT))
+            if (url.ToLower().Contains("wc-api/v3") && !WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase) && !(Version == ApiVersion.WordPressApi || Version == ApiVersion.WordPressApijwt))
                 WcSecret = secret + "&";
             else
                 WcSecret = secret;
@@ -148,7 +148,7 @@ namespace WooCommerce.NET
             HttpWebRequest httpWebRequest = null;
             try
             {
-                if ((Version == ApiVersion.WordPressAPIJWT || WcAuthWithJwt) && JwtObject == null)
+                if ((Version == ApiVersion.WordPressApijwt || WcAuthWithJwt) && JwtObject == null)
                 {
                     JwtObject = await JwtAuthenticate().ConfigureAwait(false);
                 }
@@ -248,8 +248,8 @@ namespace WooCommerce.NET
         private HttpWebRequest InitializeWebRequest(string endpoint, RequestMethod method, ref Dictionary<string, string> pars)
         {
             HttpWebRequest httpWebRequest;
-            if (WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase) && Version != ApiVersion.WordPressAPI &&
-                Version != ApiVersion.WordPressAPIJWT)
+            if (WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase) && Version != ApiVersion.WordPressApi &&
+                Version != ApiVersion.WordPressApijwt)
             {
                 if (AuthorizedHeader)
                 {
@@ -276,7 +276,7 @@ namespace WooCommerce.NET
             else
             {
                 httpWebRequest = (HttpWebRequest)WebRequest.Create(WcUrl + GetOAuthEndPoint(method.ToString(), endpoint, pars));
-                if (Version == ApiVersion.WordPressAPIJWT || (Version == ApiVersion.WordPressAPI && JwtObject != null))
+                if (Version == ApiVersion.WordPressApijwt || (Version == ApiVersion.WordPressApi && JwtObject != null))
                     httpWebRequest.Headers["Authorization"] = "Bearer " + JwtObject.Token;
             }
 
@@ -320,27 +320,27 @@ namespace WooCommerce.NET
 
         public async Task<string> GetRestful(string endpoint, Dictionary<string, string> pars = null)
         {
-            return await SendHttpClientRequest(endpoint, RequestMethod.GET, string.Empty, pars).ConfigureAwait(false);
+            return await SendHttpClientRequest(endpoint, RequestMethod.Get, string.Empty, pars).ConfigureAwait(false);
         }
 
         public async Task<string> PostRestful(string endpoint, object jsonObject, Dictionary<string, string> pars = null)
         {
-            return await SendHttpClientRequest(endpoint, RequestMethod.POST, jsonObject, pars).ConfigureAwait(false);
+            return await SendHttpClientRequest(endpoint, RequestMethod.Post, jsonObject, pars).ConfigureAwait(false);
         }
 
         public async Task<string> PutRestful(string endpoint, object jsonObject, Dictionary<string, string> pars = null)
         {
-            return await SendHttpClientRequest(endpoint, RequestMethod.PUT, jsonObject, pars).ConfigureAwait(false);
+            return await SendHttpClientRequest(endpoint, RequestMethod.Put, jsonObject, pars).ConfigureAwait(false);
         }
 
         public async Task<string> DeleteRestful(string endpoint, Dictionary<string, string> pars = null)
         {
-            return await SendHttpClientRequest(endpoint, RequestMethod.DELETE, string.Empty, pars).ConfigureAwait(false);
+            return await SendHttpClientRequest(endpoint, RequestMethod.Delete, string.Empty, pars).ConfigureAwait(false);
         }
 
         public async Task<string> DeleteRestful(string endpoint, object jsonObject, Dictionary<string, string> pars = null)
         {
-            return await SendHttpClientRequest(endpoint, RequestMethod.DELETE, jsonObject, pars).ConfigureAwait(false);
+            return await SendHttpClientRequest(endpoint, RequestMethod.Delete, jsonObject, pars).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace WooCommerce.NET
             HttpWebRequest httpWebRequest = null;
             try
             {
-                if ((Version == ApiVersion.WordPressAPIJWT || WcAuthWithJwt) && JwtObject == null)
+                if ((Version == ApiVersion.WordPressApijwt || WcAuthWithJwt) && JwtObject == null)
                 {
                     JwtObject = await JwtAuthenticate().ConfigureAwait(false);
                 }
@@ -412,7 +412,7 @@ namespace WooCommerce.NET
 
         protected string GetOAuthEndPoint(string method, string endpoint, Dictionary<string, string> pars = null)
         {
-            if (Version == ApiVersion.WordPressAPIJWT || (WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase)))
+            if (Version == ApiVersion.WordPressApijwt || (WcUrl.StartsWith("https", StringComparison.OrdinalIgnoreCase)))
             {
                 if (pars == null)
                     return endpoint;
@@ -428,7 +428,7 @@ namespace WooCommerce.NET
 
             Dictionary<string, string> dic = new Dictionary<string, string> { { "oauth_consumer_key", WcKey } };
 
-            if (Version == ApiVersion.WordPressAPI)
+            if (Version == ApiVersion.WordPressApi)
                 dic.Add("oauth_token", OauthToken);
 
             dic.Add("oauth_nonce", Guid.NewGuid().ToString("N"));
@@ -449,7 +449,7 @@ namespace WooCommerce.NET
             baseRequestUri += Uri.EscapeDataString(stringToSign.TrimEnd('&'));
 
             dic.Add("oauth_signature",
-                Version == ApiVersion.WordPressAPI
+                Version == ApiVersion.WordPressApi
                     ? Common.GetSha256(WcSecret + "&" + OauthTokenSecret, baseRequestUri)
                     : Common.GetSha256(WcSecret, baseRequestUri));
 

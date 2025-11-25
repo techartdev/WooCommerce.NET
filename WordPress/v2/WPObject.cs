@@ -14,10 +14,10 @@ namespace WooCommerce.NET.WordPress.v2
         where T7 : Taxonomies where T8 : Media where T9 : Users where T10 : PostTypes where T11 : PostStatuses where T12 : Settings
     {
        
-        protected RestApi API { get; set; }
+        protected RestApi Api { get; set; }
         public WpObject(RestApi api)
         {
-            API = api;
+            Api = api;
 
             Post = new WpPostItem(api);
             Categories = new WcItem<T3>(api);
@@ -25,7 +25,7 @@ namespace WooCommerce.NET.WordPress.v2
             Pages = new WcItem<T5>(api);
             Comments = new WcItem<T6>(api);
             Taxonomies = new WcItem<T7>(api);
-            Media = new WPMediaItem(api);
+            Media = new WpMediaItem(api);
             Users = new WcItem<T9>(api);
             PostTypes = new WcItem<T10>(api);
             PostStatuses = new WcItem<T11>(api);
@@ -44,7 +44,7 @@ namespace WooCommerce.NET.WordPress.v2
 
         public WcItem<T7> Taxonomies { get; protected set; }
 
-        public WPMediaItem Media { get; protected set; }
+        public WpMediaItem Media { get; protected set; }
 
         public WcItem<T9> Users { get; protected set; }
 
@@ -66,9 +66,9 @@ namespace WooCommerce.NET.WordPress.v2
             public WcSubItem<T2> Revisions { get; set; }
         }
 
-        public class WPMediaItem : WcItem<T8>
+        public class WpMediaItem : WcItem<T8>
         {
-            public WPMediaItem(RestApi api) : base(api)
+            public WpMediaItem(RestApi api) : base(api)
             {
                 Api = api;
             }

@@ -18,7 +18,7 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("id")]
         [JsonPropertyName("id")]
-        public ulong? id  { get; set; }
+        public ulong? Id  { get; set; }
 
         /// <summary>
         /// Number of published posts for the term.
@@ -26,7 +26,7 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("count")]
         [JsonPropertyName("count")]
-        public uint count  { get; set; }
+        public uint Count  { get; set; }
 
         /// <summary>
         /// HTML description of the term.
@@ -34,7 +34,7 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("description")]
         [JsonPropertyName("description")]
-        public string description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// URL of the term.
@@ -42,7 +42,7 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("link")]
         [JsonPropertyName("link")]
-        public string link { get; set; }
+        public string Link { get; set; }
 
         /// <summary>
         /// HTML title for the term.
@@ -50,7 +50,7 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("name")]
         [JsonPropertyName("name")]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// An alphanumeric identifier for the term unique to its type.
@@ -58,7 +58,7 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("slug")]
         [JsonPropertyName("slug")]
-        public string slug { get; set; }
+        public string Slug { get; set; }
 
         /// <summary>
         /// Type attribution for the term.
@@ -66,7 +66,7 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("taxonomy")]
         [JsonPropertyName("taxonomy")]
-        public string taxonomy { get; set; }
+        public string Taxonomy { get; set; }
 
         /// <summary>
         /// The parent term ID.
@@ -74,7 +74,7 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("parent")]
         [JsonPropertyName("parent")]
-        public ulong? parent  { get; set; }
+        public ulong? Parent  { get; set; }
 
         /// <summary>
         /// Meta fields.
@@ -82,6 +82,6 @@ namespace WooCommerce.NET.WordPress.v2
         
         [JsonProperty("meta")]
         [JsonPropertyName("meta")]
-        public object meta { get; set; }
+        public object Meta { get; set; }
     }
 }
